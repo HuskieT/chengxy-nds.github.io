@@ -19,7 +19,7 @@
     <link rel="dns-prefetch" href="http://xiaofu.wqdian.cn.gitee.io/chengxy-nds">
     <!--SEO-->
 
-<meta name="keywords" content="Redis,分布式锁" />
+<meta name="keywords" content="" />
 
 
 <meta name="description" content="引言
@@ -34,7 +34,7 @@
 
 <title>
     
-    redis 分布式锁的 5个坑，真是又大又深 |
+    hello-world - 副本 |
     
     Java | springboot | springcloud | redis | mysql
 </title>
@@ -153,24 +153,22 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="redis 分布式锁的 5个坑，真是又大又深">
+        <h1 id="hello-world - 副本">
             
-            redis 分布式锁的 5个坑，真是又大又深
+            hello-world - 副本
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/chengxy-nds/categories/Redis/">Redis</a>
+        
     </span>
     
     
     <span class="fa-wrap">
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
-            
-            <a class="tag-link" href="/chengxy-nds/tags/Redis/" rel="tag">Redis</a> <a class="tag-link" href="/chengxy-nds/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" rel="tag">分布式锁</a>
             
         </span>
     </span>
@@ -180,7 +178,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2020/01/26</span>
+            2020/04/24</span>
     </span>
     
     
@@ -192,9 +190,6 @@
     <div class="post-body post-content">
         <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; padding: 0 10px; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; margin-top: -10px; line-height: 1.25; color: #2b2b2b; font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light; letter-spacing: 2px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center;"><h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>引言</span><span class="suffix" style="display: none;"></span></h4>
 <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 14px; word-spacing: 2px;">最近项目上线的频率颇高，连着几天加班熬夜，身体有点吃不消精神也有些萎靡，无奈业务方催的紧，工期就在眼前只能硬着头皮上了。脑子浑浑噩噩的时候，写的就不能叫代码，可以直接叫做<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Bug</code>。我就熬夜写了一个<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">bug</code>被骂惨了。</p>
-
-<a id="more"></a>
-
 <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 14px; word-spacing: 2px;">由于是做商城业务，要频繁的对商品库存进行扣减，应用是集群部署，为避免并发造成库存<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">超买超卖</code>等问题，采用 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">redis</code> 分布式锁加以控制。本以为给扣库存的代码加上锁<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">lock.tryLock</code>就万事大吉了</p>
 <pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #fff; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: black; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; letter-spacing: 0px; padding-top: 15px; background: #fff; border-radius: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;<span class="hljs-doctag" style="font-weight: bold; line-height: 26px;">@author</span>&nbsp;xiaofu<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;<span class="hljs-doctag" style="font-weight: bold; line-height: 26px;">@description</span>&nbsp;扣减库存<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;<span class="hljs-doctag" style="font-weight: bold; line-height: 26px;">@date</span>&nbsp;2020/4/21&nbsp;12:10<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;<span class="hljs-function" style="line-height: 26px;"><span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">public</span>&nbsp;String&nbsp;<span class="hljs-title" style="color: #1c00cf; line-height: 26px;">stockLock</span><span class="hljs-params" style="color: #5c2699; line-height: 26px;">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RLock&nbsp;lock&nbsp;=&nbsp;redissonClient.getLock(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"stockLock"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">try</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;获取锁<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">if</span>&nbsp;(lock.tryLock(<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">10</span>,&nbsp;TimeUnit.SECONDS))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;查询库存数<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;stock&nbsp;=&nbsp;Integer.valueOf(stringRedisTemplate.opsForValue().get(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"stockCount"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #007400; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;扣减库存<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">if</span>&nbsp;(stock&nbsp;&gt;&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">0</span>)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stock&nbsp;=&nbsp;stock&nbsp;-&nbsp;<span class="hljs-number" style="color: #1c00cf; line-height: 26px;">1</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stringRedisTemplate.opsForValue().set(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"stockCount"</span>,&nbsp;stock.toString());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOGGER.info(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"库存扣减成功，剩余库存数量：{}"</span>,&nbsp;stock);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">else</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOGGER.info(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"库存不足~"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">else</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOGGER.info(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"未获取到锁业务结束.."</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">catch</span>&nbsp;(Exception&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOGGER.info(<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"处理异常"</span>,&nbsp;e);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">finally</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lock.unlock();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #aa0d91; line-height: 26px;">return</span>&nbsp;<span class="hljs-string" style="color: #c41a16; line-height: 26px;">"ok"</span>;<br>&nbsp;&nbsp;}<br></code></pre>
 <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 14px; word-spacing: 2px;">结果业务代码执行完以后我忘了释放锁<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">lock.unlock()</code>，导致<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">redis</code>线程池被打满，<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">redis</code>服务大面积故障，造成库存数据扣减混乱，被领导一顿臭骂，这个月绩效~ 哎·~。</p>
@@ -255,7 +250,7 @@
 <h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>总结</span><span class="suffix" style="display: none;"></span></h4>
 <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 14px; word-spacing: 2px;">上面就是我在使用<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Redis</code> 分布式锁时遇到的一些坑，有点小感慨，经常用一个方法填上这个坑，没多久就发现另一个坑又出来了，其实根本没有什么十全十美的解决方案，哪有什么银弹，只不过是在权衡利弊后，选一个在接受范围内的折中方案而已。</p>
 <hr data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px; height: 1px; padding: 0; border: none; border-top: 2px solid #3BAAFA;">
-<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; color: black; font-size: 16px;"><span class="prefix" style="display: none;"></span><span class="content">小福利：</span><span class="suffix" style="display: none;"></span></h5>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>小福利：</span><span class="suffix" style="display: none;"></span></h4>
 <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 14px; word-spacing: 2px;">几百本各类技术电子书相送，嘘~，<strong style="color: #3594F7; font-weight: bold;"><span>「</span>免费<span>」</span></strong> 送给小伙伴们。关注我的公号，回复【<strong style="color: #3594F7; font-weight: bold;"><span>「</span>666<span>」</span></strong>】，无套路自行领取哦</p>
 <figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="max-width: 100%; border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: 2px 4px 7px #999;"></figure>
 </section>
@@ -276,17 +271,11 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/chengxy-nds/2020/01/26/redis%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%205%E4%B8%AA%E5%9D%91%EF%BC%8C%E7%9C%9F%E6%98%AF%E5%8F%88%E5%A4%A7%E5%8F%88%E6%B7%B1%20-%20%E5%89%AF%E6%9C%AC%20(2)/" class="pre-post btn btn-default" title='redis 分布式锁的 5个坑，真是又大又深'>
-        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-        <span class="hidden-xs">
-            redis 分布式锁的 5个坑，真是又大又深</span>
-    </a>
     
-    
-    <a href="/chengxy-nds/2017/05/26/hello-world%20-%20%E5%89%AF%E6%9C%AC%20(2)/" class="next-post btn btn-default" title='分布式ID生成器'>
+    <a href="/chengxy-nds/2020/01/26/redis%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%205%E4%B8%AA%E5%9D%91%EF%BC%8C%E7%9C%9F%E6%98%AF%E5%8F%88%E5%A4%A7%E5%8F%88%E6%B7%B1%20-%20%E5%89%AF%E6%9C%AC/" class="next-post btn btn-default" title='redis 分布式锁的 5个坑，真是又大又深'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            分布式ID生成器</span><i class="fa fa-angle-right fa-fw"></i>
+            redis 分布式锁的 5个坑，真是又大又深</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -327,7 +316,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">一、锁未被释放</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">二、B的锁被A给释放了</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">三、数据库事务超时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">四、锁过期了，业务还没执行完</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">五、redis主从复制的坑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">小福利：</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">一、锁未被释放</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">二、B的锁被A给释放了</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">三、数据库事务超时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">四、锁过期了，业务还没执行完</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">五、redis主从复制的坑</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">小福利：</span></a></li></ol>
         
     </div>
 </aside>
