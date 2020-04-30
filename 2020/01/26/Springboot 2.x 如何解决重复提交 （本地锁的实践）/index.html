@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="Guava,自定义注解,AOP" />
+
+
+<meta name="description" content="唠唠叨叨
+复工不到一个月疯狂的加班中，最近没什么时间写博客更文有点慢，好在做的项目中不全是增删改的业务逻辑，还是有一些比较有意思实用的技术点，所以整理出来分享给大家。有没有遇到过这种情况：由于网..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    Springboot 2.x 如何解决重复提交 （本地锁的实践） |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                一个有点东西的 Java 老鸟
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Springboot 2.x 如何解决重复提交 （本地锁的实践）">
+            
+            Springboot 2.x 如何解决重复提交 （本地锁的实践）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Springboot/">Springboot</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/AOP/" rel="tag">AOP</a> <a class="tag-link" href="/tags/Guava/" rel="tag">Guava</a> <a class="tag-link" href="/tags/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3/" rel="tag">自定义注解</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/01/26</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; padding: 0 10px; word-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; margin-top: -10px; line-height: 1.25; color: #2b2b2b; font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light; letter-spacing: 2px; background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%); background-size: 20px 20px; background-position: center center;"><h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>唠唠叨叨</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">复工不到一个月疯狂的加班中，最近没什么时间写博客更文有点慢，好在做的项目中不全是增删改的业务逻辑，还是有一些比较有意思实用的技术点，所以整理出来分享给大家。有没有遇到过这种情况：由于网速等原因，网页响应很慢，提交一次表单后发现服务久久没响应，然后你就疯狂点击提交按钮（12306就经常被这样怒怼），如果做过防重复提交还好，否则那是什么级别的灾难就不好说了。。。</p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">今天主要是用 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">自定义注解、</code> <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">AOP、</code>· <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Guava</code> 包中Cache来生成一种本地锁，来达到的防重复提交效果，整体的实现比较简单，没有什么太大的难度，代码也是比较少，，由于是基于内存的缓存，<strong style="color: #3594F7; font-weight: bold;"><span>「</span>因此这种实现方式并不适用于分布式服务<span>」</span></strong>。旨在给大家介绍一种实现防重复提交的方案，要是什么讲的不对的地方大家温柔一点撕，毕竟人家还是个20多岁的孩子。</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200327104712499.png" alt="在这里插入图片描述" style="max-width: 100%; border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: 2px 4px 7px #999;"><figcaption style="margin-top: 5px; text-align: center; display: block; font-size: 13px; color: #2b2b2b;"><span style="background-image: url(https://img.alicdn.com/tfs/TB1Yycwyrj1gK0jSZFuXXcrHpXa-32-32.png); display: inline-block; width: 18px; height: 18px; background-size: 18px; background-repeat: no-repeat; background-position: center; margin-right: 5px; margin-bottom: -5px;"></span>在这里插入图片描述</figcaption></figure>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>Guava是什么？</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;"><code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">guava</code>包是<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">google</code>嫌弃JAVA自带的类库不好用，自行研发的一套工具包，对JDK工具做了很好的拓展。例如：并发[<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Concurrency</code>]、缓存[<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Caches</code>]、 函数式风格[<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Functional idioms</code>]、 字符串处理[<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Strings</code>]等等。总之一句话<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">guava</code>很好用。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>一、引入Guava包依赖</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">第一步没什么好说的</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #272822; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #ddd; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; letter-spacing: 0px; padding-top: 15px; background: #272822; border-radius: 5px;">&lt;dependency&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;<span class="hljs-name" style="color: #f92672; line-height: 26px;">groupId</span>&gt;</span>com.google.guava<span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #f92672; line-height: 26px;">groupId</span>&gt;</span></span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;<span class="hljs-name" style="color: #f92672; line-height: 26px;">artifactId</span>&gt;</span>guava<span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #f92672; line-height: 26px;">artifactId</span>&gt;</span></span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;<span class="hljs-name" style="color: #f92672; line-height: 26px;">version</span>&gt;</span>21.0<span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #f92672; line-height: 26px;">version</span>&gt;</span></span><br><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #f92672; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #f92672; line-height: 26px;">dependency</span>&gt;</span></span><br></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>二、自定义LocalLock注解</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">自定义一个LocalLock注解用于需要防止重复提交的方法上</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #272822; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #ddd; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; letter-spacing: 0px; padding-top: 15px; background: #272822; border-radius: 5px;"><span class="hljs-comment" style="color: #75715e; line-height: 26px;">/**<br>&nbsp;*&nbsp;锁的注解<br>&nbsp;*<br>&nbsp;*/</span><br><span class="hljs-meta" style="color: #75715e; line-height: 26px;">@Target</span>(ElementType.METHOD)<br><span class="hljs-meta" style="color: #75715e; line-height: 26px;">@Retention</span>(RetentionPolicy.RUNTIME)<br><span class="hljs-meta" style="color: #75715e; line-height: 26px;">@Documented</span><br><span class="hljs-meta" style="color: #75715e; line-height: 26px;">@Inherited</span><br><span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">public</span>&nbsp;<span class="hljs-meta" style="color: #75715e; line-height: 26px;">@interface</span>&nbsp;LocalLock&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;<span class="hljs-doctag" style="font-weight: bold; line-height: 26px;">@author</span>&nbsp;fly<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function" style="line-height: 26px;">String&nbsp;<span class="hljs-title" style="color: #a6e22e; font-weight: bold; line-height: 26px;">key</span><span class="hljs-params" style="line-height: 26px;">()</span>&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">default</span>&nbsp;""</span>;<br>}<br></code></pre>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">注解定义好以后就需要做AOP拦截器切面的具体实现，在 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">interceptor()</code> 方法上采用的是 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Around</code>（环绕增强） ，所有带 <code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">LocalLock</code> 注解的都将被切面处理；</p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">既然是缓存，那紧跟的属性一定要有过期时间，通过<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">expireAfterWrite</code> 设置缓存的过期时间，<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">maximumSize</code>设置缓存的个数。</p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">通过在内存中查询key是否存在来判断是否让再次提交，和<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">Redis</code>的<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">setNX</code>方法是一个原理。</p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;"><strong style="color: #3594F7; font-weight: bold;"><span>「</span>那么这个注解该怎么用呢？<span>」</span></strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #272822; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #ddd; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; letter-spacing: 0px; padding-top: 15px; background: #272822; border-radius: 5px;">@Aspect<br>@Configuration<br>public&nbsp;<span class="hljs-class" style="line-height: 26px;"><span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">class</span>&nbsp;<span class="hljs-title" style="font-weight: bold; color: white; line-height: 26px;">LockMethodInterceptor</span>&nbsp;</span>{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">static</span>&nbsp;final&nbsp;Cache&lt;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>,&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">Object</span>&gt;&nbsp;CACHES&nbsp;=&nbsp;CacheBuilder.newBuilder()<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">//&nbsp;最大缓存&nbsp;100&nbsp;个</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.maximumSize(<span class="hljs-number" style="line-height: 26px;">1000</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">//&nbsp;设置写缓存后&nbsp;5&nbsp;秒钟过期</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.expireAfterWrite(<span class="hljs-number" style="line-height: 26px;">5</span>,&nbsp;TimeUnit.SECONDS)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.build();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;@Around(<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"execution(public&nbsp;*&nbsp;*(..))&nbsp;&amp;&amp;&nbsp;@annotation(com.battcn.annotation.LocalLock)"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">Object</span>&nbsp;interceptor(ProceedingJoinPoint&nbsp;pjp)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MethodSignature&nbsp;signature&nbsp;=&nbsp;(MethodSignature)&nbsp;pjp.getSignature();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Method&nbsp;method&nbsp;=&nbsp;signature.getMethod();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LocalLock&nbsp;localLock&nbsp;=&nbsp;method.getAnnotation(LocalLock.class);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>&nbsp;key&nbsp;=&nbsp;getKey(localLock.key(),&nbsp;pjp.getArgs());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">if</span>&nbsp;(!StringUtils.isEmpty(key))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">if</span>&nbsp;(CACHES.getIfPresent(key)&nbsp;!=&nbsp;<span class="hljs-literal" style="color: #f92672; font-weight: bold; line-height: 26px;">null</span>)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">throw</span>&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">new</span>&nbsp;RuntimeException(<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"请勿重复请求"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">//&nbsp;如果是第一次请求,就将&nbsp;key&nbsp;当前对象压入缓存中</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CACHES.put(key,&nbsp;key);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">try</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">return</span>&nbsp;pjp.proceed();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">catch</span>&nbsp;(Throwable&nbsp;throwable)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">throw</span>&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">new</span>&nbsp;RuntimeException(<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"服务器异常"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">finally</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">//&nbsp;TODO&nbsp;为了演示效果,这里就不调用&nbsp;CACHES.invalidate(key);&nbsp;代码了</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment" style="color: #75715e; line-height: 26px;">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;key&nbsp;的生成策略,如果想灵活可以写成接口与实现类的方式（TODO&nbsp;后续讲解）<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;keyExpress&nbsp;表达式<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;args&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;参数<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;生成的key<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>&nbsp;getKey(<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>&nbsp;keyExpress,&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">Object</span>[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">for</span>&nbsp;(int&nbsp;i&nbsp;=&nbsp;<span class="hljs-number" style="line-height: 26px;">0</span>;&nbsp;i&nbsp;&lt;&nbsp;args.length;&nbsp;i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keyExpress&nbsp;=&nbsp;keyExpress.replace(<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"arg["</span>&nbsp;+&nbsp;i&nbsp;+&nbsp;<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"]"</span>,&nbsp;args[i].toString());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">return</span>&nbsp;keyExpress;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>控制层的实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">我们将注解加在控制层方法上，<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">key = "city:arg[0]</code> key自己定义，<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">arg[0]</code>这个匹配规则表示替换成第一个参数。那么就实现<code style="font-size: 14px; word-wrap: break-word; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #3594F7; background: RGBA(59, 170, 250, .1); display: inline-block; padding: 0 2px; border-radius: 2px; height: 21px; line-height: 22px;">city:token</code>在一定时间内不可以重复提交了</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #272822; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #ddd; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; letter-spacing: 0px; padding-top: 15px; background: #272822; border-radius: 5px;">@RestController<br>@RequestMapping(<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"/city"</span>)<br>public&nbsp;<span class="hljs-class" style="line-height: 26px;"><span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">class</span>&nbsp;<span class="hljs-title" style="font-weight: bold; color: white; line-height: 26px;">BookController</span>&nbsp;</span>{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;@LocalLock(key&nbsp;=&nbsp;<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"city:arg[0]"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;@GetMapping<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>&nbsp;query(@RequestParam&nbsp;<span class="hljs-built_in" style="color: #a6e22e; line-height: 26px;">String</span>&nbsp;token)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword" style="color: #f92672; font-weight: bold; line-height: 26px;">return</span>&nbsp;<span class="hljs-string" style="color: #a6e22e; line-height: 26px;">"ok-&nbsp;"</span>&nbsp;+&nbsp;token;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 18px;"><span class="prefix" style="display: none;"></span><span class="content" style="height: 16px; line-height: 16px; font-size: 16px;"><span style="background-image: url(https://imgkr.cn-bj.ufileos.com/899e43b7-5a08-4ac6-aa00-1c45f169a65b.png); display: inline-block; width: 16px; height: 16px; background-size: 100%; background-position: left bottom; background-repeat: no-repeat; width: 16px; height: 15px; line-height: 15px; margin-right: 6px; margin-bottom: -2px;"></span>测试</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">接下来我们就测试一下，我用的是postman</p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">第一请求正常响应
+<img src="https://img-blog.csdnimg.cn/20200205221753963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="max-width: 100%; border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: 2px 4px 7px #999;"></p>
+<p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; line-height: 26px; color: #2b2b2b; margin: 10px 0px; letter-spacing: 2px; font-size: 15px; word-spacing: 2px;">紧接着请求第二次，返回结果“重复提交”，显然我们实现成功了
+<img src="https://img-blog.csdnimg.cn/20200205221831453.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="max-width: 100%; border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: 2px 4px 7px #999;"></p>
+</section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/01/26/redis%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%205%E4%B8%AA%E5%9D%91%EF%BC%8C%E7%9C%9F%E6%98%AF%E5%8F%88%E5%A4%A7%E5%8F%88%E6%B7%B1/" class="pre-post btn btn-default" title='redis 分布式锁的 5个坑，真是又大又深'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            redis 分布式锁的 5个坑，真是又大又深</span>
+    </a>
+    
+    
+    <a href="/2020/01/26/3%E4%B8%87%E5%AD%97%E6%80%BB%E7%BB%93%EF%BC%8CMysql%E4%BC%98%E5%8C%96%E4%B9%8B%E7%B2%BE%E9%AB%93/" class="next-post btn btn-default" title='3万字总结，Mysql优化之精髓'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            3万字总结，Mysql优化之精髓</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">唠唠叨叨</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">Guava是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">一、引入Guava包依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">二、自定义LocalLock注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">控制层的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">测试</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
