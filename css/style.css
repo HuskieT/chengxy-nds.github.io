@@ -269,7 +269,7 @@ pre {
 }
 .main-header .main-header-box .branding h2 {
   font-family: "STXingkai", "KaiTi", "Microsoft YaHei", "SimSun", sans-serif;
-  width: 320px;
+  width: 420px;
   margin: 0 auto;
   letter-spacing: 3px;
   color: #e67e22;
@@ -323,6 +323,9 @@ pre {
   list-style: none;
   display: inline-block;
   position: relative;
+  font-size: 19px;
+  font-family: sans-serif;
+  font-weight: bold;
 }
 .main-navigation .menu li a {
   color: #505050;
@@ -904,6 +907,7 @@ pre {
   border-bottom: 1px solid #ebebeb;
   margin-bottom: 21px;
   position: relative;
+  font-size: 20px;
 }
 .widget .title:after {
   content: "";
