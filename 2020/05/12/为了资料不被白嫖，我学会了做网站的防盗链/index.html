@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="Nginx,防盗链,referer" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+下午摸鱼的时候遇到了一件有意思的事，在网上找到一个资源站，将资源站的 url 放到自己的博客里，想白嫖一波，结果在我自己的博客里链接失效了..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    为了资料不被白嫖，我学会了做网站的防盗链 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="为了资料不被白嫖，我学会了做网站的防盗链">
+            
+            为了资料不被白嫖，我学会了做网站的防盗链
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Nginx/" rel="tag">Nginx</a> <a class="tag-link" href="/tags/referer/" rel="tag">referer</a> <a class="tag-link" href="/tags/%E9%98%B2%E7%9B%97%E9%93%BE/" rel="tag">防盗链</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/05/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">下午摸鱼的时候遇到了一件有意思的事，在网上找到一个资源站，将资源站的 url 放到自己的博客里，想白嫖一波，结果在我自己的博客里链接失效了，折腾半天忽然想起来，这个网站应该是做了防盗链处理。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">什么是盗链</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">盗链</code>是个什么操作，看一下百度给出的解释：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">盗链</code>是指服务提供商自己不提供服务的内容，通过技术手段绕过其它有利益的最终用户界面（如广告），直接在自己的网站上向最终用户提供其它服务提供商的服务内容，骗取最终用户的浏览和点击率。受益者不提供资源或提供很少的资源，而真正的服务提供商却得不到任何的收益。
+<img src="https://img-blog.csdnimg.cn/20200428182634805.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+术语听得有点迷糊？那我们简单的举个栗子：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">平时我们在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>看新闻，里边有很多劲爆的图片、视频资源，每天吸引上亿的用户活跃浏览，赚着大把的广告费。
+<img src="https://img-blog.csdnimg.cn/20200428182858447.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+有一天一个穷比程序员小富突发奇想，也想建一个自己的网站吸引用户赚广告费，但苦于自己没有资源，他灵光一闪盯上了<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>，心想：要是把它的资源为我所用，这样就能借助TX的资源为自己赚钱。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">于是他通过爬虫等一些列技术手段，把<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>资源拉取到自己的小富网，绕过了<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>的展示页面直接呈现给用户，达到了自己不提供资源又能赚钱的目的。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">而如此做法却严重的损害了<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>的利益，不仅分流了大量用户，而且由于小富网的大量间接资源请求，大大增加TX网服务器及带宽的压力。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>蛋糕被动，忍无可忍决定封杀小富网这类空手套白狼的站点，终于祭出防盗链系统，对除了在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>本站以外发起的资源请求全部封杀，小富网没法再拉取资源，小富一下子又成了穷比，嘤嘤嘤~
+<img src="https://img-blog.csdnimg.cn/20200428182858336.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+上边我们简单的举例说了什么是网站的盗链，再总结的简单点就是小站点盗取大站点资源以此来获利的一种行为。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">既然有人盗就会有人防盗，接下来在看看怎么防止盗链。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">如何防盗链</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">防盗链在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">google</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">新浪</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">网易</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">天涯</code>等，内容为主的网站应用的比较多，毕竟主要靠资源内容赚钱的嘛。</p>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200429152123372.png?#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">提到防盗链的实现原理得从<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HTTP</code>协议说起，上边我们说过设置防盗链以后，会对 “除了在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TX网</code>本站以外发起的资源请求全部封杀”，那么问题来了，如何识别一个请求<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">URL</code>是从哪个站点发出的呢？</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">熟悉<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HTTP</code>协议的小伙伴应该知道，在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HTTP</code>协议头里有一个叫<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>的字段，通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code> 告诉服务器该网页是从哪个页面链接过来的，知道这个就好办了，只要获取 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code> 字段，一旦检测到来源不是本站即进行阻止或者返回指定的页面。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200429155811164.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">防盗链</code>的核心理念：尽量做到不让外站获取到我的资源，即便能通过一些手段获取到资源，也让你的获取过程异常繁琐复杂，无法实现自动化处理，或者干脆就给你有问题的资源恶心死你。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">做<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">防盗链</code>的方法比较多，基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HTTP</code>协议头的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>属性也只是其中一种，下边我们来分析几种实现防盗链的方法，如果你有更好的实现方法欢迎留言哦。</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">基于 HTTP 协议的 referer</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HTTP</code>协议中的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>做防盗链，可以从网关层或者利用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">AOP</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Filter</code>拦截器实现。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Nginx</code>在网关层做防盗链，目前是最简单的方式之一。通过拦截访问资源的请求，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">valid_referers</code> 关键字定义了白名单，校验请求头中<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>地址是否为本站，如不是本站请求，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">rewrite</code> 转发请求到指定的警告页面。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code> 或者 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code> 配置模块中加入：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">valid_referers none blocked</code>，其中 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">none</code> : 允许没有<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http_refer</code>的请求访问资源（比如：直接在浏览器输入图片网址）；<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">blocked</code> : 允许不是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http://</code>开头的，不带协议的请求访问资源。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">注意</strong>：这种实现可以限制大多数普通的非法请求，但不能限制有目的的请求，因为可以通过伪造<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>信息来绕过。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">[root<span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@server</span>1 nginx]# vim conf/nginx.conf
+<span/>
+<span/>      location / {
+<span/>            root /web;
+<span/>             index index.html;
+<span/>      }
+<span/>      location ~* \.(gif|jpg|png|jpeg)$ {
+<span/>            root /web;
+<span/>            valid_referers none blocked www.chengxy-nds.top;
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> ($invalid_referer){
+<span/>                #<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">403</span>;
+<span/>                rewrite ^/ https:<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//img-blog.csdnimg.cn/20200429152123372.png;</span>
+<span/>         }
+<span/>     }
+<span/>
+<span/>     server {
+<span/>         listen <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">80</span>;
+<span/>         server_name www.chengxy-nds.top;
+<span/>         location / {
+<span/>                 root /bbs;
+<span/>                 index index.html;
+<span/>         }
+<span/>    }
+<span/>    
+<span/>[root<span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@server</span>1 nginx]# systemctl restart nginx
+<span/>
+<span/>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Filter</code>拦截器的实现方式更加简单，拦截指定请求<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">URL</code>，拿到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">HttpServletRequest</code> 中 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">referer</code>值比对是否为本站。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">MyFilter</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">implements</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">Filter</span> </span>{
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@Override</span>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">doFilter</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(HttpServletRequest request, HttpServletResponse response,
+<span/>            FilterChain chain)</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throws</span> IOException, ServletException </span>{
+<span/>            
+<span/>        HttpServletRequest req = (HttpServletRequest) request;
+<span/>        HttpServletResponse res = (HttpServletResponse) response;
+<span/>        String referer = req.getHeader(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"referer"</span>);
+<span/>        
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (referer == <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">null</span> || !referer.contains(req.getServerName())) {
+<span/>            req.getRequestDispatcher(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"XXX.jpg"</span>).forward(req, res);
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>            chain.doFilter(request, response);
+<span/>        }
+<span/>    }
+<span/>}
+<span/></code></pre>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">登录验证，禁止游客访问</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">登录验证这种就属于一刀切的方式，一般在论坛、社区类网站使用比较多，不管你发起请求的站点是什么，到我这先登录，没登录请求直接拒绝，简单又粗暴。</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">图形验证码</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">图形验证码是一种比较常规的限制办法，比如：下载资源时，必须手动操作验证码，使爬虫工具无法绕过校验，起到保护资源的目的。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200429172614756.jpg#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+实现防盗链的方式还有很多，这里就不一一列举了（别问，问就是还有很多）。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">本来没想写这篇文章，下午搭建自己的博客整理资料，白嫖别人资源没成功有感而发，哈哈哈~  正好借此机会简单的介绍一下防盗链的概念，提醒 everyone 在开发中要提高安全意识。其实盗链与防盗链就是像是矛与盾一样，说不好是矛更锋利还是盾更坚固，做不到绝对的防盗。道高一尺魔高一丈，盗链的手段越高，相应的防盗技术也会越成熟。</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+</section><p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/05/12/%E4%B8%80%E5%8F%A3%E6%B0%94%E8%AF%B4%E5%87%BA%206%E7%A7%8D%EF%BC%8C@Transactional%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%A4%B1%E6%95%88%E5%9C%BA%E6%99%AF/" class="pre-post btn btn-default" title='一口气说出 6种，@Transactional注解的失效场景'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            一口气说出 6种，@Transactional注解的失效场景</span>
+    </a>
+    
+    
+    <a href="/2020/05/12/mysql%E3%80%81redis%E3%80%81mongodb%E9%83%BD%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%20%E2%80%9C%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA%E2%80%9D%20%E5%8A%9F%E8%83%BD%E7%9A%84%EF%BC%9F/" class="next-post btn btn-default" title='mysql、redis、mongodb都是怎么实现 “附近的人” 功能的？'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            mysql、redis、mongodb都是怎么实现 “附近的人” 功能的？</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">什么是盗链</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">如何防盗链</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">基于 HTTP 协议的 referer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">登录验证，禁止游客访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">图形验证码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

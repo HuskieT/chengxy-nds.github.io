@@ -1,0 +1,627 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="MySQL,canal,主从同步" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+一、canal是个啥？
+canal是阿里开发的一款基于数据库增量日志解析，提供增量数据订阅与消费的框架，整个框架纯JAVA开发，目前仅支持..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    另辟蹊径，MySQL主从同步延迟，这样解决也挺好 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="另辟蹊径，MySQL主从同步延迟，这样解决也挺好">
+            
+            另辟蹊径，MySQL主从同步延迟，这样解决也挺好
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Mysql/">Mysql</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/MySQL/" rel="tag">MySQL</a> <a class="tag-link" href="/tags/canal/" rel="tag">canal</a> <a class="tag-link" href="/tags/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/" rel="tag">主从同步</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/05/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、canal是个啥？</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">canal</code>是阿里开发的一款基于数据库增量日志解析，提供增量数据订阅与消费的框架，整个框架纯<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">JAVA</code>开发，目前仅支持<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Mysql</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MariaDB</code>（和mysql类似）。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">那什么是数据库增量日志？</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">MySQL的日志种类是比较多的，主要包含：错误日志、查询日志、慢查询日志、事务日志、二进制日志。而<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>数据库所发生的数据变更（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">DML</code>（data manipulation language）数据操纵语言，也就是我们熟悉的增删改），都会以二进制日志(<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binary log</code>)形式存储。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、canal原理</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在介绍<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">canal</code>原理之前，我们先来回顾一下<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>主从同步的原理，这或许会让你更好的理解<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">canal</code>的工作机制。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、MySQL主从同步原理：</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">MySQL主从同步也叫读写分离，可以提升数据库的负载和容错能力，实现数据库的高可用</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">先来分析一张MySQL主从同步原理图：
+<img src="https://img-blog.csdnimg.cn/20200219180152831.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">以上图片源自网络，如有侵权联系删除</p>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">master节点操作过程：</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">当<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">master</code>节点数据发生更改后（delete、update、insert，还是创建函数、存储过程等操作），向<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binary log</code>中写入记录日志，这些记录又叫做<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">二进制日志事件</code>（binary log events）。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">show</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">binlog</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">events</span> 
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200219180445167.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+　
+这些事件会按照顺序写入bin log中。当slave节点启动连接到master节点的时候，master节点会为slave节点开启binlog dump线程（负责传输binlog数据）。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">一旦master节点的bin log发生变化时，bin log<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;"></code>dump线程会通知slave节点有可以传输的binlog，并将相应的bin log内容发送给slave节点。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">slave节点操作过程：</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">slave节点上会创建两个线程：一个<strong style="font-weight: bold; color: black;">I/O线程</strong>，一个<strong style="font-weight: bold; color: black;">SQL线程</strong>。I/O线程连接到master节点，master节点上的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binlog dump</code> 线程会将binlog的内容发送给该I\O线程。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该I/O线程接收到binlog内容后，再将内容写入到本地的relay log。而sql线程读取到I/O线程写入的ralay log，将relay log中的内容写入slave数据库。</p>
+<hr style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、canal原理</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">懂了上边MySQL的主从同步原理，canal的工作机制就很好理解了。其实canal是模拟了MySQL数据库中，slave节点与master节点的交互协议，伪装自己为MySQL slave节点，向MySQL master节点发送<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">dump协议</code>，MySQL master节点收到dump请求，开始推送binary log给slave节点(也就是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">canal</code>)。
+<img src="https://img-blog.csdnimg.cn/20200219181140941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">以上图片源自网络，如有侵权联系删除</p>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">光说不练假把式，开干！</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">三、canal实现“监控”MySQL</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在写代码前我们先对MySQL进行一下改造，安装MySQL就不再细说了，基本操作。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、查看一下MySQL是否开启了binary log功能</strong></p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">show</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">binary</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">logs</span> 
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">如果没有开启是图中的状态，一般用户是没有这个命令权限的，不过我有，啧啧啧！
+<img src="https://img-blog.csdnimg.cn/20200220095117106.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+如果没有需要手动开启，并且在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">my.cnf</code>文件中配置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binlog-format</code> 为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Row</code>模式</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">log-bin=mysq-bin
+<span/>binlog-format=Row
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">log-bin</code>是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binlog</code>文件存放位置
+<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">binlog-format</code> 设置MySQL复制log-bin的方式</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">MySQL的三种复制方式：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">基于SQL语句的复制(statement-based replication, SBR)</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">优点：将修改数据的sql保存在binlog，不需要记录每一条sql和数据变化，binlog体量会很小，IO开销少，性能好</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">缺点：会导致master-slave中的数据不一致</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">基于行的复制(row-based replication, RBR)</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">优点：不记录每条sql语句的上下文信息，仅需记录哪条数据被修改了，修改成什么样了</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">缺点：binlog体积很大，尤其是在alter table属性时，会产生大量binlog数据</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">混合模式复制(mixed-based replication, MBR)</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">对应的，binlog的格式也有三种：STATEMENT，ROW，MIXED。</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、为canal 创建一个有权限操作MySQL的用户</strong></p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">CREATE USER canal IDENTIFIED BY <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'canal'</span>;  
+<span/>GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'canal'</span>@<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'%'</span>;
+<span/>-- GRANT ALL PRIVILEGES ON *.* TO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'canal'</span>@<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'%'</span> ;
+<span/>FLUSH PRIVILEGES;
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">3、安装canal</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">下载地址：https://github.com/alibaba/canal/releases</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">下载后选择版本例如：canal.deployer-xxx.tar.gz</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">4、配置canal</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">修改instance.properties文件，需要添加监听数据库和表的规则，canal可以全量监听数据库，也可以针对某个表进行监听，比较灵活。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">vim conf/example/instance.properties
+<span/></code></pre>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">#################################################
+<span/>## mysql serverId
+<span/>canal.instance.mysql.slaveId = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2020</span>
+<span/>
+<span/># position info 修改自己的数据库（canal要监听的数据库 地址 ）
+<span/>canal.instance.master.address = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">127.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.1</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3306</span>
+<span/>canal.instance.master.journal.name = 
+<span/>canal.instance.master.position = 
+<span/>canal.instance.master.timestamp = 
+<span/>
+<span/>#canal.instance.standby.address = 
+<span/>#canal.instance.standby.journal.name =
+<span/>#canal.instance.standby.position = 
+<span/>#canal.instance.standby.timestamp = 
+<span/>
+<span/># username/password 修改成自己 数据库信息的账号 （单独开一个 准备阶段创建的账号）
+<span/>canal.instance.dbUsername = canal
+<span/>canal.instance.dbPassword = canal
+<span/>canal.instance.defaultDatabaseName =
+<span/>canal.instance.connectionCharset = UTF<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-8</span>
+<span/>
+<span/># table regex  表的监听规则 
+<span/># canal.instance.filter.regex = blogs\.blog_info  
+<span/>canal.instance.filter.regex = .\*\\\\..\*
+<span/># table black regex
+<span/>canal.instance.filter.black.regex = 
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">启动canal</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">sh bin/startup.sh
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">看一下server日志，确认一下canal是否正常启动</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">vi logs/canal/canal.log
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">显示canal server is running now即为成功</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2020</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-01</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-08</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">15</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">25</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">33.361</span> [main] INFO  com.alibaba.otter.canal.deployer.CanalLauncher - ##    start the canal server.
+<span/><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2020</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-01</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-08</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">15</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">25</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">33.468</span> [main] INFO  com.alibaba.otter.canal.deployer.CanalController - ## start the canal server[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">192.168</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.12</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.245</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11111</span>]
+<span/><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2020</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-01</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-08</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">15</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">25</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">34.061</span> [main] INFO  com.alibaba.otter.canal.deployer.CanalLauncher - ## the canal server is running now ......
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">5、编写Java客户端代码，实现canal监听</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">引入依赖包</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;dependency&gt;
+<span/>  <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.alibaba.otter<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>  <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>canal.client<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>  <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>1.1.0<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这里只是简单实现</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">MainApp</span> </span>{
+<span/>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> main(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>... args) throws Exception {
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 创建与
+<span/>         */</span>
+<span/>        CanalConnector connector = CanalConnectors.newSingleConnector(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> InetSocketAddress(AddressUtils.getHostIp(),
+<span/>                <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11111</span>), <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"example"</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>);
+<span/>
+<span/>        int batchSize = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1000</span>;
+<span/>        int emptyCount = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>;
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            connector.connect();
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>             * 监控数据库中所有表
+<span/>             */</span>
+<span/>            connector.subscribe(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">".*\\..*"</span>);
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>             * 指定要监控的表，库名.表名
+<span/>             */</span>
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//connector.subscribe("xin-master.jk_order");</span>
+<span/>            connector.rollback();
+<span/>
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//120次心跳过后未检测到，跳出</span>
+<span/>            int totalEmptyCount = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">120</span>;
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">while</span> (emptyCount &lt; totalEmptyCount) {
+<span/>                Message message = connector.getWithoutAck(batchSize); <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 获取指定数量的数据</span>
+<span/>                long batchId = message.getId();
+<span/>                int size = message.getEntries().size();
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (batchId == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span> || size == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>) {
+<span/>                    emptyCount++;
+<span/>                    System.out.println(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"empty count : "</span> + emptyCount);
+<span/>                    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>                        Thread.sleep(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1000</span>);
+<span/>                    } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (InterruptedException e) {
+<span/>                    }
+<span/>                } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                    emptyCount = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>;
+<span/>                    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// System.out.printf("message[batchId=%s,size=%s] \n", batchId, size);</span>
+<span/>                    printEntry(message.getEntries());
+<span/>                }
+<span/>                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>                 *  提交确认
+<span/>                 */</span>
+<span/>                connector.ack(batchId);
+<span/>                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>                 * 处理失败, 回滚数据
+<span/>                 */</span>
+<span/>                connector.rollback(batchId);
+<span/>            }
+<span/>
+<span/>            System.out.println(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"empty too many times, exit"</span>);
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">finally</span> {
+<span/>            connector.disconnect();
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>             * 手动开启事务回滚
+<span/>             */</span>
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();</span>
+<span/>        }
+<span/>    }
+<span/>
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> printEntry(List&lt;CanalEntry.Entry&gt; entrys) {
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (CanalEntry.Entry entry : entrys) {
+<span/>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONBEGIN || entry.getEntryType() == CanalEntry
+<span/>                    .EntryType
+<span/>                    .TRANSACTIONEND) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">continue</span>;
+<span/>            }
+<span/>
+<span/>            CanalEntry.RowChange rowChage = <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>;
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>                rowChage = CanalEntry.RowChange.parseFrom(entry.getStoreValue());
+<span/>            } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RuntimeException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"ERROR ## parser of eromanga-event has an error , data:"</span> + entry.toString(),
+<span/>                        e);
+<span/>            }
+<span/>
+<span/>            CanalEntry.EventType eventType = rowChage.getEventType();
+<span/>            System.out.println(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>.format(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"================&gt; binlog[%s:%s] , name[%s,%s] , eventType : %s"</span>,
+<span/>                    entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
+<span/>                    entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
+<span/>                    eventType));
+<span/>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (CanalEntry.RowData rowData : rowChage.getRowDatasList()) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (eventType == CanalEntry.EventType.DELETE) {
+<span/>                    printColumn(rowData.getBeforeColumnsList());
+<span/>                } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (eventType == CanalEntry.EventType.INSERT) {
+<span/>                    printColumn(rowData.getAfterColumnsList());
+<span/>                } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                    System.out.println(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"-------&gt; before"</span>);
+<span/>                    printColumn(rowData.getBeforeColumnsList());
+<span/>                    System.out.println(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"-------&gt; after"</span>);
+<span/>                    printColumn(rowData.getAfterColumnsList());
+<span/>                }
+<span/>            }
+<span/>        }
+<span/>    }
+<span/>
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> printColumn(List&lt;CanalEntry.Column&gt; columns) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (CanalEntry.Column column : columns) {
+<span/>            System.out.println(column.getName() + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" : "</span> + column.getValue() + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"    update="</span> + column.getUpdated());
+<span/>        }
+<span/>    }
+<span/>}
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">代码到这就编写完成了，我们启动服务看下是什么效果，由于并没有操作数据库，所以监听的结果都是空的。
+<img src="https://img-blog.csdnimg.cn/2020022010271488.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+接下来我们在数据库执行一条<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">update</code>语句试试</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">update jk_orderset order_no = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'1111'</span>  where id = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">40</span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">控制台检测到了数据库的修改，并生成binlog 日志文件<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mysql-bin.000009:3830</code>
+<img src="https://img-blog.csdnimg.cn/2020022010293588.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+那么生成的binlog 文件该怎么用，如何解析成SQl语句呢？</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;!-- mysql binlog解析 --&gt;
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.github.shyiko<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>mysql-binlog-connector-java<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>0.13.0<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>
+<span/><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">将刚才的binlog文件下载本地测试一下</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> main(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>[] args) throws IOException {
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> filePath = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"C:\\ProgramData\\MySQL\\MySQL Server 5.7\\Data\\mysql-bin.000009:3830"</span>;
+<span/>        File binlogFile = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> File(filePath);
+<span/>        EventDeserializer eventDeserializer = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> EventDeserializer();
+<span/>        eventDeserializer.setChecksumType(ChecksumType.CRC32);
+<span/>        BinaryLogFileReader reader = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> BinaryLogFileReader(binlogFile, eventDeserializer);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Event event; (event = reader.readEvent()) != <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>; ) {
+<span/>                System.out.println(event.toString());
+<span/>            }
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">finally</span> {
+<span/>            reader.close();
+<span/>        }
+<span/>    }
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">查看一下执行结果，发现数据库最近的一次操作是加了一个idx_index索引</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">Event{header=EventHeaderV4{timestamp=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1551325542000</span>, eventType=ANONYMOUS_GTID, serverId=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, headerLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">19</span>, dataLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">46</span>, nextPosition=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">8455</span>, flags=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>}, data=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>}
+<span/>Event{header=EventHeaderV4{timestamp=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1551325542000</span>, eventType=QUERY, serverId=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, headerLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">19</span>, dataLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">190</span>, nextPosition=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">8664</span>, flags=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>}, data=QueryEventData{threadId=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">25</span>, executionTime=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>, errorCode=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>, database=<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'xin-master'</span>, sql=<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'ALTER TABLE `jk_order`
+<span/>DROP INDEX `idx_index` ,
+<span/>ADD INDEX `idx_index` (`user_id`, `service_id`, `real_price`) USING BTREE'</span>}}
+<span/>Event{header=EventHeaderV4{timestamp=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1551438586000</span>, eventType=STOP, serverId=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, headerLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">19</span>, dataLength=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">4</span>, nextPosition=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">8687</span>, flags=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>}, data=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>}
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">至此我们就已经实现了监控MySQL，</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">四、canal应用场景</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">canal</code>应用场景大致有以下：</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">解决MySQL主从同步延迟的问题</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">实现数据库实时备份</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">多级索引 (卖家和买家各自分库索引)</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">实现业务cache刷新</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">价格变化等重要业务消息</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">重点分析一下canal是如何解决MySQL主从同步延迟的问题</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">生产环境下<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>的主从同步模式（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">maser-slave</code>）很常见，但对于跨机房部署的集群，会出现同步延时的情况。举个栗子：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">一条订单状态是未付款，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">master</code>节点修改成已付款，可由于某些原因出现延迟数据未能及时同步到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">slave</code>，这时用户立即查看订单状态（查询走<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">slave</code>）显示还是未付款，哪个用户看到这种情况不得慌啊。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">为什么会出现主从同步延迟呢？</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">当主库<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">master</code>的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TPS</code>并发较高时，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">master</code>节点并发产生的修改操作，而<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">slave</code>节点的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">sql线程</code>是单线程处理同步数据，延时自然而言就产生了。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">不过造成主从同步的原因不止这些，由于主从服务器存在跨机器并且跨机房，除了网络带宽原因之外，网络的稳定性以及机器之间的同步，都是主从同步应该考虑的主要原因。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">本文只是简单实现canal监听数据库的功能，旨在给大家提供一种解决问题的思路，还是反复絮叨的那句话，解决问题的技术方法很对，具体如何应用还需结合具体业务。</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+</section><p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/05/12/%E4%B8%8D%E5%81%9C%E6%9C%BA%E8%BF%98%E8%83%BD%E6%9B%BF%E6%8D%A2%E4%BB%A3%E7%A0%81%EF%BC%9F6%E5%B9%B4%E7%9A%84%20Java%E7%A8%8B%E5%BA%8F%E5%91%98%E8%A1%A8%E7%A4%BA%E4%B8%8D%E5%8F%AF%E6%80%9D%E8%AE%AE/" class="pre-post btn btn-default" title='不停机还能替换代码？6年的 Java程序员表示不可思议'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            不停机还能替换代码？6年的 Java程序员表示不可思议</span>
+    </a>
+    
+    
+    <a href="/2020/04/12/Hexo%20+%20GitHub%20%E4%BA%94%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E5%85%8D%E8%B4%B9%E6%90%AD%E4%B8%80%E4%B8%AA%E9%AB%98%E9%80%BC%E6%A0%BC%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/" class="next-post btn btn-default" title='Hexo + GitHub 五分钟教你免费搭一个高逼格技术博客'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hexo + GitHub 五分钟教你免费搭一个高逼格技术博客</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">一、canal是个啥？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">二、canal原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">三、canal实现“监控”MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">四、canal应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

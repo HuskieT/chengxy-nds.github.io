@@ -1,0 +1,645 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="Nginx" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+一、正则表达式匹配
+
+~ 为区分大小写匹配~* 为不区分大小写匹配!~ 和 !~* 分别为区分大小写不匹配及不区分大小写不匹配
+二、文件及..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    后端程序员不得不会的 Nginx 转发匹配规则 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="后端程序员不得不会的 Nginx 转发匹配规则">
+            
+            后端程序员不得不会的 Nginx 转发匹配规则
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Nginx/">Nginx</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Nginx/" rel="tag">Nginx</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/02/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、正则表达式匹配</span><span class="suffix" style="display: none;"></span></h4>
+<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">~</code> 为区分大小写匹配</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">~*</code> 为不区分大小写匹配</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!~</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!~*</code> 分别为区分大小写不匹配及不区分大小写不匹配</section></li></ol>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、文件及目录匹配</span><span class="suffix" style="display: none;"></span></h4>
+<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">-f</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!-f</code> 用来判断是否存在文件</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">-d</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!-d</code> 用来判断是否存在目录</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">-e</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!-e</code> 用来判断是否存在文件或目录</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">-x</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">!-x</code> 用来判断文件是否可执行</p>
+</section></li></ol>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">三．rewrite指令的最后一项参数为flag标记，flag标记有</span><span class="suffix" style="display: none;"></span></h4>
+<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">last</code> 相当于 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">apache</code> 里面的[L]标记，表示 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">rewrite</code>。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">break</code> 本条规则匹配完成后，终止匹配，不再匹配后面的规则。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redirect</code> 返回302临时重定向，浏览器地址会显示跳转后的URL地址。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">permanent</code>  返回301永久重定向，浏览器地址会显示跳转后的URL地址。</section></li></ol>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">last</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">break</code> 实现URI重写，浏览器地址栏不变。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">而且两者有细微差别，使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">alias指令</code>必须用 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">last</code>标记；使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">proxy_pass指令</code>时，需要使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">break</code>标记。Last标记在本条rewrite规则执行完毕后，会对其所在server{......}标签重新发起请求，而break标记则在本条规则匹配完成后，终止匹配。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">例如</strong>：如果我们将类似<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">URL/photo/123456</code> 重定向到 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">/path/to/photo/12/1234/123456.png</code></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">rewrite "/photo/([0-9]{2})([0-9]{2})([0-9]{2})" 
+<span/>
+<span/>rewrite "/path/to/photo/$1/$1$2/$1$2$3.png" ;
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">四、<code>NginxRewrite</code> 规则相关指令</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、break指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">if</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令的作用是完成当前的规则集，不再处理rewrite指令。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、if 指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令用于检查一个条件是否符合，如果条件符合，则执行大括号内的语句。If指令不支持嵌套，不支持多个条件&amp;&amp;和||处理。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">3、return指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">语法：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">returncode</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">if</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令用于结束规则的执行并返回状态码给客户端。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">示例</strong>：如果访问的URL以".sh"或".bash"结尾，则返回403状态码</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~ .*\.(sh|bash)?$
+<span/>{
+<span/>   return 403;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">4、rewrite 指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">语法：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">rewriteregex replacement flag</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">if</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令根据表达式来重定向URI，或者修改字符串。指令根据配置文件中的顺序来执行。注意重写表达式只对相对路径有效。如果你想配对主机名，你应该使用if语句，示例如下：</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>if( $host ~* www\.(.*) )
+<span/>{
+<span/>   <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> $host_without_www $<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>;
+<span/>   rewrite ^(.*)$  http://$host_without_www$1permanent;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">5、Set指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">语法：setvariable value ;
+默认值：none
+使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">if</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令用于定义一个变量，并给变量赋值。变量的值可以为文本、变量以及文本变量的联合。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>   <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span>$varname <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"hello world"</span>;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">6、Uninitialized_variable_warn指令</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">语法：uninitialized_variable_warnon|off</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用环境：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">server</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">if</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">该指令用于开启和关闭未初始化变量的警告信息，默认值为开启。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">五．Nginx的Rewrite规则编写实例</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、当访问的文件和目录不存在时，重定向到某个html文件</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>if( !-e $request_filename )
+<span/>{
+<span/>    rewrite ^/(.*)$ index.htmllast;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、目录对换 /123456/xxxx  ====&gt;  /xxxx?id=123456</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">    rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">3、如果客户端使用的是IE浏览器，则重定向到/ie目录下</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>if( $http_user_agent  ~ MSIE)
+<span/>{
+<span/>    rewrite ^(.*)$ /ie/$1 break;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">4、禁止访问多个目录</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~ ^/(cron|templates)/
+<span/>{
+<span/>    deny all;
+<span/>    break;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">5、禁止访问以/data开头的文件</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~ ^/data
+<span/>{
+<span/>    deny all;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">6、禁止访问以.sh,.flv,.mp3为文件后缀名的文件</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~ .*\.(sh|flv|mp3)$
+<span/>{
+<span/>    return 403;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">7、设置某些类型文件的浏览器缓存时间</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+<span/>{
+<span/>    expires 30d;
+<span/>}
+<span/>location ~ .*\.(js|css)$
+<span/>{
+<span/>    expires 1h;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">8、给favicon.ico和robots.txt设置过期时间</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这里为favicon.ico为99天,robots.txt为7天并不记录404错误日志</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ~(favicon.ico) {
+<span/>   log_not_found off;
+<span/>   expires 99d;
+<span/>   break;
+<span/>}
+<span/>location ~(robots.txt) {
+<span/>   log_not_found off;
+<span/>   expires 7d;
+<span/>   break;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">9、设定某个文件的过期时间;这里为600秒，并不记录访问日志</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>location ^~ /html/scripts/loadhead_1.js {
+<span/>    access_log  off;
+<span/>    root /opt/lampp/htdocs/web;
+<span/>    expires 600;
+<span/>    break;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">10、文件反盗链并设置过期时间</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这里的return412 为自定义的http状态码，默认为403，方便找出正确的盗链的请求</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>rewrite ^/ http: //img.linuxidc.net/leech.gif;//显示一张防盗链图片
+<span/>access_log off; //不记录访问日志，减轻压力
+<span/>expires 3d //所有文件3天的浏览器缓存
+<span/>
+<span/>location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ {
+<span/>  valid_referers none blocked *.linuxidc.com*.linuxidc.net localhost 208.97.167.194;
+<span/>if ($invalid_referer) {
+<span/>     rewrite ^/ http://img.linuxidc.net/leech.gif;
+<span/>     return 412;
+<span/>     break;
+<span/>}
+<span/>access_log  off;
+<span/>root /opt/lampp/htdocs/web;
+<span/>expires 3d;
+<span/>break;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">11、只允许固定ip访问网站，并加上密码</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>root /opt/htdocs/www;
+<span/>allow  208.97.167.194; 
+<span/>allow  222.33.1.2; 
+<span/>allow  231.152.49.4;
+<span/>deny  all;
+<span/>auth_basic “C1G_ADMIN”;
+<span/>auth_basic_user_file htpasswd;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">12、将多级目录下的文件转成一个文件，增强seo效果</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>/job-123-456-789.html 指向/job/123/456/789.html
+<span/>
+<span/>rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">13、文件和目录不存在的时候重定向：</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>if (!-e $request_filename) {
+<span/>    proxy_pass http://127.0.0.1;
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">14、将根目录下某个文件夹指向2级目录</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>如/shanghaijob/ 指向 /area/shanghai/
+<span/>如果你将last改成permanent，那么浏览器地址栏显是/location/shanghai/
+<span/>rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+<span/>上面例子有个问题是访问/shanghai时将不会匹配
+<span/>rewrite ^/([0-9a-z]+)job$ /area/$1/ last;
+<span/>rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+<span/>这样/shanghai 也可以访问了，但页面中的相对链接无法使用，
+<span/>如./list_1.html真实地址是/area/shanghia/list_1.html会变成/list_1.html,导至无法访问。
+<span/>那我加上自动跳转也是不行咯
+<span/>(-d $request_filename)它有个条件是必需为真实目录，而我的rewrite不是的，所以没有效果
+<span/>if (-d $request_filename){
+<span/>rewrite ^/(.*)([^/])$ http://$host/$1$2/permanent;
+<span/>}
+<span/>知道原因后就好办了，让我手动跳转吧
+<span/>rewrite ^/([0-9a-z]+)job$ /$1job/permanent;
+<span/>rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">15、域名跳转</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>server{
+<span/>
+<span/>  listen      80;
+<span/>  server_name  jump.linuxidc.com;
+<span/>  index index.html index.htm index.php;
+<span/>  root  /opt/lampp/htdocs/www;
+<span/>  rewrite ^/ http://www.linuxidc.com/;
+<span/>  access_log  off;
+<span/>}
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">16、多域名转向</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>server_name  www.linuxidc.comwww.linuxidc.net;
+<span/>index index.html index.htm index.php;
+<span/>root  /opt/lampp/htdocs;
+<span/>if ($host ~ "linuxidc\.net") {
+<span/>    rewrite ^(.*) http://www.linuxidc.com$1permanent;
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">六、nginx全局变量</span><span class="suffix" style="display: none;"></span></h4>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>arg_PARAMETER    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#这个变量包含GET请求中，如果有变量PARAMETER时的值。</span>
+<span/>args                    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#这个变量等于请求行中(GET请求)的参数，如：foo=123&amp;bar=blahblah;</span>
+<span/>binary_remote_addr <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#二进制的客户地址。</span>
+<span/>body_bytes_sent    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#响应时送出的body字节数数量。即使连接中断，这个数据也是精确的。</span>
+<span/>content_length    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#请求头中的Content-length字段。</span>
+<span/>content_type      <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#请求头中的Content-Type字段。</span>
+<span/>cookie_COOKIE    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#cookie COOKIE变量的值</span>
+<span/>document_root    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#当前请求在root指令中指定的值。</span>
+<span/>document_uri      <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#与uri相同。</span>
+<span/>host                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#请求主机头字段，否则为服务器名称。</span>
+<span/>hostname          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#Set to themachine’s hostname as returned by gethostname</span>
+<span/>http_HEADER
+<span/>is_args              <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#如果有args参数，这个变量等于”?”，否则等于”"，空值。</span>
+<span/>http_user_agent    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端agent信息</span>
+<span/>http_cookie          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端cookie信息</span>
+<span/>limit_rate            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#这个变量可以限制连接速率。</span>
+<span/>query_string          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#与args相同。</span>
+<span/>request_body_file  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端请求主体信息的临时文件名。</span>
+<span/>request_method    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端请求的动作，通常为GET或POST。</span>
+<span/>remote_addr          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端的IP地址。</span>
+<span/>remote_port          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#客户端的端口。</span>
+<span/>remote_user          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#已经经过Auth Basic Module验证的用户名。</span>
+<span/>request_completion <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#如果请求结束，设置为OK. 当请求未结束或如果该请求不是请求链串的最后一个时，为空(Empty)。</span>
+<span/>request_method    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#GET或POST</span>
+<span/>request_filename  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#当前请求的文件路径，由root或alias指令与URI请求生成。</span>
+<span/>request_uri          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#包含请求参数的原始URI，不包含主机名，如：”/foo/bar.php?arg=baz”。不能修改。</span>
+<span/>scheme                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#HTTP方法（如http，https）。</span>
+<span/>server_protocol      <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#请求使用的协议，通常是HTTP/1.0或HTTP/1.1。</span>
+<span/>server_addr          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#服务器地址，在完成一次系统调用后可以确定这个值。</span>
+<span/>server_name        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#服务器名称。</span>
+<span/>server_port          <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">#请求到达服务器的端口号。</span>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">####　七、Apache和Nginx规则的对应关系</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>Apache的RewriteCond对应Nginx的if
+<span/>Apache的RewriteRule对应Nginx的rewrite
+<span/>Apache的[R]对应Nginx的redirect
+<span/>Apache的[P]对应Nginx的last
+<span/>Apache的[R,L]对应Nginx的redirect
+<span/>Apache的[P,L]对应Nginx的last
+<span/>Apache的[PT,L]对应Nginx的last
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">例如</strong>：允许指定的域名访问本站，其他的域名一律转向www.linuxidc.net</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>Apache:
+<span/>RewriteCond %{HTTP_HOST} !^(.*?)\.aaa\.com$[NC]
+<span/>RewriteCond %{HTTP_HOST} !^localhost$ 
+<span/>RewriteCond %{HTTP_HOST}!^192\.168\.0\.(.*?)$
+<span/>RewriteRule ^/(.*)$ http://www.linuxidc.net[R,L]
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">Nginx过滤示例:</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">if( $host ~* ^(.*)\.aaa\.com$ )
+<span/>{
+<span/>   <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> $allowHost ‘<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>’;
+<span/>}
+<span/>if( $host ~* ^localhost )
+<span/>{
+<span/>   <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> $allowHost ‘<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>’;
+<span/>}
+<span/>if( $host ~* ^192\.168\.1\.(.*?)$ )
+<span/>{
+<span/>   <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> $allowHost ‘<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>’;
+<span/>}
+<span/>if( $allowHost !~ ‘1’ )
+<span/>{
+<span/>   rewrite ^/(.*)$ http://www.linuxidc.netredirect ;
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">后端开发是一个最接近全栈的一个职业，前端不够用后端顶上写页面JS，没有运维不要紧后端来维护服务器，总之一个好的后端就是能面面俱到。</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/03/12/%E4%B8%8D%E4%BC%9A%E8%BF%99%E4%BA%9B%E6%A6%82%E5%BF%B5%EF%BC%8C%E7%AE%80%E5%8E%86%E4%B8%8D%E8%A6%81%E5%86%99%20%E2%80%9C%E7%86%9F%E6%82%89%E2%80%9D%20zookeeper/" class="pre-post btn btn-default" title='不会这些概念，简历不要写 “熟悉” zookeeper'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            不会这些概念，简历不要写 “熟悉” zookeeper</span>
+    </a>
+    
+    
+    <a href="/2020/02/12/9%E7%A7%8D%20%E5%88%86%E5%B8%83%E5%BC%8FID%E7%9A%84%E7%94%9F%E6%88%90%E6%96%B9%E5%BC%8F/" class="next-post btn btn-default" title='9种 分布式ID的生成方式'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            9种 分布式ID的生成方式</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">一、正则表达式匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">二、文件及目录匹配</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">三．rewrite指令的最后一项参数为flag标记，flag标记有</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">四、NginxRewrite 规则相关指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">五．Nginx的Rewrite规则编写实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">六、nginx全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

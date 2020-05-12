@@ -1,0 +1,554 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="分布式ID,滴滴,Tinyid" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+接着《一口气说出 9种 分布式ID生成方式，面试官有点懵了》来继续详细的介绍分布式ID生成器，大家比较感兴趣的美团（Leaf）、滴滴（Ti..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    分布式ID生成器之 滴滴（Tinyid）实战 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="分布式ID生成器之 滴滴（Tinyid）实战">
+            
+            分布式ID生成器之 滴滴（Tinyid）实战
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Tinyid/" rel="tag">Tinyid</a> <a class="tag-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8FID/" rel="tag">分布式ID</a> <a class="tag-link" href="/tags/%E6%BB%B4%E6%BB%B4/" rel="tag">滴滴</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">接着《一口气说出 9种 分布式ID生成方式，面试官有点懵了》来继续详细的介绍分布式ID生成器，大家比较感兴趣的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">美团（Leaf）</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">滴滴（Tinyid）</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">百度（uid-generator）</code>三个开源项目，美团（Leaf）已经讲完，详见《9种分布式ID生成之美团（Leaf）实战》，今天结合实战搞一下滴滴开源的（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>）。</p>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content"><code>Tinyid</code>介绍</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>是滴滴开发的一款分布式ID系统，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>是在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">美团（Leaf）</code>的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">leaf-segment</code>算法基础上升级而来，不仅支持了数据库多主节点模式，还提供了<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-client</code>客户端的接入方式，使用起来更加方便。但和美团（Leaf）不同的是，Tinyid只支持号段一种模式不支持雪花模式。</p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">Tinyid的特性</span><span class="suffix" style="display: none;"></span></h3>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">全局唯一的long型ID</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">趋势递增的id</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">提供 http 和 java-client 方式接入</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">支持批量获取ID</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">支持生成1,3,5,7,9...序列的ID</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">支持多个db的配置</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">适用场景</strong>：只关心ID是数字，趋势递增的系统，可以容忍ID不连续，可以容忍ID的浪费</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">不适用场景</strong>：像类似于订单ID的业务，因生成的ID大部分是连续的，容易被扫库、或者推算出订单量等信息</p>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content"><code>Tinyid</code>原理</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>是基于号段模式实现，再简单啰嗦一下号段模式的原理：就是从数据库批量的获取自增ID，每次从数据库取出一个号段范围，例如 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">(1,1000]</code> 代表1000个ID，业务服务将号段在本地生成<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">1~1000</code>的自增ID并加载到内存.。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>会将可用号段加载到内存中，并在内存中生成ID，可用号段在首次获取ID时加载，如当前号段使用达到一定比例时，系统会异步的去加载下一个可用号段，以此保证内存中始终有可用号段，以便在发号服务宕机后一段时间内还有可用ID。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">原理图大致如下图：
+<img src="https://img-blog.csdnimg.cn/20200314110819168.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content"><code>Tinyid</code>实现</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>的GitHub地址 ： https://github.com/didi/tinyid.git</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>提供了两种调用方式，一种基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid-server</code>提供的http方式，另一种<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid-client</code>客户端方式。
+不管使用哪种方式调用，搭建<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>都必须提前建表<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tiny_id_info</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tiny_id_token</code>。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">CREATE TABLE `tiny_id_info` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `biz_type` varchar(63) NOT NULL DEFAULT '' COMMENT '业务类型，唯一',
+  `begin_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '开始id，仅记录初始值，无其他含义。初始化时begin_id和max_id应相同',
+  `max_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '当前最大id',
+  `step` int(11) DEFAULT '0' COMMENT '步长',
+  `delta` int(11) NOT NULL DEFAULT '1' COMMENT '每次id增量',
+  `remainder` int(11) NOT NULL DEFAULT '0' COMMENT '余数',
+  `create_time` timestamp NOT NULL DEFAULT '2010-01-01 00:00:00' COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT '2010-01-01 00:00:00' COMMENT '更新时间',
+  `version` bigint(20) NOT NULL DEFAULT '0' COMMENT '版本号',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_biz_type` (`biz_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT 'id信息表';
+
+<p>CREATE TABLE <code>tiny_id_token</code> (<br>  <code>id</code> int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT ‘自增id’,<br>  <code>token</code> varchar(255) NOT NULL DEFAULT ‘’ COMMENT ‘token’,<br>  <code>biz_type</code> varchar(63) NOT NULL DEFAULT ‘’ COMMENT ‘此token可访问的业务类型标识’,<br>  <code>remark</code> varchar(255) NOT NULL DEFAULT ‘’ COMMENT ‘备注’,<br>  <code>create_time</code> timestamp NOT NULL DEFAULT ‘2010-01-01 00:00:00’ COMMENT ‘创建时间’,<br>  <code>update_time</code> timestamp NOT NULL DEFAULT ‘2010-01-01 00:00:00’ COMMENT ‘更新时间’,<br>  PRIMARY KEY (<code>id</code>)<br>) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT ‘token信息表’;</p>
+<p>INSERT INTO <code>tiny_id_info</code> (<code>id</code>, <code>biz_type</code>, <code>begin_id</code>, <code>max_id</code>, <code>step</code>, <code>delta</code>, <code>remainder</code>, <code>create_time</code>, <code>update_time</code>, <code>version</code>)<br>VALUES<br>    (1, ‘test’, 1, 1, 100000, 1, 0, ‘2018-07-21 23:52:58’, ‘2018-07-22 23:19:27’, 1);</p>
+<p>INSERT INTO <code>tiny_id_info</code> (<code>id</code>, <code>biz_type</code>, <code>begin_id</code>, <code>max_id</code>, <code>step</code>, <code>delta</code>, <code>remainder</code>, <code>create_time</code>, <code>update_time</code>, <code>version</code>)<br>VALUES<br>    (2, ‘test_odd’, 1, 1, 100000, 2, 1, ‘2018-07-21 23:52:58’, ‘2018-07-23 00:39:24’, 3);</p>
+<p>INSERT INTO <code>tiny_id_token</code> (<code>id</code>, <code>token</code>, <code>biz_type</code>, <code>remark</code>, <code>create_time</code>, <code>update_time</code>)<br>VALUES<br>    (1, ‘0f673adf80504e2eaa552f5d791b644c’, ‘test’, ‘1’, ‘2017-12-14 16:36:46’, ‘2017-12-14 16:36:48’);</p>
+<p>INSERT INTO <code>tiny_id_token</code> (<code>id</code>, <code>token</code>, <code>biz_type</code>, <code>remark</code>, <code>create_time</code>, <code>update_time</code>)<br>VALUES<br>    (2, ‘0f673adf80504e2eaa552f5d791b644c’, ‘test_odd’, ‘1’, ‘2017-12-14 16:36:46’, ‘2017-12-14 16:36:48’);</p>
+<p></code></pre></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tiny_id_info</code>表是具体业务方号段信息数据表
+<img src="https://img-blog.csdnimg.cn/20200314114423657.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">max_id</code> ：号段的最大值</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">step</code>：步长，即为号段的长度</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">biz_type</code>：业务类型</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">号段获取对<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">max_id</code>字段做一次<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">update</code>操作，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">update max_id= max_id + step</code>，更新成功则说明新号段获取成功，新的号段范围是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">(max_id ,max_id +step]</code>。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tiny_id_token</code>是一个权限表，表示当前token可以操作哪些业务的号段信息。
+<img src="https://img-blog.csdnimg.cn/2020031411444742.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">修改<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code>中  <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">\offline\application.properties</code> 文件配置数据库，由于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid</code>支持数据库多<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">master</code>模式，可以配置多个数据库信息。启动 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TinyIdServerApplication</code> 测试一下。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">datasource.tinyid.primary.driver-class-name=com.mysql.jdbc.Driver
+<span/>datasource.tinyid.primary.url=jdbc:mysql://127.0.0.1:3306/xin-master?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8
+<span/>datasource.tinyid.primary.username=junkang
+<span/>datasource.tinyid.primary.password=junkang
+<span/>datasource.tinyid.primary.testOnBorrow=false
+<span/>datasource.tinyid.primary.maxActive=10
+<span/>
+<span/>datasource.tinyid.secondary.driver-class-name=com.mysql.jdbc.Driver
+<span/>datasource.tinyid.secondary.url=jdbc:mysql://localhost:3306/db2?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8
+<span/>datasource.tinyid.secondary.username=root
+<span/>datasource.tinyid.secondary.password=123456
+<span/>datasource.tinyid.secondary.testOnBorrow=false
+<span/>datasource.tinyid.secondary.maxActive=10
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、Http方式</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid</code>内部一共提供了四个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http</code>接口来获取ID和号段。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">package</span> com.xiaoju.uemc.tinyid.server.controller;
+<span/>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * <span class="hljs-doctag" style="color: #608B4E; line-height: 26px;">@author</span> du_imba
+<span/> */</span>
+<span/><span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RestController</span>
+<span/><span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RequestMapping</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/id/"</span>)
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">IdContronller</span> </span>{
+<span/>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">final</span> Logger logger = LoggerFactory.getLogger(IdContronller.class);
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@Autowired</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> IdGeneratorFactoryServer idGeneratorFactoryServer;
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@Autowired</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> SegmentIdService segmentIdService;
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@Autowired</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> TinyIdTokenService tinyIdTokenService;
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@Value</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"${batch.size.max}"</span>)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> Integer batchSizeMax;
+<span/>
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RequestMapping</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextId"</span>)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> Response&lt;List&lt;Long&gt;&gt; nextId(String bizType, Integer batchSize, String token) {
+<span/>        Response&lt;List&lt;Long&gt;&gt; response = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> Response&lt;&gt;();
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            IdGenerator idGenerator = idGeneratorFactoryServer.getIdGenerator(bizType);
+<span/>            List&lt;Long&gt; ids = idGenerator.nextId(newBatchSize);
+<span/>            response.setData(ids);
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>            response.setCode(ErrorCode.SYS_ERR.getCode());
+<span/>            response.setMessage(e.getMessage());
+<span/>            logger.error(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextId error"</span>, e);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> response;
+<span/>    }
+<span/>
+<span/>    
+<span/>
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RequestMapping</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextIdSimple"</span>)
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> String <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">nextIdSimple</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(String bizType, Integer batchSize, String token)</span> </span>{
+<span/>        String response = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            IdGenerator idGenerator = idGeneratorFactoryServer.getIdGenerator(bizType);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (newBatchSize == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>) {
+<span/>                Long id = idGenerator.nextId();
+<span/>                response = id + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>            } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                List&lt;Long&gt; idList = idGenerator.nextId(newBatchSize);
+<span/>                StringBuilder sb = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> StringBuilder();
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Long id : idList) {
+<span/>                    sb.append(id).append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">","</span>);
+<span/>                }
+<span/>                response = sb.deleteCharAt(sb.length() - <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>).toString();
+<span/>            }
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>            logger.error(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextIdSimple error"</span>, e);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> response;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RequestMapping</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextSegmentId"</span>)
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> Response&lt;SegmentId&gt; <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">nextSegmentId</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(String bizType, String token)</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            SegmentId segmentId = segmentIdService.getNextSegmentId(bizType);
+<span/>            response.setData(segmentId);
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>            response.setCode(ErrorCode.SYS_ERR.getCode());
+<span/>            response.setMessage(e.getMessage());
+<span/>            logger.error(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextSegmentId error"</span>, e);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> response;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-meta" style="color: #9B9B9B; line-height: 26px;">@RequestMapping</span>(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextSegmentIdSimple"</span>)
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> String <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">nextSegmentIdSimple</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(String bizType, String token)</span> </span>{
+<span/>        String response = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            SegmentId segmentId = segmentIdService.getNextSegmentId(bizType);
+<span/>            response = segmentId.getCurrentId() + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">","</span> + segmentId.getLoadingId() + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">","</span> + segmentId.getMaxId()
+<span/>                    + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">","</span> + segmentId.getDelta() + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">","</span> + segmentId.getRemainder();
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>            logger.error(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"nextSegmentIdSimple error"</span>, e);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> response;
+<span/>    }
+<span/>
+<span/>}
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">nextId</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">nextIdSimple</code>都是获取下一个ID，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">nextSegmentIdSimple</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">getNextSegmentId</code>是获取下一个可用号段。区别在于接口是否有返回状态。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: -webkit-box; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">nextId:
+'http://localhost:9999/tinyid/id/nextId?bizType=test&amp;token=0f673adf80504e2eaa552f5d791b644c'
+response ：
+{
+    "data": [2],
+    "code": 200,
+    "message": ""
+}
+
+<p>nextId Simple:<br>‘<a href="http://localhost:9999/tinyid/id/nextIdSimple?bizType=test&amp;token=0f673adf80504e2eaa552f5d791b644c&#39;" target="_blank" rel="noopener">http://localhost:9999/tinyid/id/nextIdSimple?bizType=test&amp;token=0f673adf80504e2eaa552f5d791b644c&#39;</a><br>response: 3<br></code></pre></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200314122826149.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<img src="https://img-blog.csdnimg.cn/2020031412292993.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、<code>Tinyid-client</code>客户端</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">如果不想通过http方式，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid-client</code>客户端也是一种不错的选择。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">引用 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code>包</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;dependency&gt;
+<span/>    <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.xiaoju.uemc.tinyid<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>    <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>tinyid-client<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>    <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>${tinyid.version}<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">启动 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code>项目打包后得到 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server-0.1.0-SNAPSHOT.jar</code> ，设置版本 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">${tinyid.version}</code>为0.1.0-SNAPSHOT。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在我们的项目 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">application.properties</code> 中配置 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code>服务的请求地址 和 用户身份token</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">tinyid.server=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">127.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.1</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">9999</span>
+<span/>tinyid.token=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>f673adf80504e2eaa552f5d791b644c<span class="hljs-string" style="color: #D69D85; line-height: 26px;">``</span><span class="hljs-string" style="color: #D69D85; line-height: 26px;">`
+<span/></span></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在Java代码调用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TinyId</code>也很简单，只需要一行代码。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 根据业务类型 获取单个ID</span>
+<span/>  Long id = TinyId.nextId(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"test"</span>);
+<span/>  
+<span/>  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 根据业务类型 批量获取10个ID</span>
+<span/>  List&lt;Long&gt; ids = TinyId.nextId(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"test"</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>);    
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>整个项目的源码实现也是比较简单，像与数据库交互更直接用jdbcTemplate实现</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">@Override
+<span/>    public TinyIdInfo queryByBizType(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> bizType) {
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> sql = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"select id, biz_type, begin_id, max_id,"</span> +
+<span/>                <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" step, delta, remainder, create_time, update_time, version"</span> +
+<span/>                <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" from tiny_id_info where biz_type = ?"</span>;
+<span/>        List&lt;TinyIdInfo&gt; list = jdbcTemplate.query(sql, <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span>[]{bizType}, <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> TinyIdInfoRowMapper());
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span>(list == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> || list.isEmpty()) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>;
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> list.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>);
+<span/>    }
+<span/></code></pre>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">两种方式推荐使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid-client</code>，这种方式ID为本地生成，号段长度(<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">step</code>)越长，支持的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">qps</code>就越大，如果将号段设置足够大，则qps可达1000w+。而且<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-client</code> 对 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code> 访问变的低频，减轻了server端的压力。</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/03/12/%E4%B8%BA%E4%BA%86%E4%B8%8D%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4%EF%BC%8C%E6%88%91%E5%AD%A6%E4%BC%9A%E4%BA%86Java%E7%88%AC%E8%99%AB/" class="pre-post btn btn-default" title='为了不复制粘贴，我学会了Java爬虫'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            为了不复制粘贴，我学会了Java爬虫</span>
+    </a>
+    
+    
+    <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89%E5%AE%9E%E6%88%98/" class="next-post btn btn-default" title='分布式ID生成器之 美团（Leaf）实战'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            分布式ID生成器之 美团（Leaf）实战</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">Tinyid介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">Tinyid的特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">Tinyid原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">Tinyid实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、Http方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、Tinyid-client客户端</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

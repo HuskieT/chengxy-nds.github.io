@@ -1,0 +1,534 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="全局日期格式化" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+最近部门几位同事受了一些委屈相继离职，共事三年临别之际颇有不舍，待一切手续办妥帖，寒暄过后送他们出公司，几个老哥临别时冲我鬼魅一笑，我顿时..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    奇淫巧技，springboot 全局日期格式化处理，有点香！ |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="奇淫巧技，springboot 全局日期格式化处理，有点香！">
+            
+            奇淫巧技，springboot 全局日期格式化处理，有点香！
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Springboot/">Springboot</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/%E5%85%A8%E5%B1%80%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%8C%96/" rel="tag">全局日期格式化</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">最近部门几位同事受了一些委屈相继离职，共事三年临别之际颇有不舍，待一切手续办妥帖，寒暄过后送他们出公司，几个老哥临别时冲我鬼魅一笑，我顿时心里一紧有种不好的预感，这事绝对没有这么简单。等我接手这几个大佬的项目后，应验了我的预感，此刻我居然有点后悔，为啥送别之时没揍他们一顿！哈哈哈~  而这种打人的冲动，在我开始优化几位老哥的项目时候，变得越来越强烈。</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200413094414471.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">有个坑</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">技术部每个月都会组织一下代码走查及优化，以前是各自审查优化自己的项目，如今几位老哥的离职他们的项目就落到了我的头上。对于程序员来说最痛苦的事情就是接手别人的项目，还要做优化改造，因为这一点也不比重构一遍项目简单。不过，军令在前，没办法硬着头皮上吧！</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">第一个优化的点就让我有点崩溃，这几个大佬的技能能力很强，一直都是我学习的榜样，但在项目里几乎所有的日期格式化都这样用 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">SimpleDateFormat</code> ，像如下代码这样实现，emm~ ，受过伤的男人怎么啥事都做的出来，哈哈哈~</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">SvcOrderDailyStatisticsPo orderDailyStatisticsPo = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> SvcOrderDailyStatisticsPo();
+<span/>SimpleDateFormat dateFormat = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> SimpleDateFormat(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"yyyy-MM-dd"</span>);
+<span/><span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Date</span> stationTime = dateFormat.parse(dateFormat.format(svcWorkOrderPo.getPayEndTime()));
+<span/>orderDailyStatisticsPo.setStatisticalDate(stationTime);
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">而且项目中的时间和日期API用的也比较混乱，考虑到 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">java.util.Date</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">java.util.Calendar</code> 不支持时区，且非线程安全，对于日期的计算相对繁琐，技术部一致要求用JDK1.8以后的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">java.time</code> <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">LocalDateTime</code>。但不少人还是在用 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">java.util.Date</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">java.util.Calendar</code> 处理日期。</p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">优化方案</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">时间格式化是使用频率非常高的，如何让时间格式化变得既简单又不用重复造轮子，那么就应将它抽象出来，作为全局的日期格式化处理，下面就结合实践简单介绍下几种优化方案。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">测试地址：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http://127.0.0.1:8080/timeTest</code></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>@GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/timeTest"</span>)
+<span/>    public OrderInfo timeTest() {
+<span/>        OrderInfo order = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> OrderInfo();
+<span/>        order.setCreateTime(LocalDateTime.now());
+<span/>        order.setUpdateTime(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Date</span>());
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> order;
+<span/>    }
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、@JsonFormat注解</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解格式化时间，应该算是一个基本操作了，大部分开发者都应用此种方式，简单方便。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: xiaofu
+<span/> * @Description:
+<span/> */</span>
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">OrderInfo</span> </span>{
+<span/>
+<span/>    @JsonFormat(locale = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"zh"</span>, timezone = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"GMT+8"</span>, pattern = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"yyyy-MM-dd HH:mm:ss"</span>)
+<span/>    private LocalDateTime createTime;
+<span/>
+<span/>    @JsonFormat(locale = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"zh"</span>, timezone = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"GMT+8"</span>, pattern = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"yyyy-MM-dd HH:mm:ss"</span>)
+<span/>    private <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Date</span> updateTime;
+<span/>
+<span/>    public LocalDateTime getCreateTime() {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> createTime;
+<span/>    }
+<span/>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> setCreateTime(LocalDateTime createTime) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.createTime = createTime;
+<span/>    }
+<span/>
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Date</span> getUpdateTime() {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> updateTime;
+<span/>    }
+<span/>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> setUpdateTime(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Date</span> updateTime) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.updateTime = updateTime;
+<span/>    }
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">测试一下结果，发现 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Date</code> 类型和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">LocalDateTime</code> 类型都格式化成功，但还是有个问题，这样做仍然比较繁琐，每个实体类的日期字段都要加<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解，重复的工作量也不小。接着往下看~
+<img src="https://img-blog.csdnimg.cn/20200413103605211.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、全局配置 （1）</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Springboot</code> 已经为我们提供了日期格式化 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}</code>，这里我们需要进行全局配置，配置比较简单，也无需在实体类属性上添加<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: xiaofu
+<span/> * @Description:
+<span/> */</span>
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">OrderInfo</span> {</span>
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> LocalDateTime createTime;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> Date updateTime;
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> LocalDateTime <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">getCreateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> createTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">setCreateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(LocalDateTime createTime)</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.createTime = createTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> Date <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">getUpdateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> updateTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">setUpdateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(Date updateTime)</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.updateTime = updateTime;
+<span/>    }
+<span/>}
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">只需要用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@Configuration</code>定义一个配置类，注入两个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Bean</code>即可完成全局日期格式化处理，这种方式也是当前我项目中正在用的方式。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: xiaofu
+<span/> * @Description:
+<span/> */</span>
+<span/>@Configuration
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LocalDateTimeSerializerConfig</span> {</span>
+<span/>
+<span/>    @Value(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}"</span>)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> String pattern;
+<span/>
+<span/>    @<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;">Bean
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> LocalDateTimeSerializer <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">localDateTimeDeserializer</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> LocalDateTimeSerializer(DateTimeFormatter.ofPattern(pattern));
+<span/>    }
+<span/>
+<span/>    @<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;">Bean
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> Jackson2ObjectMapperBuilderCustomizer <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">jackson2ObjectMapperBuilderCustomizer</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> builder -&gt; builder.serializerByType(LocalDateTime.class, localDateTimeDeserializer());
+<span/>    }
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这种方式可支持 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Date</code> 类型和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">LocalDateTime</code> 类型并存，那么有一个问题就是现在全局时间格式是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">yyyy-MM-dd HH:mm:ss</code>，但有的字段却需要<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">yyyy-MM-dd</code>格式咋整？</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那就需要配合<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解使用，在特定的字段属性添加<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解即可，因为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解优先级比较高，会以<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解标注的时间格式为主。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、全局配置 （2）</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这种全局配置的实现方式与上边的效果是一样的，不过，要注意的是使用这种配置后，字段手动配置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@JsonFormat</code>注解将不再生效。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: xiaofu
+<span/> * @Description:
+<span/> */</span>
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">OrderInfo</span> {</span>
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> LocalDateTime createTime;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")</span>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> Date updateTime;
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> LocalDateTime <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">getCreateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> createTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">setCreateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(LocalDateTime createTime)</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.createTime = createTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> Date <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">getUpdateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> updateTime;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">setUpdateTime</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(Date updateTime)</span> </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.updateTime = updateTime;
+<span/>    }
+<span/>}
+<span/>
+<span/></code></pre>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: xiaofu
+<span/> * @Description:
+<span/> */</span>
+<span/>@Configuration
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LocalDateTimeSerializerConfig</span> {</span>
+<span/>
+<span/>    @Value(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"${spring.jackson.date-format:yyyy-MM-dd HH:mm:ss}"</span>)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">private</span> String pattern;
+<span/>
+<span/>    @Bean
+<span/>    @<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;">Primary
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> ObjectMapper <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">serializingObjectMapper</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">()</span> </span>{
+<span/>        ObjectMapper objectMapper = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> ObjectMapper();
+<span/>        JavaTimeModule javaTimeModule = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> JavaTimeModule();
+<span/>        javaTimeModule.addSerializer(LocalDateTime.class, <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> LocalDateTimeSerializer());
+<span/>        javaTimeModule.addDeserializer(LocalDateTime.class, <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> LocalDateTimeDeserializer());
+<span/>        objectMapper.registerModule(javaTimeModule);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> objectMapper;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LocalDateTimeSerializer</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">extends</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">JsonSerializer</span>&lt;LocalDateTime&gt; {</span>
+<span/>        @<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;">Override
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">serialize</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers)</span> throws IOException </span>{
+<span/>            gen.writeString(value.format(ofPattern(pattern)));
+<span/>        }
+<span/>    }
+<span/>
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LocalDateTimeDeserializer</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">extends</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">JsonDeserializer</span>&lt;LocalDateTime&gt; {</span>
+<span/>        @<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;">Override
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">public</span> LocalDateTime <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">deserialize</span><span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">(JsonParser p, DeserializationContext deserializationContext)</span> throws IOException </span>{
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> LocalDateTime.parse(p.getValueAsString(), ofPattern(pattern));
+<span/>        }
+<span/>    }
+<span/>}
+<span/></code></pre>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">分享了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Springboot</code>项目开发过程中的一个小技巧，也顺便吐槽一下项目优化中遇到的坑，优化别的人的代码虽然是一件比较痛苦的事情，但在这个过程中确实能学习到很多技巧，对个人的技能提升也是很有帮助，因为都是些能够实实在在提高开发效率的干货。</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89%E5%AE%9E%E6%88%98/" class="pre-post btn btn-default" title='分布式ID生成器之 美团（Leaf）实战'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            分布式ID生成器之 美团（Leaf）实战</span>
+    </a>
+    
+    
+    <a href="/2020/03/12/Redis%205%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AF%B9%E5%BA%94%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" class="next-post btn btn-default" title='Redis 5种数据结构及对应使用场景'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Redis 5种数据结构及对应使用场景</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">有个坑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">优化方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、@JsonFormat注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、全局配置 （1）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、全局配置 （2）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="" />
+
+
+<meta name="description" content="专注于系统架构实战，面试干货分享，Java小白的入门布道，程序员内点事这都有" />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    标签: 分布式ID |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content ">
+                    <ol class="breadcrumb">
+    
+    <li>
+        分布式ID
+    </li>
+    
+    
+</ol>
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E6%BB%B4%E6%BB%B4%EF%BC%88Tinyid%EF%BC%89%E5%AE%9E%E6%88%98/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="https://img-blog.csdnimg.cn/20200314110819168.png" alt="分布式ID生成器之 滴滴（Tinyid）实战">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E6%BB%B4%E6%BB%B4%EF%BC%88Tinyid%EF%BC%89%E5%AE%9E%E6%88%98/">
+                    分布式ID生成器之 滴滴（Tinyid）实战</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2020年03月12日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+接着《一口气说出 9种 分布式ID生成方式，面试官有点懵了》来继续详细的介绍分布式ID生成器，大家比较感兴趣的美团（Leaf）、滴滴（Ti...
+            
+        </p>
+    </div>
+</article>
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89%E5%AE%9E%E6%88%98/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="/photo/article-pic/meituan.jpg" alt="分布式ID生成器之 美团（Leaf）实战">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89%E5%AE%9E%E6%88%98/">
+                    分布式ID生成器之 美团（Leaf）实战</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2020年03月12日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+接着《一口气说出 9种 分布式ID生成方式，面试官有点懵了》来继续详细的介绍分布式ID生成器，大家比较感兴趣的美团（Leaf）、滴滴（Ti...
+            
+        </p>
+    </div>
+</article>
+
+<article class="post">
+    
+    <div class="post-media">
+        <a href="/2020/02/12/9%E7%A7%8D%20%E5%88%86%E5%B8%83%E5%BC%8FID%E7%9A%84%E7%94%9F%E6%88%90%E6%96%B9%E5%BC%8F/">
+            <img class="img-ajax" src="/img/loading.gif" data-src="https://img-blog.csdnimg.cn/20200213173144123.png" alt="9种 分布式ID的生成方式">
+        </a>
+    </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2020/02/12/9%E7%A7%8D%20%E5%88%86%E5%B8%83%E5%BC%8FID%E7%9A%84%E7%94%9F%E6%88%90%E6%96%B9%E5%BC%8F/">
+                    9种 分布式ID的生成方式</a>
+            </h1>
+            <div class="post-meta"> &bull;
+                <time class="post-date" datetime="" title="">
+                    2020年02月12日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+            
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+写在前边
+前两天公众号有个粉丝给我留言吐槽最近面试：“四哥，年前我在公司受点委屈一冲动就裸辞了，然后现在疫情严重两个多月还没找到工作，接了...
+            
+        </p>
+    </div>
+</article>
+
+
+                </main>
+                
+                    
+<aside class="col-md-4 sidebar">
+    
+    
+    
+    
+<div class="widget">
+    <h3 class="title">
+        站内福利
+    </h3>
+    <div class="notification">
+        <p>
+    <p style="margin: 0 auto; text-align: center">
+    <img style="width: 150px;height: 150px;" src="https://img-blog.csdnimg.cn/20200424134655550.jpg"  alt="公众号：程序员内点事" />
+    </p>
+    <p><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; margin-top: -10px; font-family: PingFangSC-Light;"><p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; color: black; margin: 10px 10px; line-height: 1.75; letter-spacing: 0.2em; font-size: 14px; word-spacing: 0.1em;">1、关注公众号:【<strong style="font-weight: border; color: rgb(248,57,41);">程序员内点事</strong>】</p>
+       <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; color: black; margin: 10px 10px; line-height: 1.75; letter-spacing: 0.2em; font-size: 14px; word-spacing: 0.1em;">2、回复【<strong style="font-weight: border; color: rgb(248,57,41);">666</strong>】，100本各类高清技术电子书，<strong style="font-weight: border; color: rgb(248,57,41);">2000G</strong>付费视频课程 <strong style="font-weight: border; color: rgb(248,57,41);">免费</strong> 相送</p>
+       <p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; color: black; margin: 10px 10px; line-height: 1.75; letter-spacing: 0.2em; font-size: 14px; word-spacing: 0.1em;">3、回复【<strong style="font-weight: border; color: rgb(248,57,41);">进群</strong>】，进高质量技术交流群，和各路大佬谈技术、聊面试</p>
+       </section><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; margin-top: -10px; font-family: PingFangSC-Light;"><p data-tool="mdnice编辑器" style="padding-top: 8px; padding-bottom: 8px; color: black; margin: 10px 10px; line-height: 1.75; letter-spacing: 0.2em; font-size: 14px; word-spacing: 0.1em;">4、技术交流加WX：<strong style="font-weight: border; color: rgb(248,57,41);">xinzhifu521</strong>，定知无不言</p>
+                 </section></p>
+</p>
+    </div>
+</div>
+
+    
+    
+<div class="widget">
+    <h3 class="title">
+        各大平台主页
+    </h3>
+    <div class="content">
+        
+        <a href="https://juejin.im/user/595210b85188250d9745f7a8" rel="external nofollow" title="掘金" target="_blank">
+            <img src="/photo/juejin.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://mp.csdn.net/console/article" rel="external nofollow" title="csdn" target="_blank">
+            <img src="/photo/csdn.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://www.toutiao.com/c/user/68164611886/#mid=1577680905716750" rel="external nofollow" title="头条" target="_blank">
+            <img src="/photo/toutiao.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://www.zhihu.com/people/pi-pi-xia-38-58" rel="external nofollow" title="知乎" target="_blank">
+            <img src="/photo/zhihu.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://segmentfault.com/u/chengxy" rel="external nofollow" title="思否" target="_blank">
+            <img src="/photo/sifou.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://www.jianshu.com/u/2c5cdf90f4ec" rel="external nofollow" title="思否" target="_blank">
+            <img src="/photo/jianshu.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+        <a href="https://my.oschina.net/u/4455409?tab=popular" rel="external nofollow" title="开源" target="_blank">
+            <img src="/photo/kaiyuan.png" style="height: 35px; width: 35px;"></img>
+        </a>
+        
+    </div>
+</div>
+
+    
+    
+<div class="widget">
+    <h3 class="title">
+        分类
+    </h3>
+    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/"><i class="fa" aria-hidden="true">Hexo</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/IDEA/"><i class="fa" aria-hidden="true">IDEA</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/"><i class="fa" aria-hidden="true">Java</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/"><i class="fa" aria-hidden="true">Mysql</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nginx/"><i class="fa" aria-hidden="true">Nginx</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/"><i class="fa" aria-hidden="true">Redis</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/"><i class="fa" aria-hidden="true">Springboot</i></a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Springboot/Redis/"><i class="fa" aria-hidden="true">Redis</i></a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/zookeeper/"><i class="fa" aria-hidden="true">zookeeper</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/"><i class="fa" aria-hidden="true">其他</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/"><i class="fa" aria-hidden="true">分布式</i></a><span class="category-list-count">7</span></li></ul>
+</div>
+
+    
+    
+<div class="widget">
+    <h3 class="title">
+        归档
+    </h3>
+    <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/"><i class="fa" aria-hidden="true">2020年05月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/"><i class="fa" aria-hidden="true">2020年04月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/"><i class="fa" aria-hidden="true">2020年03月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/"><i class="fa" aria-hidden="true">2020年02月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/"><i class="fa" aria-hidden="true">2020年01月</i></a><span class="archive-list-count">8</span></li></ul>
+</div>
+
+    
+    
+<div class="widget">
+    <h3 class="title">
+        标签
+    </h3>
+    <div class="content tag-cloud">
+        
+        <a href="/tags/2PC/" style="font-size: 10px;">2PC</a> <a href="/tags/3PC/" style="font-size: 10px;">3PC</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DelayQueue/" style="font-size: 10px;">DelayQueue</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/Guava/" style="font-size: 10px;">Guava</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 10px;">IntelliJ IDEA</a> <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/LBS/" style="font-size: 10px;">LBS</a> <a href="/tags/Leaf/" style="font-size: 10px;">Leaf</a> <a href="/tags/Lua/" style="font-size: 10px;">Lua</a> <a href="/tags/MongoDB/" style="font-size: 10px;">MongoDB</a> <a href="/tags/MySQL/" style="font-size: 13.33px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 13.33px;">Nginx</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 20px;">Redis</a> <a href="/tags/Redisson/" style="font-size: 10px;">Redisson</a> <a href="/tags/TCC/" style="font-size: 10px;">TCC</a> <a href="/tags/TinyID/" style="font-size: 10px;">TinyID</a> <a href="/tags/Tinyid/" style="font-size: 10px;">Tinyid</a> <a href="/tags/Transactional/" style="font-size: 10px;">Transactional</a> <a href="/tags/aop/" style="font-size: 10px;">aop</a> <a href="/tags/arthas/" style="font-size: 10px;">arthas</a> <a href="/tags/canal/" style="font-size: 10px;">canal</a> <a href="/tags/jsoup/" style="font-size: 10px;">jsoup</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/referer/" style="font-size: 10px;">referer</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a> <a href="/tags/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">个人博客</a> <a href="/tags/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">主从同步</a> <a href="/tags/%E4%BA%8B%E5%8A%A1/" style="font-size: 13.33px;">事务</a> <a href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/" style="font-size: 10px;">人脸识别</a> <a href="/tags/%E4%BC%98%E5%8C%96/" style="font-size: 10px;">优化</a> <a href="/tags/%E5%85%A8%E5%B1%80%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%8C%96/" style="font-size: 10px;">全局日期格式化</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8FID/" style="font-size: 16.67px;">分布式ID</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" style="font-size: 10px;">分布式锁</a> <a href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" style="font-size: 10px;">分库分表</a> <a href="/tags/%E5%8F%B7%E6%AE%B5%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">号段模式</a> <a href="/tags/%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" style="font-size: 10px;">应用场景</a> <a href="/tags/%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97/" style="font-size: 10px;">延时队列</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%B6%E9%97%B4%E8%BD%AE/" style="font-size: 10px;">时间轮</a> <a href="/tags/%E6%BB%B4%E6%BB%B4/" style="font-size: 10px;">滴滴</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 10px;">爬虫</a> <a href="/tags/%E7%94%B5%E5%AD%90%E4%B9%A6/" style="font-size: 10px;">电子书</a> <a href="/tags/%E7%AE%80%E5%8E%86/" style="font-size: 10px;">简历</a> <a href="/tags/%E7%BE%8E%E5%9B%A2/" style="font-size: 10px;">美团</a> <a href="/tags/%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89/" style="font-size: 10px;">美团（Leaf）</a> <a href="/tags/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3/" style="font-size: 10px;">自定义注解</a> <a href="/tags/%E9%98%B2%E7%9B%97%E9%93%BE/" style="font-size: 10px;">防盗链</a> <a href="/tags/%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA/" style="font-size: 10px;">附近的人</a> <a href="/tags/%E9%9B%AA%E8%8A%B1%E7%AE%97%E6%B3%95/" style="font-size: 10px;">雪花算法</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 10px;">面试</a>
+        
+    </div>
+</div>
+
+    
+    
+<div class="widget">
+    <h3 class="title">
+        友链
+    </h3>
+    <div class="content friends-link">
+        
+        <a href="https://hexo.io/zh-cn/" class="fa" target="_blank">
+            Hexo官网</a>
+        
+    </div>
+</div>
+
+    
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

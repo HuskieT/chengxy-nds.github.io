@@ -1,0 +1,743 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="Redis,分布式ID,雪花算法,TinyID,号段模式,美团（Leaf）" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+写在前边
+前两天公众号有个粉丝给我留言吐槽最近面试：“四哥，年前我在公司受点委屈一冲动就裸辞了，然后现在疫情严重两个多月还没找到工作，接了..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    9种 分布式ID的生成方式 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="9种 分布式ID的生成方式">
+            
+            9种 分布式ID的生成方式
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Redis/" rel="tag">Redis</a> <a class="tag-link" href="/tags/TinyID/" rel="tag">TinyID</a> <a class="tag-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8FID/" rel="tag">分布式ID</a> <a class="tag-link" href="/tags/%E5%8F%B7%E6%AE%B5%E6%A8%A1%E5%BC%8F/" rel="tag">号段模式</a> <a class="tag-link" href="/tags/%E7%BE%8E%E5%9B%A2%EF%BC%88Leaf%EF%BC%89/" rel="tag">美团（Leaf）</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/02/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">写在前边</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">前两天公众号有个粉丝给我留言吐槽最近面试：“四哥，年前我在公司受点委屈一冲动就裸辞了，然后现在疫情严重两个多月还没找到工作，接了几个视频面试也都没下文。好多面试官问完一个问题，紧接着说还会其他解决方法吗？<strong style="font-weight: bold; color: black;">能干活解决bug不就行了吗？那还得会多少种方法？</strong>”</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">面试官应该是对应聘者的回答不太满意，他想听到一个他认为最优的解决方案，其实这无可厚非。同样一个bug，能用一行代码解决问题的人和用十行代码解决问题的人，你会选哪个入职？显而易见的事情！所以看待问题还是要从多个角度出发，每种方法都有各自的利弊。</p>
+<hr style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、为什么要用分布式ID？</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在说分布式ID的具体实现之前，我们来简单分析一下为什么用分布式ID？分布式ID应该满足哪些特征？</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、什么是分布式ID？</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">拿MySQL数据库举个栗子：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在我们业务数据量不大的时候，单库单表完全可以支撑现有业务，数据再大一点搞个MySQL主从同步读写分离也能对付。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">但随着数据日渐增长，主从同步也扛不住了，就需要对数据库进行分库分表，但分库分表后需要有一个唯一ID来标识一条数据，数据库的自增ID显然不能满足需求；特别一点的如订单、优惠券也都需要有<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">唯一ID</code>做标识。此时一个能够生成<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">全局唯一ID</code>的系统是非常必要的。那么这个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">全局唯一ID</code>就叫<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>。</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、那么分布式ID需要满足那些条件？</span><span class="suffix" style="display: none;"></span></h4>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">全局唯一：必须保证ID是全局性唯一的，基本要求</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">高性能：高可用低延时，ID生成响应要块，否则反倒会成为业务瓶颈</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">高可用：100%的可用性是骗人的，但是也要无限接近于100%的可用性</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">好接入：要秉着拿来即用的设计原则，在系统设计和实现上要尽可能的简单</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">趋势递增：最好趋势递增，这个要求就得看具体业务场景了，一般不严格要求</section></li></ul>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、 分布式ID都有哪些生成方式？</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">今天主要分析一下以下9种，分布式ID生成器方式以及优缺点：</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">UUID</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">数据库自增ID</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">数据库多主模式</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">号段模式</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">Redis</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">雪花算法（SnowFlake）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">滴滴出品（TinyID）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">百度 （Uidgenerator）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">美团（Leaf）</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那么它们都是如何实现？以及各自有什么优缺点？我们往下看
+<img src="https://img-blog.csdnimg.cn/20200213173144123.png?" alt="图片源自网络" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">以上图片源自网络，如有侵权联系删除</p>
+</blockquote>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、基于UUID</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在Java的世界里，想要得到一个具有唯一性的ID，首先被想到可能就是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">UUID</code>，毕竟它有着全球唯一的特性。那么<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">UUID</code>可以做<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>吗？<strong style="font-weight: bold; color: black;">答案是可以的，但是并不推荐！</strong></p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> main(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>[] args) { 
+<span/>       <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> uuid = UUID.randomUUID().toString().replaceAll(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"-"</span>,<span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>);
+<span/>       System.out.println(uuid);
+<span/> }
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">UUID</code>的生成简单到只有一行代码，输出结果 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">c2b8c2b9e46c47e3b30dca3b0d447718</code>，但UUID却并不适用于实际的业务需求。像用作订单号<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">UUID</code>这样的字符串没有丝毫的意义，看不出和订单相关的有用信息；而对于数据库来说用作业务<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">主键ID</code>，它不仅是太长还是字符串，存储性能差查询也很耗时，所以不推荐用作<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">生成足够简单，本地生成无网络消耗，具有唯一性</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">无序的字符串，不具备趋势自增特性</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">没有具体的业务含义</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">长度过长16 字节128位，36位长度的字符串，存储以及查询对MySQL的性能消耗较大，MySQL官方明确建议主键要尽量越短越好，作为数据库主键 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">UUID</code> 的无序性会导致数据位置频繁变动，严重影响性能。</section></li></ul>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、基于数据库自增ID</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">基于数据库的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">auto_increment</code>自增ID完全可以充当<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>，具体实现：需要一个单独的MySQL实例用来生成ID，建表结构如下：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">CREATE DATABASE <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`SEQ_ID`</span>;
+<span/>CREATE TABLE SEQID.SEQUENCE_ID (
+<span/>    id bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) unsigned NOT NULL auto_increment, 
+<span/>    value char(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>) NOT NULL <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span>,
+<span/>    PRIMARY KEY (id),
+<span/>) ENGINE=MyISAM;
+<span/></code></pre>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">insert into SEQUENCE_ID(value)  VALUES (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'values'</span>);
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">当我们需要一个ID的时候，向表中插入一条记录返回<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">主键ID</code>，但这种方式有一个比较致命的缺点，访问量激增时MySQL本身就是系统的瓶颈，用它来实现分布式服务风险比较大，不推荐！</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">实现简单，ID单调自增，数值类型查询速度快</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">DB单点存在宕机风险，无法扛住高并发场景</section></li></ul>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、基于数据库集群模式</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">前边说了单点数据库方式不可取，那对上边的方式做一些高可用优化，换成主从模式集群。害怕一个主节点挂掉没法用，那就做双主模式集群，也就是两个Mysql实例都能单独的生产自增ID。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那这样还会有个问题，两个MySQL实例的自增ID都从1开始，<strong style="font-weight: bold; color: black;">会生成重复的ID怎么办？</strong></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">解决方案</strong>：设置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">起始值</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">自增步长</code></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">MySQL_1 配置：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> @@auto_increment_offset = 1;     -- 起始值
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> @@auto_increment_increment = 2;  -- 步长
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">MySQL_2 配置：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> @@auto_increment_offset = 2;     -- 起始值
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> @@auto_increment_increment = 2;  -- 步长
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这样两个MySQL实例的自增ID分别就是：</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">1、3、5、7、9
+2、4、6、8、10</p>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那如果集群后的性能还是扛不住高并发咋办？就要进行MySQL扩容增加节点，这是一个比较麻烦的事。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200215124534149.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+从上图可以看出，水平扩展的数据库集群，有利于解决数据库单点压力的问题，同时为了ID生成特性，将自增步长按照机器数量来设置。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">增加第三台<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>实例需要人工修改一、二两台<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL实例</code>的起始值和步长，把<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">第三台机器的ID</code>起始生成位置设定在比现有<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">最大自增ID</code>的位置远一些，但必须在一、二两台<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL实例</code>ID还没有增长到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">第三台MySQL实例</code>的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">起始ID</code>值的时候，否则<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">自增ID</code>就要出现重复了，<strong style="font-weight: bold; color: black;">必要时可能还需要停机修改</strong>。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">解决DB单点问题</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">不利于后续扩容，而且实际上单个数据库自身压力还是大，依旧无法满足高并发场景。</section></li></ul>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">4、基于数据库的号段模式</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">号段模式是当下分布式ID生成器的主流实现方式之一，号段模式可以理解为从数据库批量的获取自增ID，每次从数据库取出一个号段范围，例如 (1,1000] 代表1000个ID，具体的业务服务将本号段，生成1~1000的自增ID并加载到内存。表结构如下：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">CREATE TABLE id_generator (
+<span/>  id int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>) NOT NULL,
+<span/>  max_id bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'当前最大id'</span>,
+<span/>  step int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'号段的布长'</span>,
+<span/>  biz_type int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'业务类型'</span>,
+<span/>  version int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'版本号'</span>,
+<span/>  PRIMARY KEY (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>)
+<span/>) 
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">biz_type ：代表不同业务类型</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">max_id ：当前最大的可用id</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">step ：代表号段的长度</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">version ：是一个乐观锁，每次都更新version，保证并发时数据的正确性</p>
+<table style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">biz_type</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">max_id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">step</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">version</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">101</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1000</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">2000</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">0</td>
+</tr>
+</tbody>
+</table>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">等这批号段ID用完，再次向数据库申请新号段，对<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">max_id</code>字段做一次<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">update</code>操作，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">update max_id= max_id + step</code>，update成功则说明新号段获取成功，新的号段范围是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">(max_id ,max_id +step]</code>。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">update id_generator <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> max_id = #{max_id+step}, version = version + <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> where version = # {version} and biz_type = XXX
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">由于多业务端可能同时操作，所以采用版本号<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">version</code>乐观锁方式更新，这种<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>生成方式不强依赖于数据库，不会频繁的访问数据库，对数据库的压力小很多。</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">5、基于Redis模式</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>也同样可以实现，原理就是利用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">incr</code>命令实现ID的原子性自增。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">127.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.1</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">6379</span>&gt; <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">set</span> seq_id 1     // 初始化自增ID为1
+<span/>OK
+<span/>127.0.0.1:6379&gt; incr seq_id      // 增加1，并返回递增后的数值
+<span/>(integer) 2
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>实现需要注意一点，要考虑到redis持久化的问题。<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>有两种持久化方式<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">RDB</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">AOF</code></p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">RDB</code>会定时打一个快照进行持久化，假如连续自增但<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>没及时持久化，而这会Redis挂掉了，重启Redis后会出现ID重复的情况。</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">AOF</code>会对每条写命令进行持久化，即使<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>挂掉了也不会出现ID重复的情况，但由于incr命令的特殊性，会导致<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>重启恢复的数据时间过长。</p>
+</section></li></ul>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">6、基于雪花算法（Snowflake）模式</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">雪花算法（Snowflake）是twitter公司内部分布式项目采用的ID生成算法，开源后广受国内大厂的好评，在该算法影响下各大公司相继开发出各具特色的分布式生成器。</p>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200215190247159.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">以上图片源自网络，如有侵权联系删除</p>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Snowflake</code>生成的是Long类型的ID，一个Long类型占8个字节，每个字节占8比特，也就是说一个Long类型占64个比特。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">Snowflake ID组成结构：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">正数位</code>（占1比特）+ <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">时间戳</code>（占41比特）+ <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">机器ID</code>（占5比特）+ <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">数据中心</code>（占5比特）+ <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">自增值</code>（占12比特），总共64比特组成的一个Long类型。</p>
+<ul style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">第一个bit位（1bit）：Java中long的最高位是符号位代表正负，正数是0，负数是1，一般生成ID都为正数，所以默认为0。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">时间戳部分（41bit）：毫秒级的时间，不建议存当前时间戳，而是用（当前时间戳 - 固定开始时间戳）的差值，可以使产生的ID从更小的值开始；41位的时间戳可以使用69年，(1L &lt;&lt; 41) / (1000L * 60 * 60 * 24 * 365) = 69年</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">工作机器id（10bit）：也被叫做<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>，这个可以灵活配置，机房或者机器号组合都可以。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">序列号部分（12bit），自增值支持同一毫秒内同一个节点可以生成4096个ID</section></li></ul>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">根据这个算法的逻辑，只需要将这个算法用Java语言实现出来，封装为一个工具方法，那么各个业务应用可以直接使用该工具方法来获取分布式ID，只需保证每个业务应用有自己的工作机器id即可，而不需要单独去搭建一个获取分布式ID的应用。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">Java版本的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Snowflake</code>算法实现：</strong></p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * Twitter的SnowFlake算法,使用SnowFlake算法生成一个整数，然后转化为62进制变成一个短地址URL
+<span/> *
+<span/> * https://github.com/beyondfengyu/SnowFlake
+<span/> */</span>
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">SnowFlakeShortUrl</span> </span>{
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 起始的时间戳
+<span/>     */</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long START_TIMESTAMP = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1480166465631</span>L;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 每一部分占用的位数
+<span/>     */</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long SEQUENCE_BIT = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">12</span>;   <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//序列号占用的位数</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long MACHINE_BIT = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">5</span>;     <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//机器标识占用的位数</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long DATA_CENTER_BIT = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">5</span>; <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//数据中心占用的位数</span>
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 每一部分的最大值
+<span/>     */</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long MAX_SEQUENCE = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L ^ (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L &lt;&lt; SEQUENCE_BIT);
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long MAX_MACHINE_NUM = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L ^ (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L &lt;&lt; MACHINE_BIT);
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long MAX_DATA_CENTER_NUM = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L ^ (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L &lt;&lt; DATA_CENTER_BIT);
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 每一部分向左的位移
+<span/>     */</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long MACHINE_LEFT = SEQUENCE_BIT;
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long DATA_CENTER_LEFT = SEQUENCE_BIT + MACHINE_BIT;
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> long TIMESTAMP_LEFT = DATA_CENTER_LEFT + DATA_CENTER_BIT;
+<span/>
+<span/>    private long dataCenterId;  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//数据中心</span>
+<span/>    private long machineId;     <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//机器标识</span>
+<span/>    private long sequence = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>L; <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//序列号</span>
+<span/>    private long lastTimeStamp = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-1</span>L;  <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//上一次时间戳</span>
+<span/>
+<span/>    private long getNextMill() {
+<span/>        long mill = getNewTimeStamp();
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">while</span> (mill &lt;= lastTimeStamp) {
+<span/>            mill = getNewTimeStamp();
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> mill;
+<span/>    }
+<span/>
+<span/>    private long getNewTimeStamp() {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> System.currentTimeMillis();
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 根据指定的数据中心ID和机器标志ID生成指定的序列号
+<span/>     *
+<span/>     * @param dataCenterId 数据中心ID
+<span/>     * @param machineId    机器标志ID
+<span/>     */</span>
+<span/>    public SnowFlakeShortUrl(long dataCenterId, long machineId) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (dataCenterId &gt; MAX_DATA_CENTER_NUM || dataCenterId &lt; <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> IllegalArgumentException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"DtaCenterId can't be greater than MAX_DATA_CENTER_NUM or less than 0！"</span>);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (machineId &gt; MAX_MACHINE_NUM || machineId &lt; <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> IllegalArgumentException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"MachineId can't be greater than MAX_MACHINE_NUM or less than 0！"</span>);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.dataCenterId = dataCenterId;
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.machineId = machineId;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 产生下一个ID
+<span/>     *
+<span/>     * @return
+<span/>     */</span>
+<span/>    public synchronized long nextId() {
+<span/>        long currTimeStamp = getNewTimeStamp();
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (currTimeStamp &lt; lastTimeStamp) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RuntimeException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"Clock moved backwards.  Refusing to generate id"</span>);
+<span/>        }
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (currTimeStamp == lastTimeStamp) {
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//相同毫秒内，序列号自增</span>
+<span/>            sequence = (sequence + <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>) &amp; MAX_SEQUENCE;
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//同一毫秒的序列数已经达到最大</span>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (sequence == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>L) {
+<span/>                currTimeStamp = getNextMill();
+<span/>            }
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//不同毫秒内，序列号置为0</span>
+<span/>            sequence = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>L;
+<span/>        }
+<span/>
+<span/>        lastTimeStamp = currTimeStamp;
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> (currTimeStamp - START_TIMESTAMP) &lt;&lt; TIMESTAMP_LEFT <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//时间戳部分</span>
+<span/>                | dataCenterId &lt;&lt; DATA_CENTER_LEFT       <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//数据中心部分</span>
+<span/>                | machineId &lt;&lt; MACHINE_LEFT             <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//机器标识部分</span>
+<span/>                | sequence;                             <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//序列号部分</span>
+<span/>    }
+<span/>    
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> main(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>[] args) {
+<span/>        SnowFlakeShortUrl snowFlake = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> SnowFlakeShortUrl(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>);
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (int i = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>; i &lt; (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> &lt;&lt; <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">4</span>); i++) {
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//10进制</span>
+<span/>            System.out.println(snowFlake.nextId());
+<span/>        }
+<span/>    }
+<span/>}
+<span/></code></pre>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">7、百度（uid-generator）</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code>是由百度技术部开发，项目GitHub地址 https://github.com/baidu/uid-generator</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code>是基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Snowflake</code>算法实现的，与原始的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">snowflake</code>算法不同在于，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code>支持自<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">定义时间戳</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">工作机器ID</code>和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">序列号</code> 等各部分的位数，而且<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code>中采用用户自定义<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>的生成策略。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code>需要与数据库配合使用，需要新增一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WORKER_NODE</code>表。当应用启动时会向数据库表中去插入一条数据，插入成功后返回的自增ID就是该机器的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>数据由host，port组成。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">对于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">uid-generator</code> ID组成结构</strong>：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>，占用了22个bit位，时间占用了28个bit位，序列化占用了13个bit位，需要注意的是，和原始的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">snowflake</code>不太一样，时间的单位是秒，而不是毫秒，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>也不一样，而且同一应用每次重启就会消费一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>。</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">参考文献
+https://github.com/baidu/uid-generator/blob/master/README.zh_cn.md</p>
+</blockquote>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">8、美团（Leaf）</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf</code>由美团开发，github地址：https://github.com/Meituan-Dianping/Leaf</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf</code>同时支持号段模式和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">snowflake</code>算法模式，可以切换使用。</p>
+<h5 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">号段模式</span><span class="suffix" style="display: none;"></span></h5>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">先导入源码 https://github.com/Meituan-Dianping/Leaf ，在建一张表<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">leaf_alloc</code></p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">DROP TABLE IF EXISTS <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`leaf_alloc`</span>;
+<span/>
+<span/>CREATE TABLE <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`leaf_alloc`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_tag`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">128</span>)  NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'业务key'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`max_id`</span> bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'1'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'当前已经分配了的最大id'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`step`</span> int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) NOT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'初始步长，也是动态调整的最小步长'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`description`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">256</span>)  DEFAULT NULL COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'业务key的描述'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span> timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'数据库维护的更新时间'</span>,
+<span/>  PRIMARY KEY (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_tag`</span>)
+<span/>) ENGINE=InnoDB;
+<span/>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">然后在项目中开启<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">号段模式</code>，配置对应的数据库信息，并关闭<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">snowflake</code>模式</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">leaf.name=com.sankuai.leaf.opensource.test
+<span/>leaf.segment.enable=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>
+<span/>leaf.jdbc.url=jdbc:mysql:<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//localhost:3306/leaf_test?useUnicode=true&amp;characterEncoding=utf8&amp;characterSetResults=utf8</span>
+<span/>leaf.jdbc.username=root
+<span/>leaf.jdbc.password=root
+<span/>
+<span/>leaf.snowflake.enable=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>
+<span/>#leaf.snowflake.zk.address=
+<span/>#leaf.snowflake.port=
+<span/>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">启动<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">leaf-server</code> 模块的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">LeafServerApplication</code>项目就跑起来了</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">号段模式获取分布式自增ID的测试url ：http：//localhost：8080/api/segment/get/leaf-segment-test</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">监控号段模式：http://localhost:8080/cache</p>
+<h5 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">snowflake模式</span><span class="suffix" style="display: none;"></span></h5>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf</code>的snowflake模式依赖于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ZooKeeper</code>，不同于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">原始snowflake</code>算法也主要是在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>的生成上，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf</code>中<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>是基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ZooKeeper</code>的顺序Id来生成的，每个应用在使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf-snowflake</code>时，启动时都会都在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Zookeeper</code>中生成一个顺序Id，相当于一台机器对应一个顺序节点，也就是一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">workId</code>。</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">leaf.snowflake.enable=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>
+<span/>leaf.snowflake.zk.address=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">127.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.1</span>
+<span/>leaf.snowflake.port=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2181</span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">snowflake模式获取分布式自增ID的测试url：http://localhost:8080/api/snowflake/get/test</p>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">9、滴滴（Tinyid）</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>由滴滴开发，Github地址：https://github.com/didi/tinyid。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>是基于号段模式原理实现的与<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Leaf</code>如出一辙，每个服务获取一个号段（1000,2000]、（2000,3000]、（3000,4000]<img src="https://img-blog.csdnimg.cn/20200215205417730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Tinyid</code>提供<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-client</code>两种方式接入</p>
+<h5 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">Http方式接入</span><span class="suffix" style="display: none;"></span></h5>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">（1）导入Tinyid源码：</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">git clone https://github.com/didi/tinyid.git</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">（2）创建数据表：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">CREATE TABLE <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_info`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span> bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) unsigned NOT NULL AUTO_INCREMENT COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'自增主键'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">63</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'业务类型，唯一'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`begin_id`</span> bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'开始id，仅记录初始值，无其他含义。初始化时begin_id和max_id应相同'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`max_id`</span> bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'当前最大id'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`step`</span> int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'步长'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`delta`</span> int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'1'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'每次id增量'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remainder`</span> int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'余数'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span> timestamp NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2010-01-01 00:00:00'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'创建时间'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span> timestamp NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2010-01-01 00:00:00'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'更新时间'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`version`</span> bigint(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">20</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'版本号'</span>,
+<span/>  PRIMARY KEY (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>),
+<span/>  UNIQUE KEY <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`uniq_biz_type`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span>)
+<span/>) ENGINE=InnoDB AUTO_INCREMENT=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> DEFAULT CHARSET=utf8 COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'id信息表'</span>;
+<span/>
+<span/>CREATE TABLE <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_token`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span> int(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) unsigned NOT NULL AUTO_INCREMENT COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'自增id'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`token`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'token'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">63</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'此token可访问的业务类型标识'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remark`</span> varchar(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">''</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'备注'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span> timestamp NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2010-01-01 00:00:00'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'创建时间'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span> timestamp NOT NULL DEFAULT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2010-01-01 00:00:00'</span> COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'更新时间'</span>,
+<span/>  PRIMARY KEY (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>)
+<span/>) ENGINE=InnoDB AUTO_INCREMENT=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> DEFAULT CHARSET=utf8 COMMENT <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'token信息表'</span>;
+<span/>
+<span/>INSERT INTO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_info`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`begin_id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`max_id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`step`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`delta`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remainder`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`version`</span>)
+<span/>VALUES
+<span/> (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'test'</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">100000</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2018-07-21 23:52:58'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2018-07-22 23:19:27'</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>);
+<span/>
+<span/>INSERT INTO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_info`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`begin_id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`max_id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`step`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`delta`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remainder`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`version`</span>)
+<span/>VALUES
+<span/> (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'test_odd'</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">100000</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2018-07-21 23:52:58'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2018-07-23 00:39:24'</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>);
+<span/>
+<span/>
+<span/>INSERT INTO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_token`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`token`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remark`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span>)
+<span/>VALUES
+<span/> (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0f673adf80504e2eaa552f5d791b644c'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'test'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'1'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2017-12-14 16:36:46'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2017-12-14 16:36:48'</span>);
+<span/>
+<span/>INSERT INTO <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`tiny_id_token`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`token`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`biz_type`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`remark`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span>)
+<span/>VALUES
+<span/> (<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'0f673adf80504e2eaa552f5d791b644c'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'test_odd'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'1'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2017-12-14 16:36:46'</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2017-12-14 16:36:48'</span>);
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">（3）配置数据库：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">datasource.tinyid.names=primary
+<span/>datasource.tinyid.primary.driver-<span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span>-<span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">name</span></span>=com.mysql.jdbc.Driver
+<span/>datasource.tinyid.primary.url=jdbc:mysql:<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//ip:port/databaseName?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8</span>
+<span/>datasource.tinyid.primary.username=root
+<span/>datasource.tinyid.primary.password=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">123456</span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">（4）启动<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid-server</code>后测试</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">获取分布式自增ID: http:<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//localhost:9999/tinyid/id/nextIdSimple?bizType=test&amp;token=0f673adf80504e2eaa552f5d791b644c'</span>
+<span/>返回结果: <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>
+<span/>
+<span/>批量获取分布式自增ID:
+<span/>http:<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//localhost:9999/tinyid/id/nextIdSimple?bizType=test&amp;token=0f673adf80504e2eaa552f5d791b644c&amp;batchSize=10'</span>
+<span/>返回结果:  <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">4</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">5</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">6</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">7</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">8</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">9</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">12</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">13</span>
+<span/></code></pre>
+<h5 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">Java客户端方式接入</span><span class="suffix" style="display: none;"></span></h5>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">重复Http方式的（2）（3）操作</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">引入依赖</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">       &lt;dependency&gt;
+<span/>            <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.xiaoju.uemc.tinyid<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>            <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>tinyid-client<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>            <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>${tinyid.version}<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">配置文件</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">tinyid.server =localhost:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">9999</span>
+<span/>tinyid.token =<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>f673adf80504e2eaa552f5d791b644c
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">test</code>  、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid.token</code>是在数据库表中预先插入的数据，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">test</code>  是具体业务类型，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">tinyid.token</code>表示可访问的业务类型</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 获取单个分布式自增ID</span>
+<span/>Long id =  TinyId . nextId( <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" test "</span> );
+<span/>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 按需批量分布式自增ID</span>
+<span/>List&lt; Long &gt; ids =  TinyId . nextId( <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" test "</span> , <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span> );
+<span/></code></pre>
+<hr style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">本文只是简单介绍一下每种分布式ID生成器，旨在给大家一个详细学习的方向，每种生成方式都有它自己的优缺点，具体如何使用还要看具体的业务需求。</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+</section><p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/02/12/%E5%90%8E%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E4%B8%8D%E5%BE%97%E4%B8%8D%E4%BC%9A%E7%9A%84%20Nginx%20%E8%BD%AC%E5%8F%91%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/" class="pre-post btn btn-default" title='后端程序员不得不会的 Nginx 转发匹配规则'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            后端程序员不得不会的 Nginx 转发匹配规则</span>
+    </a>
+    
+    
+    <a href="/2020/01/26/IntelliJ%20IDEA%202020%20%E7%9A%84Debug%E5%8A%9F%E8%83%BD%E4%B9%9F%E5%A4%AA%E5%A5%BD%E7%94%A8%E4%BA%86%EF%BC%8C%E7%9C%9F%E9%A6%99%EF%BC%81/" class="next-post btn btn-default" title='IntelliJ IDEA 2020 的Debug功能也太好用了，真香！'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            IntelliJ IDEA 2020 的Debug功能也太好用了，真香！</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">写在前边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">一、为什么要用分布式ID？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、什么是分布式ID？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、那么分布式ID需要满足那些条件？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">二、 分布式ID都有哪些生成方式？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、基于UUID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、基于数据库自增ID</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、基于数据库集群模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">4、基于数据库的号段模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">5、基于Redis模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">6、基于雪花算法（Snowflake）模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">7、百度（uid-generator）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">8、美团（Leaf）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">号段模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">snowflake模式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">9、滴滴（Tinyid）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">Http方式接入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">Java客户端方式接入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,742 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="Redis,LBS,MongoDB,MySQL,附近的人" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+昨天一位公众号粉丝和我讨论了一道面试题，个人觉得比较有意义，这里整理了一下分享给大家，愿小伙伴们面试路上少踩坑。面试题目比较简单：“让你实..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    mysql、redis、mongodb都是怎么实现 “附近的人” 功能的？ |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="mysql、redis、mongodb都是怎么实现 “附近的人” 功能的？">
+            
+            mysql、redis、mongodb都是怎么实现 “附近的人” 功能的？
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/LBS/" rel="tag">LBS</a> <a class="tag-link" href="/tags/MongoDB/" rel="tag">MongoDB</a> <a class="tag-link" href="/tags/MySQL/" rel="tag">MySQL</a> <a class="tag-link" href="/tags/Redis/" rel="tag">Redis</a> <a class="tag-link" href="/tags/%E9%99%84%E8%BF%91%E7%9A%84%E4%BA%BA/" rel="tag">附近的人</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/05/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">昨天一位公众号粉丝和我讨论了一道面试题，个人觉得比较有意义，这里整理了一下分享给大家，愿小伙伴们面试路上少踩坑。面试题目比较简单：“让你实现一个附近的人功能，你有什么方案？”，这道题其实主要还是考察大家对于技术的广度，本文介绍几种方案，给大家一点思路，避免在面试过程中语塞而影响面试结果，如有不严谨之处，还望亲人们温柔指正！</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code> 功能生活中是比较常用的，像外卖app附近的餐厅，共享单车app里附近的车辆。既然常用面试被问的概率就很大，所以下边依次来分析基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mysql数据库</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>、 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MongoDB</code>实现的 “附近的人” 功能。
+<img src="https://img-blog.csdnimg.cn/20200407151317789.jpg#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<strong style="font-weight: bold; color: black;">科普</strong>：世界上标识一个位置，通用的做法就使用经、纬度。经度的范围在 (-180, 180]，纬度的范围 在(-90, 90]，纬度正负以赤道为界，北正南负，经度正负以本初子午线 (英国格林尼治天文台) 为界，东正西负。比如：望京摩托罗拉大厦的经、纬度（116.49141，40.01229）全是正数，就是因为我国位于东北半球。</p>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、“附近的人”原理</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code> 也就是常说的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">LBS</code> (Location Based Services，基于位置服务)，它围绕用户当前地理位置数据而展开的服务，为用户提供精准的增值服务。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">“附近的人” 核心思想如下：</p>
+<ol data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以 “我” 为中心，搜索附近的用户</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以 “我” 当前的地理位置为准，计算出别人和 “我” 之间的距离</p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">按 “我” 与别人距离的远近排序，筛选出离我最近的用户或者商店等
+<img src="https://img-blog.csdnimg.cn/2020040715580460.jpg#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+</section></li></ol>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、什么是GeoHash算法？</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在说 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code> 功能的具体实现之前，先来认识一下<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code> 算法，因为后边会一直和它打交道。定位一个位置最好的办法就是用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">经、纬度</code>标识，但<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">经、纬度</code>它是二维的，在进行位置计算的时候还是很麻烦，如果能通过某种方法将二维的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">经、纬度</code>数据转换成一维的数据，那么比较起来就要容易的多，因此<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法应运而生。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法将二维的经、纬度转换成一个字符串，例如：下图中9个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>字符串代表了9个区域，每一个字符串代表了一矩形区域。而这个矩形区域内其他的点（经、纬度）都用同一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>字符串表示。</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200407171221431.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">比如</strong>：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WX4ER</code>区域内的用户搜索附近的餐厅数据，由于这区域内用户的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>字符串都是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WX4ER</code>，故可以把<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WX4ER</code>当作<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">key</code>，餐厅信息作为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">value</code>进行缓存；而如果不使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法，区域内的用户请求餐厅数据，用户传来的经、纬度都是不同的，这样缓存不仅麻烦且数据量巨大。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>字符串越长，表示的位置越精确，字符串长度越长代表在距离上的误差越小。下图<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>码精度表：</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">geohash码长度</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">宽度</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">高度</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">5,009.4km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4,992.6km</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">2</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1,252.3km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">624.1km</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">3</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">156.5km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">156km</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">39.1km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">19.5km</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">5</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4.9km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4.9km</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">6</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1.2km</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">609.4m</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">7</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">152.9m</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">152.4m</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">8</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">38.2m</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">19m</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">9</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4.8m</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">4.8m</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">10</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1.2m</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">59.5cm</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">11</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">14.9cm</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">14.9cm</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">12</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">3.7cm</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">1.9cm</td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">而且字符串越相似表示距离越相近，字符串前缀匹配越多的距离越近。比如：下边的经、纬度就代表了三家距离相近的餐厅。</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">商户</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">经纬度</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">Geohash字符串</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">串串香</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">116.402843,39.999375</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">wx4er9v</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: #f8f8f8;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">火锅</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">116.3967,39.99932</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">wx4ertk</td>
+</tr>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">烤肉</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">116.40382,39.918118</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">wx4erfe</td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">让大家简单了解什么是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法，方便后边内容展开，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法内容比较高深，感兴趣的小伙伴自行深耕一下，这里不占用过多篇幅（其实是我懂得太肤浅，哭唧唧~）。</p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">三、基于Mysql</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">此种方式是纯基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mysql</code>实现的，未使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、设计思路</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以用户为中心，假设给定一个500米的距离作为半径画一个圆，这个圆型区域内的所有用户就是符合用户要求的 “附近的人”。但有一个问题是圆形有弧度啊，直接搜索圆形区域难度太大，根本无法用经、纬度直接搜索。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">但如果在圆形外套上一个正方形，通过获取用户经、纬度的最大最小值（经、纬度 + 距离），再根据最大最小值作为筛选条件，就很容易将正方形内的用户信息搜索出来。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那么问题又来了，<strong style="font-weight: bold; color: black;">多出来一些面积肿么办？</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">我们来分析一下，多出来的这部分区域内的用户，到圆点的距离一定比圆的半径要大，那么我们就计算用户中心点与正方形内所有用户的距离，筛选出所有距离小于等于半径的用户，圆形区域内的所用户即符合要求的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code>。</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200414160310623.png?#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、利弊分析</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">纯基于 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mysql</code> 实现 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code>，优点显而易见就是简单，只要建一张表存下用户的经、纬度信息即可。缺点也很明显，需要大量的计算两个点之间的距离，非常影响性能。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">创建一个简单的表用来存放用户的经、纬度属性。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CREATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">TABLE</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`nearby_user`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">int</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NOT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> AUTO_INCREMENT,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`name`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'名称'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`longitude`</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">double</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'经度'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`latitude`</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">double</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'纬度'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span> datetime <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ON</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">UPDATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CURRENT_TIMESTAMP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'创建时间'</span>,
+<span/>  PRIMARY <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">KEY</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>)
+<span/>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ENGINE</span>=<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">InnoDB</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CHARSET</span>=utf8mb4;
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">计算两个点之间的距离，用了一个三方的类库，毕竟自己造的轮子不是特别圆，还有可能是方的，啊哈哈哈~</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;dependency&gt;
+<span/>     <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.spatial4j<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>     <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spatial4j<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>     <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>0.5<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">获取到外接正方形后，以正方形的最大最小经、纬度值搜索正方形区域内的用户，再剔除超过指定距离的用户，就是最终的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">    private SpatialContext spatialContext = SpatialContext.GEO;    
+<span/> 
+<span/> <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 获取附近 x 米的人
+<span/>     *
+<span/>     * @param distance 搜索距离范围 单位km
+<span/>     * @param userLng  当前用户的经度
+<span/>     * @param userLat  当前用户的纬度
+<span/>     */</span>
+<span/>    @GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/nearby"</span>)
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> nearBySearch(@RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"distance"</span>) double distance,
+<span/>                               @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"userLng"</span>) double userLng,
+<span/>                               @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"userLat"</span>) double userLat) {
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//1.获取外接正方形</span>
+<span/>        Rectangle rectangle = getRectangle(distance, userLng, userLat);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//2.获取位置在正方形内的所有用户</span>
+<span/>        List&lt;User&gt; users = userMapper.selectUser(rectangle.getMinX(), rectangle.getMaxX(), rectangle.getMinY(), rectangle.getMaxY());
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//3.剔除半径超过指定距离的多余用户</span>
+<span/>        users = users.stream()
+<span/>            .filter(a -&gt; getDistance(a.getLongitude(), a.getLatitude(), userLng, userLat) &lt;= distance)
+<span/>            .collect(Collectors.toList());
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.toJSONString(users);
+<span/>    }
+<span/>    
+<span/>    private Rectangle getRectangle(double distance, double userLng, double userLat) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> spatialContext.getDistCalc()
+<span/>            .calcBoxByDistFromPt(spatialContext.makePoint(userLng, userLat), 
+<span/>                                 distance * DistanceUtils.KM_TO_DEG, spatialContext, <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>);
+<span/>    }
+<span/>
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">由于用户间距离的排序是在业务代码中实现的，可以看到SQL语句也非常的简单。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">    &lt;select id=<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"selectUser"</span> resultMap=<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"BaseResultMap"</span>&gt;
+<span/>        SELECT * FROM user
+<span/>        WHERE <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>
+<span/>        and (longitude BETWEEN ${minlng} AND ${maxlng})
+<span/>        and (latitude BETWEEN ${minlat} AND ${maxlat})
+<span/>    &lt;<span class="hljs-regexp" style="color: #9A5334; line-height: 26px;">/select&gt;
+<span/>
+<span/></span></code></pre>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">四、Mysql + GeoHash</span><span class="suffix" style="display: none;"></span></h3>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、设计思路</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这种方式的设计思路更简单，在存用户位置信息时，根据用户经、纬度属性计算出相应的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串。<strong style="font-weight: bold; color: black;">注意</strong>：在计算<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串时，需要指定<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串的精度，也就是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串的长度，<strong style="font-weight: bold; color: black;">参考上边的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>精度表</strong>。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">当需要获取<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>，只需用当前用户<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串，数据库通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WHERE geohash Like 'geocode%</code>' 来查询<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串相似的用户，然后计算当前用户与搜索出的用户距离，筛选出所有距离小于等于指定距离（附近500米）的，即<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、利弊分析</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">利用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GeoHash</code>算法实现<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code>有一个问题，由于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>算法将地图分为一个个矩形，对每个矩形进行编码，得到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>字符串。可我当前的点与邻近的点很近，但恰好我们分别在两个区域，明明就在眼前的点偏偏搜不到，实实在在的灯下黑。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">如何解决这一问题？</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">为了避免类似邻近两点在不同区域内，我们就需要同时获取当前点（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WX4G0</code>）所在区域附近 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">8个</code>区域的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>码，一并进行筛选比较。
+<img src="https://img-blog.csdnimg.cn/20200414184147131.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">同样要设计一张表存用户的经、纬度信息，但区别是要多一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geo_code</code>字段，存放geohash字符串，此字段通过用户经、纬度属性计算出。使用频繁的字段建议加上索引。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CREATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">TABLE</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`nearby_user_geohash`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">int</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NOT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> AUTO_INCREMENT,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`name`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'名称'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`longitude`</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">double</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'经度'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`latitude`</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">double</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'纬度'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`geo_code`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">64</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'经纬度所计算的geohash码'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span> datetime <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ON</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">UPDATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CURRENT_TIMESTAMP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'创建时间'</span>,
+<span/>  PRIMARY <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">KEY</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>),
+<span/>  <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">KEY</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`index_geo_hash`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`geo_code`</span>)
+<span/>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ENGINE</span>=<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">InnoDB</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CHARSET</span>=utf8mb4;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">首先根据用户经、纬度信息，在指定精度后计算用户坐标的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geoHash</code>码，再获取到用户周边8个方位的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geoHash</code>码在数据库中搜索用户，最后过滤掉超出给定距离（500米内）的用户。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> private SpatialContext spatialContext = SpatialContext.GEO;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/***
+<span/>     * 添加用户
+<span/>     * @return
+<span/>     */</span>
+<span/>    @PostMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/addUser"</span>)
+<span/>    public boolean add(@RequestBody UserGeohash user) {
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//默认精度12位</span>
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> geoHashCode = GeohashUtils.encodeLatLon(user.getLatitude(),user.getLongitude());
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> userGeohashService.save(user.setGeoCode(geoHashCode).setCreateTime(LocalDateTime.now()));
+<span/>    }
+<span/>
+<span/>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 获取附近指定范围的人
+<span/>     *
+<span/>     * @param distance 距离范围（附近多远的用户） 单位km
+<span/>     * @param len      geoHash的精度（几位的字符串）
+<span/>     * @param userLng  当前用户的经度
+<span/>     * @param userLat  当前用户的纬度
+<span/>     * @return json
+<span/>     */</span>
+<span/>    @GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/nearby"</span>)
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> nearBySearch(@RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"distance"</span>) double distance,
+<span/>                               @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"len"</span>) int len,
+<span/>                               @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"userLng"</span>) double userLng,
+<span/>                               @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"userLat"</span>) double userLat) {
+<span/>
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//1.根据要求的范围，确定geoHash码的精度，获取到当前用户坐标的geoHash码</span>
+<span/>        GeoHash geoHash = GeoHash.withCharacterPrecision(userLat, userLng, len);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//2.获取到用户周边8个方位的geoHash码</span>
+<span/>        GeoHash[] adjacent = geoHash.getAdjacent();
+<span/>
+<span/>        QueryWrapper&lt;UserGeohash&gt; queryWrapper = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> QueryWrapper&lt;UserGeohash&gt;()
+<span/>            .likeRight(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"geo_code"</span>,geoHash.toBase32());
+<span/>        Stream.of(adjacent).forEach(a -&gt; queryWrapper.or().likeRight(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"geo_code"</span>,a.toBase32()));
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//3.匹配指定精度的geoHash码</span>
+<span/>        List&lt;UserGeohash&gt; users = userGeohashService.list(queryWrapper);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//4.过滤超出距离的</span>
+<span/>        users = users.stream()
+<span/>                .filter(a -&gt;getDistance(a.getLongitude(),a.getLatitude(),userLng,userLat)&lt;= distance)
+<span/>                .collect(Collectors.toList());
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.toJSONString(users);
+<span/>    }
+<span/>
+<span/>    
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/***
+<span/>     * 球面中，两点间的距离
+<span/>     * @param longitude 经度1
+<span/>     * @param latitude  纬度1
+<span/>     * @param userLng   经度2
+<span/>     * @param userLat   纬度2
+<span/>     * @return 返回距离，单位km
+<span/>     */</span>
+<span/>    private double getDistance(Double longitude, Double latitude, double userLng, double userLat) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> spatialContext.calcDistance(spatialContext.makePoint(userLng, userLat),
+<span/>                spatialContext.makePoint(longitude, latitude)) * DistanceUtils.DEG_TO_KM;
+<span/>    }
+<span/>
+<span/></code></pre>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">五、Redis + GeoHash</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis 3.2</code>版本以后，基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>和数据结构<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Zset</code>提供了地理位置相关功能。通过上边两种<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mysql</code>的实现方式发现，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>功能是明显的读多写少场景，所以用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>性能更会有很大的提升。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、设计思路</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code> 实现<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>功能主要通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Geo</code>模块的六个命令。</p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEOADD</code>：将给定的位置对象（纬度、经度、名字）添加到指定的key;</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEOPOS</code>：从key里面返回所有给定位置对象的位置（经度和纬度）;</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEODIST</code>：返回两个给定位置之间的距离;</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEOHASH</code>：返回一个或多个位置对象的Geohash表示;</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEORADIUS</code>：以给定的经纬度为中心，返回目标集合中与中心的距离不超过给定最大距离的所有位置对象;</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEORADIUSBYMEMBER</code>：以给定的位置对象为中心，返回与其距离不超过给定最大距离的所有位置对象。</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEOADD</code> 命令和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEORADIUS</code> 命令简单举例：</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">GEOADD key longitude latitude member [longitude latitude member ...]
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">其中，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">key</code>为集合名称，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">member</code>为该经纬度所对应的对象。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEOADD</code> 添加多个商户“火锅店”位置信息：</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">GEOADD hotel <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">119.98866180732716</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">30.27465803229662</span> 火锅店
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">GEORADIUS</code>  根据给定的经纬度为中心，获取目标集合中与中心的距离不超过给定最大距离（500米内）的所有位置对象，也就是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code>。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [ASC|DESC] [COUNT count] [STORE key] [STORedisT key]
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">范围单位：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">m</code> | <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">km</code> | <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ft</code> | <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">mi</code> --&gt; 米 | 千米 | 英尺 | 英里。</p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WITHDIST</code>：在返回位置对象的同时，将位置对象与中心之间的距离也一并返回。距离的单位和用户给定的范围单位保持一致。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WITHCOORD</code>：将位置对象的经度和维度也一并返回。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">WITHHASH</code>：以 52 位有符号整数的形式，返回位置对象经过原始 geohash 编码的有序集合分值。这个选项主要用于底层应用或者调试，实际中的作用并不大。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ASC | DESC</code>：从近到远返回位置对象元素 | 从远到近返回位置对象元素。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">COUNT count</code>：选取前N个匹配位置对象元素。（不设置则返回所有元素）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">STORE key</code>：将返回结果的地理位置信息保存到指定key。</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">STORedisT key</code>：将返回结果离中心点的距离保存到指定key。</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">例如下边命令：获取当前位置周边500米内的所有饭店。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">GEORADIUS hotel <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">119.98866180732716</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">30.27465803229662</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">500</span> m WITHCOORD
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>内部使用有序集合(<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">zset</code>)保存用户的位置信息，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">zset</code>中每个元素都是一个带位置的对象，元素的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">score</code>值为通过经、纬度计算出的52位<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geohash</code>值。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、利弊分析</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>实现<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">附近的人</code>效率比较高，集成也比较简单，而且还支持对距离排序。不过，结果存在一定的误差，要想让结果更加精确，还需要手动将用户中心位置与其他用户位置计算距离后，再一次进行筛选。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以下就是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Java</code> <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code>实现版本，代码非常的简洁。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> @Autowired
+<span/>    private RedisTemplate&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span>&gt; redisTemplate;
+<span/> 
+<span/> <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//GEO相关命令用到的KEY</span>
+<span/>    private final <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> KEY = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"user_info"</span>;
+<span/>
+<span/>    public boolean save(User user) {
+<span/>        Long flag = redisTemplate.opsForGeo().add(KEY, <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RedisGeoCommands.GeoLocation&lt;&gt;(
+<span/>                user.getName(), 
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> Point(user.getLongitude(), user.getLatitude()))
+<span/>        );
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> flag != <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> &amp;&amp; flag &gt; <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 根据当前位置获取附近指定范围内的用户
+<span/>     * @param distance 指定范围 单位km ，可根据{@link org.springframework.data.geo.Metrics} 进行设置
+<span/>     * @param userLng 用户经度
+<span/>     * @param userLat 用户纬度
+<span/>     * @return
+<span/>     */</span>
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> nearBySearch(double distance, double userLng, double userLat) {
+<span/>        List&lt;User&gt; users = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> ArrayList&lt;&gt;();
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 1.GEORADIUS获取附近范围内的信息</span>
+<span/>        GeoResults&lt;RedisGeoCommands.GeoLocation&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span>&gt;&gt; reslut = 
+<span/>            redisTemplate.opsForGeo().radius(KEY, 
+<span/>                        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> Circle(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> Point(userLng, userLat), <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> Distance(distance, Metrics.KILOMETERS)),
+<span/>                        RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs()
+<span/>                                .includeDistance()
+<span/>                                .includeCoordinates().sortAscending());
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//2.收集信息，存入list</span>
+<span/>        List&lt;GeoResult&lt;RedisGeoCommands.GeoLocation&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span>&gt;&gt;&gt; content = reslut.getContent();
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//3.过滤掉超过距离的数据</span>
+<span/>        content.forEach(a-&gt; users.add(
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> User().setDistance(a.getDistance().getValue())
+<span/>                .setLatitude(a.getContent().getPoint().getX())
+<span/>                .setLongitude(a.getContent().getPoint().getY())));
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.toJSONString(users);
+<span/>    }
+<span/></code></pre>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">六、MongoDB + 2d索引</span><span class="suffix" style="display: none;"></span></h3>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、设计思路</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MongoDB</code>实现附近的人，主要是通过它的两种地理空间索引 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2dsphere</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2d</code>。 两种索引的底层依然是基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Geohash</code>来进行构建的。但与国际通用的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Geohash</code>还有一些不同，具体参考<a href="https://docs.mongodb.com/manual/geospatial-queries/" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">官方文档</a>。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2dsphere</code> 索引仅支持球形表面的几何形状查询。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2d</code> 索引支持平面几何形状和一些球形查询。虽然<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2d</code> 索引支持某些球形查询，但 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2d</code> 索引对这些球形查询时，可能会出错。所以球形查询尽量选择 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2dsphere</code>索引。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">尽管两种索引的方式不同，但只要坐标跨度不太大，这两个索引计算出的距离相差几乎可以忽略不计。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">首先插入一批位置数据到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MongoDB</code>， <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">collection</code>为起名 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">hotel</code>，相当于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>的表名。两个字段<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">name</code>名称，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code> 为经、纬度数据对。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">db.hotel.insertMany([
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel1'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.993121</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.676436</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel2'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116.000093</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.679402</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel3'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.999967</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.679743</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel4'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.995593</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.681632</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel5'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.975543</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.679509</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel6'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.968428</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.669368</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel7'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116.035262</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.677037</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel8'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116.024770</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.68667</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel9'</span>,  <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116.002384</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.683865</span>]},
+<span/> {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'name'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'hotel10'</span>, <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">location</span>:[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116.000821</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.68129</span>]},
+<span/>])
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">接下来我们给 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">location</code> 字段创建一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">2d</code>索引，索引的精度通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">bits</code>来指定，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">bits</code>越大，索引的精度就越高。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">db.coll.createIndex({<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'location'</span>:<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"2d"</span>}, {<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"bits"</span>:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11111</span>})
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">geoNear</code>命令测试一下， <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">near</code> 当前坐标（经、纬度），<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">spherical</code> 是否计算球面距离，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">distanceMultiplier</code>地球半径，单位是米，默认6378137， <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">maxDistance</code> 过滤条件（指定距离内的用户），开启弧度需除<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">distanceMultiplier</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">distanceField</code> 计算出的两点间距离，字段别名（随意取名）。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">db.hotel.aggregate({
+<span/>    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">$geoNear</span>:{
+<span/>        <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">near</span>: [<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">115.999567</span>,<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">28.681813</span>], <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 当前坐标</span>
+<span/>        spherical: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>, <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 计算球面距离</span>
+<span/>        distanceMultiplier: <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">6378137</span>, <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 地球半径,单位是米,那么的除的记录也是米</span>
+<span/>        maxDistance: <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2000</span>/<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">6378137</span>, <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 过滤条件2000米内，需要弧度</span>
+<span/>        distanceField: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"distance"</span> <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 距离字段别名</span>
+<span/>    }
+<span/>})
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">看到结果中有符合条件的数据，还多出一个字段<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">distance</code> 刚才设置的别名，代表两点间的距离。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">{ "_id" : ObjectId("5e96a5c91b8d4ce765381e58"), "name" : "hotel10", "location" : [ 116.000821, 28.68129 ], "distance" : 135.60095397487655 }
+<span/>{ "_id" : ObjectId("5e96a5c91b8d4ce765381e51"), "name" : "hotel3", "location" : [ 115.999967, 28.679743 ], "distance" : 233.71915803517447 }
+<span/>{ "_id" : ObjectId("5e96a5c91b8d4ce765381e50"), "name" : "hotel2", "location" : [ 116.000093, 28.679402 ], "distance" : 273.26317035334176 }
+<span/>{ "_id" : ObjectId("5e96a5c91b8d4ce765381e57"), "name" : "hotel9", "location" : [ 116.002384, 28.683865 ], "distance" : 357.5791936927476 }
+<span/>{ "_id" : ObjectId("5e96a5c91b8d4ce765381e52"), "name" : "hotel4", "location" : [ 115.995593, 28.681632 ], "distance" : 388.62555058249967 }
+<span/>{ "_id" : ObjectId("5e96a5c91b8d4ce765381e4f"), "name" : "hotel1", "location" : [ 115.993121, 28.676436 ], "distance" : 868.6740526419927 }
+<span/></code></pre>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">本文重点并不是在具体实现，旨在给大家提供一些设计思路，面试中可能你对某一项技术了解的并不深入，但如果你的知识面宽，可以从多方面说出多种设计的思路，能够侃侃而谈，那么会给面试官极大的好感度，拿到offer的概率就会高很多。而且<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">“附近的人”</code> 功能使用的场景比较多，尤其是像电商平台应用更为广泛，所以想要进大厂的同学，这类的知识点还是应该有所了解的。</p>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">代码实现借鉴了一位大佬的开源项目，这里有前三种实现方式的demo，感兴趣的小伙伴可以学习一下，GitHub地址：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">https://github.com/larscheng/larscheng-learning-demo/tree/master/NearbySearch</code>，。</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/05/12/%E4%B8%BA%E4%BA%86%E8%B5%84%E6%96%99%E4%B8%8D%E8%A2%AB%E7%99%BD%E5%AB%96%EF%BC%8C%E6%88%91%E5%AD%A6%E4%BC%9A%E4%BA%86%E5%81%9A%E7%BD%91%E7%AB%99%E7%9A%84%E9%98%B2%E7%9B%97%E9%93%BE/" class="pre-post btn btn-default" title='为了资料不被白嫖，我学会了做网站的防盗链'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            为了资料不被白嫖，我学会了做网站的防盗链</span>
+    </a>
+    
+    
+    <a href="/2020/05/12/%E4%B8%8D%E5%81%9C%E6%9C%BA%E8%BF%98%E8%83%BD%E6%9B%BF%E6%8D%A2%E4%BB%A3%E7%A0%81%EF%BC%9F6%E5%B9%B4%E7%9A%84%20Java%E7%A8%8B%E5%BA%8F%E5%91%98%E8%A1%A8%E7%A4%BA%E4%B8%8D%E5%8F%AF%E6%80%9D%E8%AE%AE/" class="next-post btn btn-default" title='不停机还能替换代码？6年的 Java程序员表示不可思议'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            不停机还能替换代码？6年的 Java程序员表示不可思议</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">一、“附近的人”原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">二、什么是GeoHash算法？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">三、基于Mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、设计思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、利弊分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">四、Mysql + GeoHash</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、设计思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、利弊分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">五、Redis + GeoHash</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、设计思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、利弊分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">六、MongoDB + 2d索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、设计思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

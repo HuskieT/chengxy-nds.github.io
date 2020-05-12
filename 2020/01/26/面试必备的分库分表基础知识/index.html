@@ -1,0 +1,580 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="分库分表,面试" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+微服务、分布式大行其道的当下，中、高级Java工程师面试题中高并发、大数据量、分库分表等已经成
+了面试的高频词汇，这些知识不了解面试通过率..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    面试必备的分库分表基础知识 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="面试必备的分库分表基础知识">
+            
+            面试必备的分库分表基础知识
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" rel="tag">分库分表</a> <a class="tag-link" href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/01/26</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">微服务、分布式大行其道的当下，中、高级Java工程师面试题中高并发、大数据量、分库分表等已经成</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">了面试的高频词汇，这些知识不了解面试通过率不会太高。你可以不会用，但你不能不知道，就是这么</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">一种现状。技术名词大多晦涩难懂，不要死记硬背理解最重要，当你捅破那层窗户纸，发现其实它也就</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">那么回事。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、为什么要分库分表</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">关系型数据库以MySQL为例，单机的存储能力、连接数是有限的，它自身就很容易会成为系统的瓶</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">颈。当单表数据量在百万以里时，我们还可以通过添加从库、优化索引提升性能。一旦数据量朝着千万</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以上趋势增长，再怎么优化数据库，很多操作性能仍下降严重。为了减少数据库的负担，提升数据库响</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">应速度，缩短查询时间，这时候就需要进行<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分库分表</code>。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、如何分库分表</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">分库分表就是要将大量数据分散到多个数据库中，使每个数据库中数据量小响应速度快，以此来提升数</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">据库整体性能。核心理念就是对数据进行切分（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Sharding</code>），以及切分后如何对数据的快速定位与整合。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">针对数据切分类型，大致可以分为：垂直（纵向）切分和水平（横向）切分两种。</p>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、垂直切分</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">垂直切分又细分为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">垂直分库</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">垂直分表</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">垂直分库</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">垂直分库是基于业务分类的，和我们常听到的微服务治理观念很相似，每一个独立的服务都拥有自己的</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">数据库，需要不同业务的数据需接口调用。而垂直分库也是按照业务分类进行划分，每个业务有独立数</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">据库，这个比较好理解。</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200224134311915.png#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">垂直分表</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">垂直分表</code>是基于数据表的列为依据切分的，是一种大表拆小表的模式。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">例如：一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order</code>表有很多字段，把长度较大且访问不频繁的字段，拆分出来创建一个单独的扩展表<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">work_extend</code>进行存储。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order</code>表：</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（2000)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">拆分后</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order</code>核心表：</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">work_extend</code>表：</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（2000)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">数据库是以行为单位将数据加载到内存中，这样拆分以后核心表大多是访问频率较高的字段，而且字段</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">长度也都较短，可以加载更多数据到内存中，增加查询的命中率，减少磁盘IO，以此来提升数据库性能。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">业务间解耦，不同业务的数据进行独立的维护、监控、扩展</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">在高并发场景下，一定程度上缓解了数据库的压力</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">提升了开发的复杂度，由于业务的隔离性，很多表无法直接访问，必须通过接口方式聚合数据，</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">分布式事务管理难度增加</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">数据库还是存在单表数据量过大的问题，并未根本上解决，需要配合水平切分</section></li></ul>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、水平切分</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">前边说了垂直切分还是会存在单表数据量过大的问题，当我们的应用已经无法在细粒度的垂直切分时，
+依旧存在单库读写、存储性能瓶颈，这时就要配合水平切分一起了。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">水平切分将一张大数据量的表，切分成多个表结构相同，而每个表只占原表一部分数据，然后按不同的条件分散到多个数据库中。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">假如一张<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order</code>表有2000万数据，水平切分后出来四个表，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_1</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_2</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_3</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_4</code>，每张表数据500万，以此类推。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_1</code>表：</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（200</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_2</code>表</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（200</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_3</code>表</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（200</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order_4</code>表</p>
+<table data-tool="mdnice编辑器" style="display: table; text-align: left;">
+<thead>
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">id</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">workNo</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">price</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">describe</th>
+<th style="font-size: 16px; padding: 5px 10px; text-align: left; font-weight: bold; border: 1px solid #009688; background-color: #009688; color: #f8f8f8; border-bottom: 0;">.....</th>
+</tr>
+</thead>
+<tbody style="border: 0;">
+<tr style="border: 0; border-top: 1px solid #ccc; background-color: white;">
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（12)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（2)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">int（15)</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;">varchar（200</td>
+<td style="font-size: 16px; padding: 5px 10px; text-align: left; border: 1px solid #009688;"></td>
+</tr>
+</tbody>
+</table>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">水平切分又分有<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">库内分表</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分库分表</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">库内分表</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">库内分表虽然将表拆分，但子表都还是在同一个数据库实例中，只是解决了单一表数据量过大的问题，并没有将拆分后的表分布到不同机器的库上，还在竞争同一个物理机的CPU、内存、网络IO。
+<img src="https://img-blog.csdnimg.cn/20200224164304643.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">分库分表</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">分库分表则是将切分出来的子表，分散到不同的数据库中，从而使得单个表的数据量变小，达到分布式的效果。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">解决高并发时单库数据量过大的问题，提升系统稳定性和负载能力</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">业务系统改造的工作量不是很大</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">跨分片的事务一致性难以保证</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">跨库的join关联查询性能较差</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">扩容的难度和维护量较大，（拆分成几千张子表想想都恐怖）</section></li></ul>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">三、数据该往哪个库的表存？</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">分库分表以后会出现一个问题，一张表会出现在多个数据库里，到底该往哪个库的表里存呢？</p>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、根据取值范围</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">按照<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">时间区间</code>或<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ID区间</code>来切分，举个栗子：假如我们切分的是用户表，可以定义每个库的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">User表</code>里只存10000条数据，第一个库<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">userId</code>从1 ~ 9999，第二个库10000 ~ 20000，第三个库20001~ 30000......以此类推。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">单表数据量是可控的</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">水平扩展简单只需增加节点即可，无需对其他分片的数据进行迁移</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">能快速定位要查询的数据在哪个库</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">由于连续分片可能存在数据热点，如果按时间字段分片，有些分片存储最近时间段内的数据，可能会被频繁的读写，而有些分片存储的历史数据，则很少被查询</section></li></ul>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、hash取模</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">hash取模mod（<strong style="font-weight: bold; color: black;">对hash结果取余数 (hash() mod N)</strong>）的切分方式比较常见，还拿<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">User表</code>举例，对数据库从0到N-1进行编号，对<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">User表</code>中<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">userId</code>字段进行取模，得到余数<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">i</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">i=0</code>存第一个库，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">i=1</code>存第二个库，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">i=2</code>存第三个库....以此类推。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这样同一个用户的数据都会存在同一个库里，用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">userId</code>作为条件查询就很好定位了</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">优点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">数据分片相对比较均匀，不易出现某个库并发访问的问题</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">缺点：</strong></p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">但这种算法存在一些问题，当某一台机器宕机，本应该落在该数据库的请求就无法得到正确的处理，这时宕掉的实例会被踢出集群，此时算法变成hash(userId) mod N-1，用户信息可能就不再在同一个库中。</section></li></ul>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">四、分库分表后会有哪些坑？</span><span class="suffix" style="display: none;"></span></h4>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、事务一致性问题</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">由于表分布在不同库中，不可避免会带来跨库事务问题。一般可使用"XA协议"和"两阶段提交"处理，但是这种方式性能较差，代码开发量也比较大。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">通常做法是做到最终一致性的方案，往往不苛求系统的实时一致性，只要在允许的时间段内达到最终一致性即可，可采用事务补偿的方式。</p>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、分页、排序的坑</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">日常开发中分页、排序是必备功能，而多库进行查询时<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">limit</code>分页、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">order by</code>排序，着实让人比较头疼。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">分页需按照指定字段进行排序，如果排序字段恰好是分片字段时，通过分片规则就很容易定位到分片的位置；一旦排序字段非分片字段时，就需要先在不同的分片节点中将数据进行排序并返回，然后将不同分片返回的结果集进行汇总和再次排序，最终返回给用户，过程比较复杂。</p>
+<h5 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.1em; padding-left: 10px; border-left: 1px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、全局唯一主键问题</span><span class="suffix" style="display: none;"></span></h5>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">由于分库分表后，表中的数据同时存在于多个数据库，而某个分区数据库的自增主键已经无法满足全局</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">唯一，所以此时一个能够生成全局唯一ID的系统是非常必要的。那么这个全局唯一ID就叫<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">分布式ID</code>。可</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以参考我之前写的这篇文章<a href="https://juejin.im/post/5e48a9af6fb9a07cc200c203" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">《一口气说出 9种 分布式ID生成方式，面试官有点懵了》</a></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">五、分库分表工具？</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">自己开发分库分表工具的工作量是巨大的，好在业界已经有了很多比较成熟的分库分表中间件，我们可</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以将更多的时间放在业务实现上</p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">sharding-jdbc（当当）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">TSharding（蘑菇街）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">Atlas（奇虎360）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">Cobar（阿里巴巴）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">MyCAT（基于Cobar）</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">Oceanus（58同城） Vitess（谷歌）</section></li></ul>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/01/26/%E5%B9%B2%E8%B4%A7%E6%8E%A8%E8%8D%90%EF%BC%8113%20%E4%B8%AA%E6%8A%80%E6%9C%AF%E7%94%B5%E5%AD%90%E4%B9%A6%E8%B5%84%E6%BA%90%E7%AB%99/" class="pre-post btn btn-default" title='干货推荐！13 个技术电子书资源站'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            干货推荐！13 个技术电子书资源站</span>
+    </a>
+    
+    
+    <a href="/2020/01/26/%E4%B8%BA%E4%BA%86%E5%AE%A0%E7%B2%89%EF%BC%8C%E7%94%A8%20Java%20%E5%AE%9E%E7%8E%B0%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E5%8A%9F%E8%83%BD%EF%BC%88%E9%99%84%E6%BA%90%E7%A0%81%EF%BC%89/" class="next-post btn btn-default" title='为了宠粉，用 Java 实现人脸识别功能（附源码）'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            为了宠粉，用 Java 实现人脸识别功能（附源码）</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">一、为什么要分库分表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">二、如何分库分表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">1、垂直切分</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">2、水平切分</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">三、数据该往哪个库的表存？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">1、根据取值范围</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">2、hash取模</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">四、分库分表后会有哪些坑？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">1、事务一致性问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">2、分页、排序的坑</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#nice"><span class="toc-text">3、全局唯一主键问题</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">五、分库分表工具？</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="人脸识别" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+远程在家办公的第N天，快要闲出屁了，今天突然有个小学弟加我VX说要咨询我点技术问题（终于可以装X了）。 看了他的需求描述，大概是要做一个J..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    为了宠粉，用 Java 实现人脸识别功能（附源码） |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="为了宠粉，用 Java 实现人脸识别功能（附源码）">
+            
+            为了宠粉，用 Java 实现人脸识别功能（附源码）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/" rel="tag">人脸识别</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/01/26</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">远程在家办公的第N天，快要闲出屁了，今天突然有个小学弟加我VX说要咨询我点技术问题（终于可以装X了）。 看了他的需求描述，大概是要做一个Java web版本的人脸识别功能，然后存储人物的特征，再扫脸比对。可是我不会啊。。。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">不过，作为一个宠粉的暖男，别说有困难就是没困难制造困难也要上，既然人家这么真诚的咨询，说明我还是有被需要的价值，不会那就帮着查查资料吧！没想到还有意外的收获~
+<img src="https://img-blog.csdnimg.cn/20200306184600400.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+看完他的境遇，忽然想起自己当年做毕设时那无助的样子，是何等的相似。每每看到有这样的咨询，能帮的我都尽自己最大努力帮，毕竟都是这么走过来的。</p>
+<hr data-tool="mdnice编辑器" style="height: 1px; margin-top: 10px; margin-bottom: 10px; border: none; border-top: 1px solid black; margin: 20px 0;">
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">人脸识别SDK</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">人脸识别</code>技术是很复杂的，自己用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Java</code>手撕一个识别算法有点不切实际，毕竟实力不允许我这么嚣张，还是借助三方的SDK吧！</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">找了一圈发现一个免费的人脸识别SDK： <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ArcSoft</code>:，地址：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">https://ai.arcsoft.com.cn</code>。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">官网首页 -&gt; 右上角开发者中心 -&gt; 选择“人脸识别” -&gt; 添加SDK</strong>，会生成<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">APPID</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">SDK KEY</code>后续会用到，根据需要选择不同的环境（<strong style="font-weight: bold; color: black;">本文基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">windows环境</code></strong>），然后下载<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">SDK</code>是一个压缩包。
+<img src="https://img-blog.csdnimg.cn/20200306191114120.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">Java项目搭建</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">终于在我的苦苦搜寻之下终于，找到一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ArcSoft</code>的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Java版本</code>Demo，开源真是一件美好的事情，话不多说开干！
+<img src="https://img-blog.csdnimg.cn/20200306192129158.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<strong style="font-weight: bold; color: black;">1、下载demo项目</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">github地址：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">https://github.com/xinzhfiu/ArcSoftFaceDemo</code>，本地搭建数据库，创建表:<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">user_face_info</code>。这个表主要用来存人像特征，其中主要的字段 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">face_feature</code> 用二进制类型 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">blob</code>  存放人脸特征。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">SET</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NAMES</span> utf8mb4;
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">SET</span> FOREIGN_KEY_CHECKS = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>;
+<span/>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">-- ----------------------------</span>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">-- Table structure for user_face_info</span>
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">-- ----------------------------</span>
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DROP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">TABLE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">IF</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">EXISTS</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`user_face_info`</span>;
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CREATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">TABLE</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`user_face_info`</span> (
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">int</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NOT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> AUTO_INCREMENT <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'主键'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`group_id`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">int</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'分组id'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`face_id`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">31</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'人脸唯一Id'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`name`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">63</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'名字'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`age`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">int</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'年纪'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`email`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'邮箱地址'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`gender`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">smallint</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'性别，1=男，2=女'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`phone_number`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">11</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'电话号码'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`face_feature`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">blob</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'人脸特征'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`create_time`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">timestamp</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NOT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CURRENT_TIMESTAMP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'创建时间'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`update_time`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">timestamp</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">NOT</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">NULL</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CURRENT_TIMESTAMP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ON</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">UPDATE</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CURRENT_TIMESTAMP</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'更新时间'</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`fpath`</span> <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">varchar</span>(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">255</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">COMMENT</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">'照片路径'</span>,
+<span/>  PRIMARY <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">KEY</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`id`</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">USING</span> BTREE,
+<span/>  <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">KEY</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">`GROUP_ID`</span> (<span class="hljs-string" style="color: #D69D85; line-height: 26px;">`group_id`</span>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">USING</span> BTREE
+<span/>) <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">ENGINE</span>=<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">InnoDB</span> AUTO_INCREMENT=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">DEFAULT</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">CHARSET</span>=utf8mb4 ROW_FORMAT=DYNAMIC;
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">SET</span> FOREIGN_KEY_CHECKS = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>;
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、修改<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">application.properties</code>文件</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">整个项目还是比较完整的，只需改一些配置即可启动，但有几点注意的地方，后边会重点说明。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">config.arcface-sdk.sdk-lib-path</code>： 存放<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">SDK</code>压缩包中的三个.<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">dll</code>文件的路径</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">config.arcface-sdk.app-id</code> ：  开发者中心的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">APPID</code></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">config.arcface-sdk.sdk-key</code> ：开发者中心的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">SDK Key</code></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">config.arcface-sdk.sdk-lib-path=d:<span class="hljs-regexp" style="color: #9A5334; line-height: 26px;">/arcsoft_lib
+<span/>config.arcface-sdk.app-id=8XMHMu71Dmb5UtAEBpPTB1E9ZPNTw2nrvQ5bXxBobUA8
+<span/>config.arcface-sdk.sdk-key=BA8TLA9vVwK7G6btJh2A2FCa8ZrC6VWZLNbBBFctCz5R
+<span/>
+<span/># druid  本地的数据库地址
+<span/>spring.datasource.druid.url=jdbc:mysql:/</span><span class="hljs-regexp" style="color: #9A5334; line-height: 26px;">/127.0.0.1:3306/</span>xin-master?useUnicode=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>&amp;characterEncoding=utf<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">-8</span>&amp;useSSL=<span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>&amp;serverTimezone=UTC
+<span/>spring.datasource.druid.username=junkang
+<span/>spring.datasource.druid.password=junkang
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">3、根目录创建<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">lib</code>文件夹</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在项目根目录创建文件夹 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">lib</code>,将下载的SDK压缩包中的arcsoft-sdk-face-2.2.0.1.jar放入项目<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">根目录</code>
+<img src="https://img-blog.csdnimg.cn/20200306225623255.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">4、引入<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">arcsoft</code>依赖包</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> &lt;dependency&gt;
+<span/>      <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.arcsoft.face<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>      <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>arcsoft-sdk-face<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>      <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>2.2.0.1<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/>      <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">scope</span>&gt;</span>system<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">scope</span>&gt;</span></span>
+<span/>      <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">systemPath</span>&gt;</span>${basedir}/lib/arcsoft-sdk-face-2.2.0.1.jar<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">systemPath</span>&gt;</span></span>
+<span/><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">pom.xml</code>文件要配置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">includeSystemScope</code>属性，否则可能会导致<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">arcsoft-sdk-face-2.2.0.1.jar</code>引用不到</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> &lt;build&gt;
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">plugins</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">plugin</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">configuration</span>&gt;</span>
+<span/>                    <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">includeSystemScope</span>&gt;</span>true<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">includeSystemScope</span>&gt;</span>
+<span/>                    <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">fork</span>&gt;</span>true<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">fork</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">configuration</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">plugin</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">plugins</span>&gt;</span></span>
+<span/>    <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">build</span>&gt;</span></span>
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">5、启动项目</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">到此为止配置完成，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">run</code> <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Application</code>文件启动</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">测试一下：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http://127.0.0.1:8089/demo</code>，如下页面即启动成功</p>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200306230554971.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">操作</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、录入人脸图像</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">页面输入名称，点击<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">摄像头注册</code>调起本地摄像头，提交后将当前图像传入后台，识别提取当前人脸体征，保存至数据库。
+<img src="https://img-blog.csdnimg.cn/20200306231502629.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+<strong style="font-weight: bold; color: black;">2、人脸对比</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">录入完人脸图像后测试一下能否识别成功，提交当前的图像，发现识别成功<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">相似度92%</code>。但是作为程序员对什么事情都要持怀疑的态度，<strong style="font-weight: bold; color: black;">这结果不是老铁在页面写死的吧？</strong>
+<img src="https://img-blog.csdnimg.cn/20200307105538422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+为了进一步验证，这回把脸挡住再试一下，发现提示“人脸不匹配”，证明真的有进行比对。
+<img src="https://img-blog.csdnimg.cn/20200307112817589.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">源码分析</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">简单看了一下项目源码，分析一下实现的过程：</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">页面和JS一看就是后端程序员写的，不要问我问为什么？懂的自然懂，哈哈哈 ~ ，</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">1、JS调起本地摄像头拍照，上传图片文件字符串</strong></p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">getMedia</span>(<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;"></span>) </span>{
+<span/>        $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#mainDiv"</span>).empty();
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> videoComp = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" &lt;video id='video' width='500px' height='500px' autoplay='autoplay' style='margin-top: 20px'&gt;&lt;/video&gt;&lt;canvas id='canvas' width='500px' height='500px' style='display: none'&gt;&lt;/canvas&gt;"</span>;
+<span/>        $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#mainDiv"</span>).append(videoComp);
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> constraints = {
+<span/>            <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">video</span>: {<span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">width</span>: <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">500</span>, <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">height</span>: <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">500</span>},
+<span/>            <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">audio</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>
+<span/>        };
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//获得video摄像头区域</span>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> video = <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">document</span>.getElementById(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"video"</span>);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//这里介绍新的方法，返回一个 Promise对象</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// then()是Promise对象里的方法</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 避免数据没有获取到</span>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> promise = navigator.mediaDevices.getUserMedia(constraints);
+<span/>        promise.then(<span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">MediaStream</span>) </span>{
+<span/>            video.srcObject = MediaStream;
+<span/>            video.play();
+<span/>        });
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// var t1 = window.setTimeout(function() {</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//     takePhoto();</span>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// },2000)</span>
+<span/>    }
+<span/><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//拍照事件</span>
+<span/>    <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">takePhoto</span>(<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;"></span>) </span>{
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> mainComp = $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#mainDiv"</span>);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span>(mainComp.has(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'video'</span>).length)
+<span/>        {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> userNameInput = $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#userName"</span>).val();
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span>(userNameInput == <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>)
+<span/>            {
+<span/>                alert(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"姓名不能为空!"</span>);
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>;
+<span/>            }
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//获得Canvas对象</span>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> video = <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">document</span>.getElementById(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"video"</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> canvas = <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">document</span>.getElementById(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"canvas"</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> ctx = canvas.getContext(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'2d'</span>);
+<span/>            ctx.drawImage(video, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">500</span>, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">500</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> formData = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> FormData();
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> base64File = canvas.toDataURL();
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> userName = $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#userName"</span>).val();
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"file"</span>, base64File);
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"name"</span>, userName);
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"groupId"</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"101"</span>);
+<span/>            $.ajax({
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">type</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"post"</span>,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">url</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/faceAdd"</span>,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">data</span>: formData,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">contentType</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">processData</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">async</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">success</span>: <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">text</span>) </span>{
+<span/>                    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> res = <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.stringify(text)
+<span/>                    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (text.code == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>) {
+<span/>                        alert(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"注册成功"</span>)
+<span/>                    } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                        alert(text.message)
+<span/>                    }
+<span/>                },
+<span/>                <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">error</span>: <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">error</span>) </span>{
+<span/>                    alert(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.stringify(error))
+<span/>                }
+<span/>            });
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span>{
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> formData = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> FormData();
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">let</span> userName = $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#userName"</span>).val();
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"groupId"</span>, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"101"</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> file = $(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"#file0"</span>)[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>].files[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>];
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> reader = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> FileReader();
+<span/>            reader.readAsDataURL(file);
+<span/>            reader.onload = <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;"></span>) </span>{
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> base64 = reader.result;
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"file"</span>, base64);
+<span/>            formData.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"name"</span>,userName);
+<span/>                $.ajax({
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">type</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"post"</span>,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">url</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/faceAdd"</span>,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">data</span>: formData,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">contentType</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">processData</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">async</span>: <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>,
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">success</span>: <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">text</span>) </span>{
+<span/>                        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">var</span> res = <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.stringify(text)
+<span/>                        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (text.code == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>) {
+<span/>                            alert(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"注册成功"</span>)
+<span/>                        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                            alert(text.message)
+<span/>                        }
+<span/>                    },
+<span/>                    <span class="hljs-attr" style="color: #9CDCFE; line-height: 26px;">error</span>: <span class="hljs-function" style="color: #DCDCDC; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">function</span> (<span class="hljs-params" style="color: #DCDCDC; line-height: 26px;">error</span>) </span>{
+<span/>                        alert(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.stringify(error))
+<span/>                    }
+<span/>                });
+<span/>                location.reload();
+<span/>            }
+<span/>        }
+<span/>
+<span/>    }
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">2、后台解析图片，提取人像特征</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">后台解析前端传过来的图片，提取人像特征存入数据库，人像特征的提取主要是靠<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">FaceEngine</code>引擎，顺着源码一路看下去，自己才疏学浅实在是没懂具体是个什么样的算法。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"> <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/*
+<span/>    人脸添加
+<span/>     */</span>
+<span/>    @RequestMapping(value = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/faceAdd"</span>, method = RequestMethod.POST)
+<span/>    @ResponseBody
+<span/>    public Result&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span>&gt; faceAdd(@RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"file"</span>) <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> file, @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"groupId"</span>) Integer groupId, @RequestParam(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"name"</span>) <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> name) {
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>       
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//解析图片</span>
+<span/>            byte[] decode = Base64.decode(base64Process(file));
+<span/>            ImageInfo imageInfo = ImageFactory.getRGBData(decode);
+<span/>
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//人脸特征获取</span>
+<span/>            byte[] bytes = faceEngineService.extractFaceFeature(imageInfo);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (bytes == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newFailedResult(ErrorCodeEnum.NO_FACE_DETECTED);
+<span/>            }
+<span/>
+<span/>            UserFaceInfo userFaceInfo = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> UserFaceInfo();
+<span/>            userFaceInfo.setName(name);
+<span/>            userFaceInfo.setGroupId(groupId);
+<span/>            userFaceInfo.setFaceFeature(bytes);
+<span/>            userFaceInfo.setFaceId(RandomUtil.randomString(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>));
+<span/>
+<span/>            <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//人脸特征插入到数据库</span>
+<span/>            userFaceInfoService.insertSelective(userFaceInfo);
+<span/>
+<span/>            logger.info(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"faceAdd:"</span> + name);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newSuccessResult(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>);
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Exception e) {
+<span/>            logger.error(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>, e);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newFailedResult(ErrorCodeEnum.UNKNOWN);
+<span/>    }
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><strong style="font-weight: bold; color: black;">3、人像特征对比</strong></p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">人脸识别：将前端传入的图像经过人像特征提取后，和库中已存在的人像信息对比分析</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/*
+<span/>    人脸识别
+<span/>     */</span>
+<span/>    @RequestMapping(value = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/faceSearch"</span>, method = RequestMethod.POST)
+<span/>    @ResponseBody
+<span/>    public Result&lt;FaceSearchResDto&gt; faceSearch(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> file, Integer groupId) throws Exception {
+<span/>        byte[] decode = Base64.decode(base64Process(file));
+<span/>        BufferedImage bufImage = ImageIO.read(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> ByteArrayInputStream(decode));
+<span/>        ImageInfo imageInfo = ImageFactory.bufferedImage2ImageInfo(bufImage);
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//人脸特征获取</span>
+<span/>        byte[] bytes = faceEngineService.extractFaceFeature(imageInfo);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (bytes == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newFailedResult(ErrorCodeEnum.NO_FACE_DETECTED);
+<span/>        }
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//人脸比对，获取比对结果</span>
+<span/>        List&lt;FaceUserInfo&gt; userFaceInfoList = faceEngineService.compareFaceFeature(bytes, groupId);
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (CollectionUtil.isNotEmpty(userFaceInfoList)) {
+<span/>            FaceUserInfo faceUserInfo = userFaceInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>);
+<span/>            FaceSearchResDto faceSearchResDto = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> FaceSearchResDto();
+<span/>            BeanUtil.copyProperties(faceUserInfo, faceSearchResDto);
+<span/>            List&lt;ProcessInfo&gt; processInfoList = faceEngineService.process(imageInfo);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (CollectionUtil.isNotEmpty(processInfoList)) {
+<span/>                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//人脸检测</span>
+<span/>                List&lt;FaceInfo&gt; faceInfoList = faceEngineService.detectFaces(imageInfo);
+<span/>                int left = faceInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getRect().getLeft();
+<span/>                int top = faceInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getRect().getTop();
+<span/>                int width = faceInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getRect().getRight() - left;
+<span/>                int height = faceInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getRect().getBottom() - top;
+<span/>
+<span/>                Graphics2D graphics2D = bufImage.createGraphics();
+<span/>                graphics2D.setColor(Color.RED);<span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">//红色</span>
+<span/>                BasicStroke stroke = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> BasicStroke(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">5</span>f);
+<span/>                graphics2D.setStroke(stroke);
+<span/>                graphics2D.drawRect(left, top, width, height);
+<span/>                ByteArrayOutputStream outputStream = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> ByteArrayOutputStream();
+<span/>                ImageIO.write(bufImage, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"jpg"</span>, outputStream);
+<span/>                byte[] bytes1 = outputStream.toByteArray();
+<span/>                faceSearchResDto.setImage(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"data:image/jpeg;base64,"</span> + Base64Utils.encodeToString(bytes1));
+<span/>                faceSearchResDto.setAge(processInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getAge());
+<span/>                faceSearchResDto.setGender(processInfoList.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>).getGender().equals(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>) ? <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"女"</span> : <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"男"</span>);
+<span/>
+<span/>            }
+<span/>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newSuccessResult(faceSearchResDto);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> Results.newFailedResult(ErrorCodeEnum.FACE_DOES_NOT_MATCH);
+<span/>    }
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">整个人脸识别功能的大致流程图如下：
+<img src="https://img-blog.csdnimg.cn/20200306230036561.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">整个项目的设计思路比较清晰，难点在于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">人脸识别引擎</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">前端JS</code>部分代码，其他的功能比较平常。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">源码地址：https://github.com/xinzhfiu/ArcSoftFaceDemo/，有任何技术问题，欢迎随时沟通</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/01/26/%E9%9D%A2%E8%AF%95%E5%BF%85%E5%A4%87%E7%9A%84%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="pre-post btn btn-default" title='面试必备的分库分表基础知识'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            面试必备的分库分表基础知识</span>
+    </a>
+    
+    
+    <a href="/2020/01/26/3%E4%B8%87%E5%AD%97%E6%80%BB%E7%BB%93%EF%BC%8CMysql%E4%BC%98%E5%8C%96%E4%B9%8B%E7%B2%BE%E9%AB%93/" class="next-post btn btn-default" title='3万字总结，Mysql优化之精髓'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            3万字总结，Mysql优化之精髓</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">人脸识别SDK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">Java项目搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">源码分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

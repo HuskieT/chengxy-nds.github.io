@@ -1,0 +1,737 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="springboot,aop,Lua,分布式" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+一、什么是限流？为什么要限流？
+不知道大家有没有做过帝都的地铁，就是进地铁站都要排队的那种，为什么要这样摆长龙转圈圈？答案就是为了限流！因..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    springboot + aop + Lua分布式限流的最佳实践 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="springboot + aop + Lua分布式限流的最佳实践">
+            
+            springboot + aop + Lua分布式限流的最佳实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Springboot/">Springboot</a> <a class="category-link" href="/categories/Springboot/Redis/">Redis</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Lua/" rel="tag">Lua</a> <a class="tag-link" href="/tags/aop/" rel="tag">aop</a> <a class="tag-link" href="/tags/springboot/" rel="tag">springboot</a> <a class="tag-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">一、什么是限流？为什么要限流？</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">不知道大家有没有做过帝都的地铁，就是进地铁站都要排队的那种，为什么要这样摆长龙转圈圈？答案就是为了<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">限流</code>！因为一趟地铁的运力是有限的，一下挤进去太多人会造成站台的拥挤、列车的超载，存在一定的安全隐患。同理，我们的程序也是一样，它处理请求的能力也是有限的，一旦请求多到超出它的处理极限就会崩溃。为了不出现最坏的崩溃情况，只能耽误一下大家进站的时间。
+<img src="https://img-blog.csdnimg.cn/202004081524187.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+限流是保证系统高可用的重要手段！！！</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">由于互联网公司的流量巨大，系统上线会做一个流量峰值的评估，尤其是像各种秒杀促销活动，为了保证系统不被巨大的流量压垮，会在系统流量到达一定阈值时，拒绝掉一部分流量。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">限流会导致用户在短时间内（这个时间段是毫秒级的）系统不可用，一般我们衡量系统处理能力的指标是每秒的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">QPS</code>或者<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">TPS</code>，假设系统每秒的流量阈值是1000，理论上一秒内有第1001个请求进来时，那么这个请求就会被限流。</p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">二、限流方案</span><span class="suffix" style="display: none;"></span></h3>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、计数器</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">Java内部也可以通过原子类计数器<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">AtomicInteger</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Semaphore</code>信号量来做简单的限流。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 限流的个数</span>
+<span/>    private int maxCount = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>;
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 指定的时间内</span>
+<span/>    private long interval = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">60</span>;
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 原子类计数器</span>
+<span/>    private AtomicInteger atomicInteger = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> AtomicInteger(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>);
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 起始时间</span>
+<span/>    private long startTime = System.currentTimeMillis();
+<span/>
+<span/>    public boolean limit(int maxCount, int interval) {
+<span/>        atomicInteger.addAndGet(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (atomicInteger.get() == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>) {
+<span/>            startTime = System.currentTimeMillis();
+<span/>            atomicInteger.addAndGet(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>;
+<span/>        }
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 超过了间隔时间，直接重新开始计数</span>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (System.currentTimeMillis() - startTime &gt; interval * <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1000</span>) {
+<span/>            startTime = System.currentTimeMillis();
+<span/>            atomicInteger.set(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>;
+<span/>        }
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 还在间隔时间内,check有没有超过限流的个数</span>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (atomicInteger.get() &gt; maxCount) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">false</span>;
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">true</span>;
+<span/>    }
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、漏桶算法</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">漏桶算法思路很简单，我们把水比作是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">请求</code>，漏桶比作是<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">系统处理能力极限</code>，水先进入到漏桶里，漏桶里的水按一定速率流出，当流出的速率小于流入的速率时，由于漏桶容量有限，后续进入的水直接溢出（拒绝请求），以此实现限流。
+<img src="https://img-blog.csdnimg.cn/20200408165322945.jpg#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、令牌桶算法</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">令牌桶算法的原理也比较简单，我们可以理解成医院的挂号看病，只有拿到号以后才可以进行诊病。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">系统会维护一个令牌（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">token</code>）桶，以一个恒定的速度往桶里放入令牌（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">token</code>），这时如果有请求进来想要被处理，则需要先从桶里获取一个令牌（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">token</code>），当桶里没有令牌（<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">token</code>）可取时，则该请求将被拒绝服务。令牌桶算法通过控制桶的容量、发放令牌的速率，来达到对请求的限制。
+<img src="https://img-blog.csdnimg.cn/20200408165303683.jpg#pic_center" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">4、Redis + Lua</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">很多同学不知道<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>是啥？个人理解，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">MySQL</code>数据库的存储过程比较相似，他们执行一组命令，所有命令的执行要么全部成功或者失败，以此达到原子性。也可以把<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本理解为，一段具有业务逻辑的代码块。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">而<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>本身就是一种编程语言，虽然<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code> 官方没有直接提供限流相应的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">API</code>，但却支持了 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code> 脚本的功能，可以使用它实现复杂的令牌桶或漏桶算法，也是分布式系统中实现限流的主要方式之一。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">相比<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code>事务，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua脚本</code>的优点：</p>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">减少网络开销： 使用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本，无需向<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code> 发送多次请求，执行一次即可，减少网络传输</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">原子操作：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code> 将整个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本作为一个命令执行，原子，无需担心并发</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">复用：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本一旦执行，会永久保存 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis</code> 中,，其他客户端可复用</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>脚本大致逻辑如下：</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">-- 获取调用脚本时传入的第一个key值（用作限流的 key）
+<span/>local key = KEYS[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>]
+<span/>-- 获取调用脚本时传入的第一个参数值（限流大小）
+<span/>local limit = tonumber(ARGV[<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>])
+<span/>
+<span/>-- 获取当前流量大小
+<span/>local curentLimit = tonumber(redis.call(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">'get'</span>, key) or <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"0"</span>)
+<span/>
+<span/>-- 是否超出限流
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> curentLimit + <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span> &gt; limit then
+<span/>    -- 返回(拒绝)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span>
+<span/><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span>
+<span/>    -- 没有超出 value + <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>
+<span/>    redis.call(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"INCRBY"</span>, key, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>)
+<span/>    -- 设置过期时间
+<span/>    redis.call(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"EXPIRE"</span>, key, <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">2</span>)
+<span/>    -- 返回(放行)
+<span/>    <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>
+<span/>end
+<span/></code></pre>
+<ul data-tool="mdnice编辑器" style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: disc;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">KEYS[1]</code> 获取传入的key参数</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ARGV[1]</code>获取传入的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">limit</code>参数</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis.call</code>方法，从缓存中<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">get</code>和<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">key</code>相关的值，如果为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">null</code>那么就返回0</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">接着判断缓存中记录的数值是否会大于限制大小，如果超出表示该被限流，返回0</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;">如果未超过，那么该key的缓存值+1，并设置过期时间为1秒钟以后，并返回缓存值+1</section></li></ul>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">这种方式是本文推荐的方案，具体实现会在后边做细说。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">5、网关层限流</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">限流常在网关这一层做，比如<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Nginx</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Openresty</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">kong</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">zuul</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Spring Cloud Gateway</code>等，而像<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">spring cloud - gateway</code>网关限流底层实现原理，就是基于<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis + Lua</code>，通过内置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Lua</code>限流脚本的方式。
+<img src="https://img-blog.csdnimg.cn/20200408165829339.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">三、Redis + Lua 限流实现</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">下面我们通过<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">自定义注解</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">aop</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Redis + Lua</code> 实现限流，步骤会比较详细，为了小白能让快速上手这里啰嗦一点，有经验的老鸟们多担待一下。</p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、环境准备</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">springboot</code> 项目创建地址：https://start.spring.io，很方便实用的一个工具。
+<img src="https://img-blog.csdnimg.cn/2020040812215172.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、引入依赖包</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">pom文件中添加如下依赖包，比较关键的就是 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">spring-boot-starter-data-redis</code> 和 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">spring-boot-starter-aop</code>。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">    &lt;dependencies&gt;
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>com.google.guava<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>guava<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>21.0<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>commons-lang3<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">scope</span>&gt;</span>test<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">scope</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">exclusions</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">exclusion</span>&gt;</span>
+<span/>                    <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.junit.vintage<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>
+<span/>                    <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>junit-vintage-engine<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>
+<span/>                <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">exclusion</span>&gt;</span>
+<span/>            <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">exclusions</span>&gt;</span>
+<span/>        <span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/>    <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependencies</span>&gt;</span></span>
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、配置application.properties</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">application.properties</code> 文件中配置提前搭建好的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">redis</code> 服务地址和端口。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">spring.redis.host=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">127.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.0</span><span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">.1</span>
+<span/>
+<span/>spring.redis.port=<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">6379</span>
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">4、配置RedisTemplate实例</span><span class="suffix" style="display: none;"></span></h4>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">@Configuration
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">RedisLimiterHelper</span> </span>{
+<span/>
+<span/>    @Bean
+<span/>    public RedisTemplate&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, Serializable&gt; limitRedisTemplate(LettuceConnectionFactory redisConnectionFactory) {
+<span/>        RedisTemplate&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, Serializable&gt; template = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RedisTemplate&lt;&gt;();
+<span/>        template.setKeySerializer(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> StringRedisSerializer());
+<span/>        template.setValueSerializer(<span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> GenericJackson2JsonRedisSerializer());
+<span/>        template.setConnectionFactory(redisConnectionFactory);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> template;
+<span/>    }
+<span/>}
+<span/></code></pre>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">限流类型枚举类</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @author fu
+<span/> * @description 限流类型
+<span/> * @date 2020/4/8 13:47
+<span/> */</span>
+<span/>public enum LimitType {
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 自定义key
+<span/>     */</span>
+<span/>    CUSTOMER,
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 请求者IP
+<span/>     */</span>
+<span/>    IP;
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">5、自定义注解</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">我们自定义个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@Limit</code>注解，注解类型为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">ElementType.METHOD</code>即作用于方法上。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">period</code>表示请求限制时间段，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">count</code>表示在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">period</code>这个时间段内允许放行请求的次数。<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">limitType</code>代表限流的类型，可以根据<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">请求的IP</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">自定义key</code>，如果不传<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">limitType</code>属性则默认用方法名作为默认key。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @author fu
+<span/> * @description 自定义限流注解
+<span/> * @date 2020/4/8 13:15
+<span/> */</span>
+<span/>@Target({ElementType.METHOD, ElementType.TYPE})
+<span/>@Retention(RetentionPolicy.RUNTIME)
+<span/>@Inherited
+<span/>@Documented
+<span/>public @interface Limit {
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 名字
+<span/>     */</span>
+<span/>    <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> name() <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * key
+<span/>     */</span>
+<span/>    <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> key() <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * Key的前缀
+<span/>     */</span>
+<span/>    <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> prefix() <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">""</span>;
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 给定的时间范围 单位(秒)
+<span/>     */</span>
+<span/>    int period();
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 一定时间内最多访问次数
+<span/>     */</span>
+<span/>    int count();
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * 限流的类型(用户自定义key 或者 请求ip)
+<span/>     */</span>
+<span/>    LimitType limitType() <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span> LimitType.CUSTOMER;
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">6、切面代码实现</span><span class="suffix" style="display: none;"></span></h4>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @author fu
+<span/> * @description 限流切面实现
+<span/> * @date 2020/4/8 13:04
+<span/> */</span>
+<span/>@Aspect
+<span/>@Configuration
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LimitInterceptor</span> </span>{
+<span/>
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> final Logger logger = LoggerFactory.getLogger(LimitInterceptor.class);
+<span/>
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> final <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> UNKNOWN = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"unknown"</span>;
+<span/>
+<span/>    private final RedisTemplate&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, Serializable&gt; limitRedisTemplate;
+<span/>
+<span/>    @Autowired
+<span/>    public LimitInterceptor(RedisTemplate&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, Serializable&gt; limitRedisTemplate) {
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">this</span>.limitRedisTemplate = limitRedisTemplate;
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @param pjp
+<span/>     * @author fu
+<span/>     * @description 切面
+<span/>     * @date 2020/4/8 13:04
+<span/>     */</span>
+<span/>    @Around(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"execution(public * *(..)) &amp;&amp; @annotation(com.xiaofu.limit.api.Limit)"</span>)
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Object</span> interceptor(ProceedingJoinPoint pjp) {
+<span/>        MethodSignature signature = (MethodSignature) pjp.getSignature();
+<span/>        Method method = signature.getMethod();
+<span/>        Limit limitAnnotation = method.getAnnotation(Limit.class);
+<span/>        LimitType limitType = limitAnnotation.limitType();
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> name = limitAnnotation.name();
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> key;
+<span/>        int limitPeriod = limitAnnotation.period();
+<span/>        int limitCount = limitAnnotation.count();
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 根据限流类型获取不同的key ,如果不传我们会以方法名作为key
+<span/>         */</span>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">switch</span> (limitType) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">case</span> IP:
+<span/>                key = getIpAddress();
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">break</span>;
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">case</span> CUSTOMER:
+<span/>                key = limitAnnotation.key();
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">break</span>;
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">default</span>:
+<span/>                key = StringUtils.upperCase(method.getName());
+<span/>        }
+<span/>
+<span/>        ImmutableList&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>&gt; keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix(), key));
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">try</span> {
+<span/>            <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> luaScript = buildLuaScript();
+<span/>            RedisScript&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Number</span>&gt; redisScript = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> DefaultRedisScript&lt;&gt;(luaScript, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Number</span>.class);
+<span/>            <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Number</span> count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
+<span/>            logger.info(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"Access try count is {} for name={} and key = {}"</span>, count, name, key);
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (count != <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> &amp;&amp; count.intValue() &lt;= limitCount) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> pjp.proceed();
+<span/>            } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">else</span> {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RuntimeException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"You have been dragged into the blacklist"</span>);
+<span/>            }
+<span/>        } <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">catch</span> (Throwable e) {
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (e <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">instanceof</span> RuntimeException) {
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RuntimeException(e.getLocalizedMessage());
+<span/>            }
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">throw</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> RuntimeException(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"server exception"</span>);
+<span/>        }
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author fu
+<span/>     * @description 编写 redis Lua 限流脚本
+<span/>     * @date 2020/4/8 13:24
+<span/>     */</span>
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> buildLuaScript() {
+<span/>        StringBuilder lua = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> StringBuilder();
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"local c"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nc = redis.call('get',KEYS[1])"</span>);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 调用不超过最大值，则直接返回</span>
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nif c and tonumber(c) &gt; tonumber(ARGV[1]) then"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nreturn c;"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nend"</span>);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 执行计算器自加</span>
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nc = redis.call('incr',KEYS[1])"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nif tonumber(c) == 1 then"</span>);
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">// 从第一次调用开始限流，设置对应键值的过期</span>
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nredis.call('expire',KEYS[1],ARGV[2])"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nend"</span>);
+<span/>        lua.append(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"\nreturn c;"</span>);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> lua.toString();
+<span/>    }
+<span/>
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author fu
+<span/>     * @description 获取id地址
+<span/>     * @date 2020/4/8 13:24
+<span/>     */</span>
+<span/>    public <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> getIpAddress() {
+<span/>        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> ip = request.getHeader(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"x-forwarded-for"</span>);
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (ip == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> || ip.length() == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span> || UNKNOWN.equalsIgnoreCase(ip)) {
+<span/>            ip = request.getHeader(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"Proxy-Client-IP"</span>);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (ip == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> || ip.length() == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span> || UNKNOWN.equalsIgnoreCase(ip)) {
+<span/>            ip = request.getHeader(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"WL-Proxy-Client-IP"</span>);
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (ip == <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span> || ip.length() == <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">0</span> || UNKNOWN.equalsIgnoreCase(ip)) {
+<span/>            ip = request.getRemoteAddr();
+<span/>        }
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> ip;
+<span/>    }
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">7、控制层实现</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">我们将<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@Limit</code>注解作用在需要进行限流的接口方法上，下边我们给方法设置<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">@Limit</code>注解，在<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">10秒</code>内只允许放行<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">3个</code>请求，这里为直观一点用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">AtomicInteger</code>计数。</p>
+<pre class="custom" data-tool="mdnice编辑器" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/> * @Author: fu
+<span/> * @Description:
+<span/> */</span>
+<span/>@RestController
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">LimiterController</span> </span>{
+<span/>
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> final AtomicInteger ATOMIC_INTEGER_1 = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> AtomicInteger();
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> final AtomicInteger ATOMIC_INTEGER_2 = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> AtomicInteger();
+<span/>    private <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> final AtomicInteger ATOMIC_INTEGER_3 = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> AtomicInteger();
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author fu
+<span/>     * @description
+<span/>     * @date 2020/4/8 13:42
+<span/>     */</span>
+<span/>    @Limit(key = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"limitTest"</span>, period = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>, count = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>)
+<span/>    @GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/limitTest1"</span>)
+<span/>    public int testLimiter1() {
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> ATOMIC_INTEGER_1.incrementAndGet();
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author fu
+<span/>     * @description
+<span/>     * @date 2020/4/8 13:42
+<span/>     */</span>
+<span/>    @Limit(key = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"customer_limit_test"</span>, period = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>, count = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>, limitType = LimitType.CUSTOMER)
+<span/>    @GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/limitTest2"</span>)
+<span/>    public int testLimiter2() {
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> ATOMIC_INTEGER_2.incrementAndGet();
+<span/>    }
+<span/>
+<span/>    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author fu
+<span/>     * @description 
+<span/>     * @date 2020/4/8 13:42
+<span/>     */</span>
+<span/>    @Limit(key = <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"ip_limit_test"</span>, period = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">10</span>, count = <span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">3</span>, limitType = LimitType.IP)
+<span/>    @GetMapping(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/limitTest3"</span>)
+<span/>    public int testLimiter3() {
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">return</span> ATOMIC_INTEGER_3.incrementAndGet();
+<span/>    }
+<span/>
+<span/>}
+<span/></code></pre>
+<h4 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">8、测试</span><span class="suffix" style="display: none;"></span></h4>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">测试<strong style="font-weight: bold; color: black;">预期</strong>：连续请求3次均可以成功，第4次请求被拒绝。接下来看一下是不是我们预期的效果，请求地址：<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http://127.0.0.1:8080/limitTest1</code>，用<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">postman</code>进行测试，有没有<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">postman</code> url直接贴浏览器也是一样。</p>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;"><img src="https://img-blog.csdnimg.cn/20200408141131360.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+可以看到第四次请求时，应用直接拒绝了请求，说明我们的 Springboot + aop + lua 限流方案搭建成功。
+<img src="https://img-blog.csdnimg.cn/20200408141247524.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 data-tool="mdnice编辑器" style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">以上 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">springboot + aop + Lua</code> 限流实现是比较简单的，旨在让大家认识下什么是限流？如何做一个简单的限流功能，面试要知道这是个什么东西。上面虽然说了几种实现限流的方案，但选哪种还要结合具体的业务场景，不能为了用而用。</p>
+<blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure data-tool="mdnice编辑器" style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+<p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/03/12/Redis%205%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%8F%8A%E5%AF%B9%E5%BA%94%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" class="pre-post btn btn-default" title='Redis 5种数据结构及对应使用场景'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Redis 5种数据结构及对应使用场景</span>
+    </a>
+    
+    
+    <a href="/2020/03/12/%E4%B8%8D%E4%BC%9A%E8%BF%99%E4%BA%9B%E6%A6%82%E5%BF%B5%EF%BC%8C%E7%AE%80%E5%8E%86%E4%B8%8D%E8%A6%81%E5%86%99%20%E2%80%9C%E7%86%9F%E6%82%89%E2%80%9D%20zookeeper/" class="next-post btn btn-default" title='不会这些概念，简历不要写 “熟悉” zookeeper'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            不会这些概念，简历不要写 “熟悉” zookeeper</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">一、什么是限流？为什么要限流？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">二、限流方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、计数器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、漏桶算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、令牌桶算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">4、Redis + Lua</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">5、网关层限流</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">三、Redis + Lua 限流实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、环境准备</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、引入依赖包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、配置application.properties</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">4、配置RedisTemplate实例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">5、自定义注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">6、切面代码实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">7、控制层实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">8、测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>

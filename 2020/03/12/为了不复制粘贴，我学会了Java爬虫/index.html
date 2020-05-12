@@ -1,0 +1,632 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="Java | springboot | springcloud | redis | mysql">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+    <!--SEO-->
+
+<meta name="keywords" content="爬虫,jsoup,Java" />
+
+
+<meta name="description" content="
+WX搜索【程序员内点事】，回复【666】妙不可言。
+
+写在前边
+受疫情影响一直在家远程办公，公司业务进展的缓慢，老实讲活并没有那么多，每天吃饭、睡觉、逛技术社区、写博客，摸鱼摸得爽的很。早上本..." />
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+<title>
+    
+    为了不复制粘贴，我学会了Java爬虫 |
+    
+    Java | springboot | springcloud | redis | mysql
+</title>
+
+<link rel="alternate" href="/atom.xml" title="Java | springboot | springcloud | redis | mysql" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash.css">
+
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='程序员内点事'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <h2>
+                操蛋的职业，一天到晚学个没完
+            </h2>
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="https://github.com/chengxy-nds/chengxy-nds.github.io.git">
+                        Java | springboot | springcloud | redis | mysql</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa fa-home"></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Springboot/"><i class="fa "></i>
+                                Springboot</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/分布式/"><i class="fa "></i>
+                                分布式</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Redis/"><i class="fa "></i>
+                                Redis</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Mysql/"><i class="fa "></i>
+                                Mysql</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="为了不复制粘贴，我学会了Java爬虫">
+            
+            为了不复制粘贴，我学会了Java爬虫
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Java/">Java</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Java/" rel="tag">Java</a> <a class="tag-link" href="/tags/jsoup/" rel="tag">jsoup</a> <a class="tag-link" href="/tags/%E7%88%AC%E8%99%AB/" rel="tag">爬虫</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2020/03/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><section id="nice" data-tool="mdnice编辑器" data-website="https://www.mdnice.com" style="font-size: 16px; color: black; padding: 0 10px; line-height: 1.6; word-spacing: 0px; letter-spacing: 0px; word-break: break-word; word-wrap: break-word; text-align: left; font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: -10px;"><blockquote data-tool="mdnice编辑器" style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">WX搜索【程序员内点事】，回复【666】妙不可言。</p>
+</blockquote>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">写在前边</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">受疫情影响一直在家远程办公，公司业务进展的缓慢，老实讲活并没有那么多，每天吃饭、睡觉、逛技术社区、写博客，摸鱼摸得爽的很。早上本来还想在来个回笼觉，突然部门经理的语音消息就过来了，甩给我一个连接地址 http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/，要我把全国的省市名称和区域代码弄出来，建一个字典表，时限一上午。
+<img src="https://img-blog.csdnimg.cn/20200214131633979.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"></p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">分下一下需求</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">要全国的省、市名称，建一张字典表进行存储，表结构设计相对容易，那么城市数据该怎么搞？</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">有两种解决办法：</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<ol style="margin-top: 8px; margin-bottom: 8px; padding-left: 25px; color: black; list-style-type: decimal;">
+<li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;"><strong style="font-weight: bold; color: black;">辛苦点复制粘贴，说多了也就几百个而已</strong></p>
+</section></li><li><section style="margin-top: 5px; margin-bottom: 5px; line-height: 26px; text-align: left; color: rgb(1,1,1); font-weight: 500;"><p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;"><strong style="font-weight: bold; color: black;">写个爬虫工具，一劳永逸</strong></p>
+</section></li></ol>
+</blockquote>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">但作为一个程序员没有什么是不能用程序解决的，虽然工作<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Ctrl+C</code> 、 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Ctrl+V</code>用的不少，像这种没有技术含量的复制粘贴还是挺丢面子的。</p>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">爬虫搞起</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">基于这个需求只想要城市名称，爬虫工具选的是Jsoup，Jsoup是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。</p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">Jsoup是根据HTML页面的<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;body&gt;</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;td&gt;</code>、<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;tr&gt;</code>等标签来获取文本内容的，所以先分析一下目标页面结构。打开<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">F12</code>查看页面结构发现，我们要的目标数据在第5个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;tbody&gt;</code>标签 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">class</code> 属性为<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">provincetr</code> 的 <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;tr&gt;</code> 标签里。
+<img src="https://img-blog.csdnimg.cn/20200214135319517.png" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;">
+省份名称内容的页面结构如下：</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;tr <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span></span>=<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"provincetr"</span>&gt;
+<span/>     &lt;td&gt;
+<span/>        &lt;a href="11.html"&gt;北京市&lt;br&gt;&lt;/a&gt;
+<span/>     &lt;/td&gt;
+<span/>     &lt;td&gt;
+<span/>         &lt;a href="12.html"&gt;天津市&lt;br&gt;
+<span/>     &lt;/td&gt;
+<span/>     .........
+<span/>&lt;/tr&gt;
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">再拿到<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;td&gt;</code>标签中<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">&lt;a&gt;</code>标签属性就可以了，省份名称找到了，再看看省对应的城市名在哪里，属性<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">href="11.html"</code> 就是省份下对应的城市页面<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">Url</code> <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/11.html</code></p>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">找城市名称跟上边分析过程一样，这里就不再赘述了，既然数据位置已经确定了，那么就开始具体的爬取工作了。</p>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://img-blog.csdnimg.cn/20200214142816139.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWZ1MQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="display: block; margin: 0 auto; max-width: 100%;"><figcaption style="margin-top: 5px; text-align: center; color: #888; font-size: 14px;">在这里插入图片描述</figcaption></figure>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">爬虫实现</span><span class="suffix" style="display: none;"></span></h3>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">1、引入Jsoup依赖</span><span class="suffix" style="display: none;"></span></h4>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">&lt;dependency&gt;
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span>org.jsoup<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">groupId</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span>jsoup<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">artifactId</span>&gt;</span></span>
+<span/>        <span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span>1.7.3<span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">version</span>&gt;</span></span>
+<span/><span class="xml" style="line-height: 26px;"><span class="hljs-tag" style="color: #9B9B9B; line-height: 26px;">&lt;/<span class="hljs-name" style="color: #569CD6; line-height: 26px;">dependency</span>&gt;</span></span>
+<span/></code></pre>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">2、代码编写</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">代码的实现比较简单就两个方法而已，没有什么难度主要是得细心，捋清页面标签的嵌套结构就可以了。按照之前分析的逻辑一步一步走</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author xin
+<span/>     * @description 解析省份
+<span/>     * @date 2019/11/4 19:24
+<span/>     */</span>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> parseProvinceName(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>&gt;&gt; map, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> url) throws IOException {
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 获取页面文档数据
+<span/>         */</span>
+<span/>        Document doc = Jsoup.connect(url).get();
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 获取页面上所有的tbody标签
+<span/>         */</span>
+<span/>        Elements elements = doc.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"tbody"</span>);
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 拿到第五个tbody标签
+<span/>         */</span>
+<span/>        Element element = elements.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">4</span>);
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 拿到tbody标签下所有的子标签
+<span/>         */</span>
+<span/>        Elements childrens = element.children();
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 当前页面的URL
+<span/>         */</span>
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> baseUri = element.baseUri();
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Element element1 : childrens) {
+<span/>        
+<span/>            Elements provincetrs = element1.getElementsByClass(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"provincetr"</span>);
+<span/>            
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Element provincetr : provincetrs) {
+<span/>            
+<span/>                Elements tds = provincetr.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"td"</span>);
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Element td : tds) {
+<span/>
+<span/>                    <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> provinceName = td.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"a"</span>).text();
+<span/>                    <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> href = td.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"a"</span>).attr(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"href"</span>);
+<span/>
+<span/>                    System.out.println(provinceName + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"    "</span> + baseUri + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/"</span> + href);
+<span/>
+<span/>                    map.put(provinceName, <span class="hljs-literal" style="color: #569CD6; line-height: 26px;">null</span>);
+<span/>                    <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>                      * 组装城市页面的URL，进入城市页面爬城市名称
+<span/>                      */</span>
+<span/>                    parseCityName(map, baseUri + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"/"</span> + href, provinceName);
+<span/>                }
+<span/>            }
+<span/>        }
+<span/>    }
+<span/>    
+<span/>   
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">在抓取城市名称的时候有一点要注意，直辖市城市的省份和城市名称是一样的</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;"><span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>     * @author xin
+<span/>     * @description 解析城市名称
+<span/>     * @date 2019/11/4 19:26
+<span/>     */</span>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> parseCityName(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>&gt;&gt; map, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> url, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> provinceName) throws IOException {
+<span/>
+<span/>        Document doc = Jsoup.connect(url).get();
+<span/>        Elements elements = doc.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"tbody"</span>);
+<span/>        Element element = elements.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">4</span>);
+<span/>        Elements childrens = element.children();
+<span/>
+<span/>        <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>         * 
+<span/>         */</span>
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> baseUri = element.baseUri();
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>&gt; cityMap = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> HashMap&lt;&gt;();
+<span/>
+<span/>        <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Element element1 : childrens) {
+<span/>
+<span/>            Elements citytrs = element1.getElementsByClass(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"citytr"</span>);
+<span/>
+<span/>            <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">for</span> (Element cityTag : citytrs) {
+<span/>                Elements tds = cityTag.getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"td"</span>);
+<span/>
+<span/>                <span class="hljs-comment" style="color: #57A64A; font-style: italic; line-height: 26px;">/**
+<span/>                 * 直辖市，城市名就是本身
+<span/>                 */</span>
+<span/>                <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> cityName = tds.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>).getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"a"</span>).text();
+<span/>                
+<span/>                <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">if</span> (cityName.equals(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"市辖区"</span>)) {
+<span/>                    cityName = provinceName;
+<span/>                }
+<span/>                <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span> href1 = tds.get(<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1</span>).getElementsByTag(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"a"</span>).attr(<span class="hljs-string" style="color: #D69D85; line-height: 26px;">"href"</span>);
+<span/>
+<span/>                System.out.println(cityName + <span class="hljs-string" style="color: #D69D85; line-height: 26px;">" "</span> + href1);
+<span/>                
+<span/>                cityMap.put(cityName, href1);
+<span/>            }
+<span/>        }
+<span/>        map.put(provinceName, cityMap);
+<span/>    }
+<span/></code></pre>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">
+<span/>
+<span/>public <span class="hljs-class" style="color: #B8D7A3; line-height: 26px;"><span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">class</span> <span class="hljs-title" style="color: #DCDCDC; line-height: 26px;">test2</span> </span>{
+<span/>
+<span/>    public <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">static</span> <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">void</span> main(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>[] args) throws IOException {
+<span/>        
+<span/>        <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">Map</span>&lt;<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>, <span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">String</span>&gt;&gt; map = <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">new</span> HashMap&lt;&gt;();
+<span/>        
+<span/>        parseProvinceName(map, <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018"</span>);
+<span/>        
+<span/>        System.out.println(<span class="hljs-built_in" style="color: #4EC9B0; line-height: 26px;">JSON</span>.toJSONString(map));
+<span/>    }
+<span/>}
+<span/>
+<span/></code></pre>
+<h4 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; margin: 0.6em auto; font-size: 1.2em; padding-left: 10px; border-left: 2px dashed #009688;"><span class="prefix" style="display: none;"></span><span class="content">3、输出JSON字符串</span><span class="suffix" style="display: none;"></span></h4>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">当前只要省份和城市名称，爬虫没有什么深度，如果还需要区县等信息，可以根据市后边的url <code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">35/3508.html</code> 继续往下爬取</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">{
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"福建省"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"龙岩市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3508.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"南平市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3507.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"莆田市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3503.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"福州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3501.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"泉州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3505.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"漳州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3506.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"厦门市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3502.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"三明市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3504.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"宁德市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"35/3509.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"西藏自治区"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"拉萨市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5401.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"昌都市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5403.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"日喀则市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5402.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"那曲市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5406.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"林芝市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5404.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"山南市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5405.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"阿里地区"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"54/5425.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"贵州省"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"贵阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5201.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"毕节市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5205.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"铜仁市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5206.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"六盘水市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5202.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"遵义市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5203.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"黔西南布依族苗族自治州"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5223.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"安顺市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5204.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"黔东南苗族侗族自治州"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5226.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"黔南布依族苗族自治州"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"52/5227.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"上海市"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"上海市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"31/3101.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"湖北省"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"黄冈市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4211.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"孝感市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4209.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"恩施土家族苗族自治州"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4228.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"省直辖县级行政区划"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4290.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"襄阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4206.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"鄂州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4207.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"十堰市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4203.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"咸宁市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4212.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"黄石市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4202.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"荆州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4210.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"随州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4213.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"宜昌市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4205.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"武汉市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4201.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"荆门市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"42/4208.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"湖南省"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"湘潭市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4303.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"衡阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4304.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"张家界市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4308.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"益阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4309.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"岳阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4306.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"娄底市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4313.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"株洲市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4302.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"常德市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4307.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"湘西土家族苗族自治州"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4331.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"郴州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4310.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"邵阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4305.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"长沙市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4301.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"永州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4311.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"怀化市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"43/4312.html"</span>
+<span/> },
+<span/> <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"广东省"</span>: {
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"河源市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4416.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"韶关市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4402.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"茂名市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4409.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"汕头市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4405.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"清远市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4418.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"深圳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4403.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"珠海市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4404.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"广州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4401.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"肇庆市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4412.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"中山市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4420.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"江门市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4407.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"云浮市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4453.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"惠州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4413.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"湛江市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4408.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"东莞市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4419.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"揭阳市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4452.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"阳江市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4417.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"佛山市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4406.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"汕尾市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4415.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"潮州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4451.html"</span>,
+<span/>  <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"梅州市"</span>: <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"44/4414.html"</span>
+<span/> }
+<span/>
+<span/>     .......
+<span/>}
+<span/></code></pre>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">Jsoup爬取页面数据对网络的依赖比较高，像我500块一年50M的方正宽带快要卡出翔了，平均执行三次才有一次成功，我太难了！</p>
+<pre class="custom" style="margin-top: 10px; margin-bottom: 10px; border-radius: 5px; box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span style="display: block; background: url(https://imgkr.cn-bj.ufileos.com/97e4eed2-a992-4976-acf0-ccb6fb34d308.png); height: 30px; width: 100%; background-size: 40px; background-repeat: no-repeat; background-color: #1E1E1E; margin-bottom: -7px; border-radius: 5px; background-position: 10px 10px;"></span><code class="hljs" style="overflow-x: auto; padding: 16px; color: #DCDCDC; display: block; font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; font-size: 12px; -webkit-overflow-scrolling: touch; padding-top: 15px; background: #1E1E1E; border-radius: 5px;">Exception <span class="hljs-keyword" style="color: #569CD6; line-height: 26px;">in</span> thread <span class="hljs-string" style="color: #D69D85; line-height: 26px;">"main"</span> java.net.SocketTimeoutException: Read timed out
+<span/> at java.net.SocketInputStream.socketRead0(Native Method)
+<span/> at java.net.SocketInputStream.socketRead(SocketInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">116</span>)
+<span/> at java.net.SocketInputStream.read(SocketInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">171</span>)
+<span/> at java.net.SocketInputStream.read(SocketInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">141</span>)
+<span/> at java.io.BufferedInputStream.fill(BufferedInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">246</span>)
+<span/> at java.io.BufferedInputStream.read1(BufferedInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">286</span>)
+<span/> at java.io.BufferedInputStream.read(BufferedInputStream.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">345</span>)
+<span/> at sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">735</span>)
+<span/> at sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">678</span>)
+<span/> at sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1569</span>)
+<span/> at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">1474</span>)
+<span/> at java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">480</span>)
+<span/> at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">443</span>)
+<span/> at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">465</span>)
+<span/> at org.jsoup.helper.HttpConnection$Response.execute(HttpConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">424</span>)
+<span/> at org.jsoup.helper.HttpConnection.execute(HttpConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">178</span>)
+<span/> at org.jsoup.helper.HttpConnection.get(HttpConnection.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">167</span>)
+<span/> at com.xinzf.project.jsoup.test2.parseProvinceName(test2.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">32</span>)
+<span/> at com.xinzf.project.jsoup.test2.main(test2.java:<span class="hljs-number" style="color: #B8D7A3; line-height: 26px;">17</span>)
+<span/>
+<span/></code></pre>
+<h3 style="margin-top: 30px; margin-bottom: 15px; padding: 0px; font-weight: bold; color: black; font-size: 20px; margin: 0.6em auto; padding-left: 10px; border-left: 2px solid #009688;"><span class="prefix" style="display: none;"></span><span class="content">总结</span><span class="suffix" style="display: none;"></span></h3>
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify;">从分析页面到编写代码花费的时间，可能要比简单的复制粘贴还要长，但我依然选择用程序解决问题，并不是因为我有多勤快，反而是因为我很懒，你品，你细品！</p>
+<blockquote style="display: block; font-size: 0.9em; overflow: auto; overflow-scrolling: touch; background: rgba(0, 0, 0, 0.05); padding-top: 10px; padding-bottom: 10px; padding-right: 10px; margin-bottom: 20px; margin-top: 20px; border-left: 2px solid #888; border-right: 2px solid #888; padding-left: 1em; color: #777;">
+<p style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; text-align: justify; margin: 0px; color: black; line-height: 26px;">整理了几百本各类技术电子书和视频资料 ，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">嘘~</code>，<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">免费</code> 送，公号内回复【<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">666</code>】自行领取。和小伙伴们建了一个<code style="font-size: 14px; word-wrap: break-word; padding: 2px 4px; border-radius: 4px; margin: 0 2px; background-color: rgba(27,31,35,.05); font-family: Operator Mono, Consolas, Monaco, Menlo, monospace; word-break: break-all; color: #009688;">技术交流群</code>，一起探讨技术、分享技术资料，旨在共同学习进步，感兴趣就入我们吧！</p>
+</blockquote>
+<figure style="margin: 0; margin-top: 10px; margin-bottom: 10px;"><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAyMC8yLzQvMTcwMGU0Mjk1MDQzMjQ0Yg?x-oss-process=image/format,png" alt style="display: block; margin: 0 auto; max-width: 100%;"></figure>
+</section><p id="nice-suffix-juejin-container" class="nice-suffix-juejin-container" data-tool="mdnice编辑器" style="font-size: 16px; padding-top: 8px; padding-bottom: 8px; margin: 0; line-height: 26px; color: black; text-align: justify; margin-top: 20px !important;">本文使用 <a href="https://mdnice.com" target="_blank" rel="noopener" style="text-decoration: none; word-wrap: break-word; font-weight: bold; color: #009688; border-bottom: 1px solid #009688;">mdnice</a> 排版</p></section>
+    </div>
+    
+    <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+            <span class="reward-type">
+                <img class="alipay" src="/支付宝支付码.jpg"><b>支付宝打赏</b>
+            </span>
+            
+            
+            <span class="reward-type">
+                <img class="wechat" src="/微信支付码.png"><b>微信打赏</b>
+            </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">
+        赞赏是不耍流氓的鼓励
+    </p>
+</div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            转载请注明出处
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2020/04/12/Hexo%20+%20GitHub%20%E4%BA%94%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E5%85%8D%E8%B4%B9%E6%90%AD%E4%B8%80%E4%B8%AA%E9%AB%98%E9%80%BC%E6%A0%BC%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/" class="pre-post btn btn-default" title='Hexo + GitHub 五分钟教你免费搭一个高逼格技术博客'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hexo + GitHub 五分钟教你免费搭一个高逼格技术博客</span>
+    </a>
+    
+    
+    <a href="/2020/03/12/%E5%88%86%E5%B8%83%E5%BC%8FID%E7%94%9F%E6%88%90%E5%99%A8%E4%B9%8B%20%E6%BB%B4%E6%BB%B4%EF%BC%88Tinyid%EF%BC%89%E5%AE%9E%E6%88%98/" class="next-post btn btn-default" title='分布式ID生成器之 滴滴（Tinyid）实战'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            分布式ID生成器之 滴滴（Tinyid）实战</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '20',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">写在前边</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">分下一下需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">爬虫搞起</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">爬虫实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">1、引入Jsoup依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">2、代码编写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nice"><span class="toc-text">3、输出JSON字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nice"><span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2020
+                    
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash.js"></script>
+
+</body>
+</html>
